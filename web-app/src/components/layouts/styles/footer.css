@@ -1,0 +1,32 @@
+.footer-block{
+    justify-self: flex-end;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    background-color: var(--purple-deep);
+    width: 100%;
+    height: 200px;
+    gap: 10px;
+    overflow-y: hidden;
+}
+.footer-block .title{
+    color: var(--white-creamy);
+    font-size: 30px;
+    font-weight: 400;
+    font-family: var(--unquiet);
+}
+.footer-block .main-infa-block{
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: var(--pink-soft);
+    font-size: 21px;
+    font-family: var(--izvod);
+}
+
+.footer-block .open-data{
+    color: var(--white-creamy);
+    font-size: 23px;
+    font-family: var(--izvod);
+}

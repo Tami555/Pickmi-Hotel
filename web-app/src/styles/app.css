@@ -28,14 +28,17 @@ html, body {
     --pink-soft: #F39DB6;   
     --pink-peach: #F6D2D6; 
     --white-creamy: #FEFAF9;
+    --izvod: 'Izvod';
+    --unquiet: 'Unquiet';
 }
 
 .App {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     min-height: 100vh;
-    font-family: 'Izvod';
+    font-family: var(--izvod);
     background-color: var(--white-creamy);
 }

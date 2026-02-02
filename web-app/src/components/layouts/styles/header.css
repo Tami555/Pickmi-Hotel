@@ -1,0 +1,41 @@
+.header-block {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: var(--purple-deep);
+    width: 100%;
+    height: 75px;
+}
+.head-link{
+    font-family: var(--izvod);
+    color: var(--white-creamy);
+    font-size: 40px;
+    text-decoration: none;
+}
+.active-link{
+    text-decoration: underline 2px white;
+}
+
+.header-block .logotype{
+    width: 60px;
+    height: 60px;
+}
+
+.login-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    border: 5px solid var(--white-creamy);
+    color: var(--white-creamy);
+    font-size: 40px;
+    background-color: var(--purple-deep);
+    transition: all 0.5s;
+    cursor: pointer;
+}
+.login-btn:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 20px var(--pink-soft);
+}
