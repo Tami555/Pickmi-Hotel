@@ -12,6 +12,30 @@ html, body {
     user-select: none;          
 }
 
+@font-face {  
+    font-family: 'Unquiet';  
+    src: url('./fonts/unquietspiritsrusbylyajka.otf') format('opentype');  
+}
+
+@font-face {  
+    font-family: 'Izvod';  
+    src: url('./fonts/Izvod.otf') format('opentype');  
+}
+
+:root {
+    --purple-deep: #6A4163;
+    --pink-rose: #D46A92; 
+    --pink-soft: #F39DB6;   
+    --pink-peach: #F6D2D6; 
+    --white-creamy: #FEFAF9;
+}
+
 .App {
-  text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    font-family: 'Izvod';
+    background-color: var(--white-creamy);
 }
