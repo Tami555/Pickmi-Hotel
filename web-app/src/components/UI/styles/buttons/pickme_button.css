@@ -1,0 +1,21 @@
+.pickme-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 60px;
+    border-radius: 45px;
+    cursor: pointer;
+    transition: all 0.6s;
+    font-family: var(--izvod);
+    text-shadow: 0px 0px var(--purple-deep) 2px;
+    font-weight: 500;
+    font-size: 30px;
+    /* по умолчанию */
+    background-color: var(--pink-soft);
+    color: var(--white-creamy);
+}
+.pickme-btn:hover{
+    transform: scale(1.05);
+    box-shadow: 0px 0px 10px 1px var(--purple-deep);
+}
