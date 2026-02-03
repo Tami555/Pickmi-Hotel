@@ -9,6 +9,7 @@
     height: 200px;
     gap: 10px;
     overflow-y: hidden;
+    z-index: 100;
 }
 .footer-block .title{
     color: var(--white-creamy);

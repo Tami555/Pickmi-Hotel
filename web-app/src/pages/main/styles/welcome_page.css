@@ -1,0 +1,26 @@
+.title-page-block {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--pink-rose);
+    height: 90vh;
+    position: relative;
+}
+.title-page-block .img-hotel{
+    width: 80%;
+    height: 98vh;
+}
+
+.title-hotel{
+    display: flex;
+    flex-wrap: wrap;
+    width: 200px;
+    font-weight: 500;
+    font-size: 230px;
+    font-family: var(--unquiet);
+    color: var(--white-creamy);
+    position: absolute;
+    left: 100px;
+    z-index: 2;
+}
