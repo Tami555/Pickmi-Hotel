@@ -20,9 +20,12 @@
     display: flex;
     flex-direction: column;
     gap: 3px;
+}
+.footer-block .main-infa-block .item{
     color: var(--pink-soft);
     font-size: 21px;
     font-family: var(--izvod);
+    text-decoration: none;
 }
 
 .footer-block .open-data{
