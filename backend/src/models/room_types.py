@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import String, Text
-from models import Base
+from . import Base
 
 
 class RoomTypes(Base):
