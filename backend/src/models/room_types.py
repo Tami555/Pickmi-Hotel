@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Mapped, mapped_column
-from sqlalchemy import String, Text
+from sqlalchemy import String, Text, Integer
 from . import Base
 
 
@@ -8,3 +8,4 @@ class RoomTypes(Base):
     title: Mapped[str] = mapped_column(String(100), unique=True)
     description: Mapped[str] = mapped_column(Text)
     image: Mapped[str] = mapped_column(nullable=True)
+    price_per_day: Mapped[int] = mapped_column(Integer, nullable=False)
