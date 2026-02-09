@@ -7,7 +7,7 @@ from contextlib import asynccontextmanager
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print('Старт...')
-    await db_helper.create_data_base()
+    # await db_helper.create_data_base()
     yield
     print('Стоп...')
 
