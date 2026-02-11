@@ -1,0 +1,12 @@
+.room-types-title{
+    font-size: 100px;
+    font-family: var(--unquiet);
+    color: var(--pink-rose);
+    font-weight: 500;
+}
+.room-types-blocks{
+    margin: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}

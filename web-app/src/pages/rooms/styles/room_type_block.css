@@ -1,0 +1,114 @@
+.room-block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 250px;
+    margin: 20px;
+    gap: 0px;
+}
+
+.room-block.reverse {
+    flex-direction: row-reverse;
+}
+
+.room-block img {
+    width: 450px;
+    height: 300px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.infa-block.triangle-left {
+    width: 600px;
+    height: 300px;
+    background-color: var(--pink-peach);
+    border-radius: 20px;
+    padding: 20px;
+    clip-path: polygon(0 100%, 0 0, 100% 60%);
+    display: flex;
+    flex-direction: column;
+}
+
+.infa-block.triangle-right {
+    width: 600px;
+    height: 300px;
+    align-items: flex-end;
+    justify-content: flex-end;
+    background-color: var(--pink-peach);
+    border-radius: 20px;
+    padding-bottom: 50px;
+    clip-path: polygon(0 60%, 100% 0, 100% 100%);
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 50px;
+    font-weight: 500;
+    color: black;
+    font-family: var(--izvod);
+}
+.description {
+    display: flex;
+    width: 350px;
+    flex-wrap: wrap;
+    font-size: 15px;
+    color: var(--pink-rose);
+    font-family: var(--izvod);
+}
+
+/* Последний блок с кнопками и ценой */
+.last-block{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.price {
+    color: var(--purple-deep);
+    font-family: var(--izvod);
+    font-size: 50px;
+    position: relative;
+    top: -30px;
+}
+
+/* Кнопки: треугольные */
+.btn {
+    display: flex;
+    align-items: center;
+    width: 130px;
+    height: 50px;
+    padding: 5px;
+    border-radius: 7px;
+    font-family: var(--izvod);
+    transition: all 0.5s;
+    cursor: pointer;
+    font-size: 20px;
+    border: 2px solid var(--pink-rose);
+}
+
+.btn-right{
+    clip-path: polygon(0 60%, 100% 0, 100% 100%);
+    justify-content: end;
+}
+
+.btn-left{
+    clip-path: polygon(0 100%, 0 0, 100% 60%);
+    justify-content: start;
+}
+
+.btn-choose {
+    background-color: var(--pink-rose);
+    color: var(--white-creamy);
+}
+
+.btn-detaile {
+    background-color: var(--white-creamy);
+    color: var(--pink-rose);
+}
+
+.btn:hover {
+    transform: scale(1.06);
+}
