@@ -5,7 +5,7 @@ from models import RoomTypes, RoomTypeAmenities
 
 
 async def get_room_types(session: AsyncSession) -> list[RoomTypes]:
-    stmt = select(RoomTypes)
+    stmt = select(RoomTypes).order_by(-RoomTypes.price_per_day)
     room_types = await session.scalars(stmt)
     return list(room_types)
 

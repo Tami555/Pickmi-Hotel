@@ -5,7 +5,7 @@ import '../styles/room_type_block.css';
 export const RoomTypeBlock = ({room, index}) => {
     return (
         <div className={`room-block ${index % 2 === 1 ? 'reverse' : ''}`}>
-            <img src={room.image} />
+            <img src={`https://drive.google.com/thumbnail?id=${room.image}&sz=w300`} />
             <div
                 className={`infa-block ${index % 2 === 1 ? 'triangle-right' : 'triangle-left'}`}>
                 <h2 className="title">{room.title}</h2>
