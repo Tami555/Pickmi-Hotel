@@ -1,0 +1,14 @@
+.loader-block {
+    display: inline-block;
+    width: 80px;
+    height: 80px;
+    border: 12px dotted var(--pink-rose);
+    border-radius: 50%;
+    border-top-color: var(--purple-deep);
+    animation: spin 1s ease-in-out infinite;
+    align-self: center;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}

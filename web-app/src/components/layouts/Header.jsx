@@ -7,8 +7,8 @@ import { Link, useLocation } from "react-router-dom";
 export const Header = () => {
     const links = [
         { title: 'О нас', path: '/' },
-        { title: 'Услуги', path: '/services' },
         { title: 'Номера', path: '/rooms' },
+        { title: 'Услуги', path: '/services' },
     ];
     const location = useLocation();
     return (

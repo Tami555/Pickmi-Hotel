@@ -2,13 +2,21 @@ import React from "react";
 import '../styles/other_detail_page.css';
 import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
 import { hotel_swimming_pool, hotel_bed_1, hotel_bed_2 } from "../../../images";
+import { useNavigate } from "react-router-dom";
 
 export const OtherDetailPage = () => {
+    const nav = useNavigate()
+
     return (
         <div className="other-detail-page-block">
             <div className="btns-block">
                <PickMeButton className={'btn'}>забронировать</PickMeButton>
-               <PickMeButton className={'btn detail-btn'}>подробнее</PickMeButton>
+               <PickMeButton
+                    className={'btn detail-btn'}
+                    onClick={() => nav('/rooms')}
+                >
+                    подробнее
+                </PickMeButton>
             </div>
 
             <div className="images-gallery">

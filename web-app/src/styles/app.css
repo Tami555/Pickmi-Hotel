@@ -28,6 +28,7 @@ html, body {
     --pink-soft: #F39DB6;   
     --pink-peach: #F6D2D6; 
     --white-creamy: #FEFAF9;
+    --error: rgb(235, 120, 120);
     --izvod: 'Izvod';
     --unquiet: 'Unquiet';
 }
