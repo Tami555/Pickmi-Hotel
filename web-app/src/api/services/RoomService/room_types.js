@@ -11,3 +11,12 @@ export const room_types_list = async () => {
         }
     )
 }
+
+export const room_type_by_slug = async (slug) => {
+    return await apiRequest(
+        async () => {
+            const res = await axios.get(getBackendUrl(ROOMS_ENDPOINTS.ROOMS_TYPES) + `/${slug}`)
+            return res.data
+        }
+    )
+}

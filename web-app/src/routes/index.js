@@ -1,4 +1,5 @@
 import { MainPage } from '../pages/main/MainPage';
+import { OneRoomTypePage } from '../pages/rooms/OneRoomTypePage';
 import { RoomTypesPage } from '../pages/rooms/RoomTypesPage';
 
 
@@ -6,7 +7,8 @@ import { RoomTypesPage } from '../pages/rooms/RoomTypesPage';
 export const  common_routes = [
     {path: '/', element: MainPage},
     {path: '/main', element: MainPage},
-    {path: '/rooms', element: RoomTypesPage}
+    {path: '/rooms', element: RoomTypesPage},
+    {path: '/rooms/:slug', element: OneRoomTypePage}
 ]
 // для не авторизованных
 export const no_authorized_routes = []

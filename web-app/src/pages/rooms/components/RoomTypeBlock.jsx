@@ -1,8 +1,10 @@
 import React from "react";
 import '../styles/room_type_block.css';
+import { useNavigate } from "react-router-dom";
 
 
 export const RoomTypeBlock = ({room, index}) => {
+    const nav = useNavigate()
     return (
         <div className={`room-block ${index % 2 === 1 ? 'reverse' : ''}`}>
             <img src={`https://drive.google.com/thumbnail?id=${room.image}&sz=w300`} />
@@ -11,8 +13,17 @@ export const RoomTypeBlock = ({room, index}) => {
                 <h2 className="title">{room.title}</h2>
                 <p className="description">{room.description}</p>
                 <div className={`last-block ${index % 2 === 1 ? 'reverse' : ''}`}>
-                    <div className={`btn btn-choose ${index % 2 === 1 ? 'btn-right' : 'btn-left'}`}>Выбрать</div>
-                    <div className={`btn btn-detaile ${index % 2 === 1 ? 'btn-right' : 'btn-left'}`}>Подробнее</div>
+                    <div
+                        className={`btn btn-choose ${index % 2 === 1 ? 'btn-right' : 'btn-left'}`}
+                    >
+                        Выбрать
+                    </div>
+                    <div
+                        className={`btn btn-detaile ${index % 2 === 1 ? 'btn-right' : 'btn-left'}`}
+                        onClick={() => nav(`/rooms/${room.slug}`)}
+                    >
+                        Подробнее
+                    </div>
                     <p className="price">{room.price_per_day} руб</p>
                 </div>
             </div>
