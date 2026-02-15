@@ -32,7 +32,7 @@ export const OneRoomTypePage = () => {
     });
 
     return (
-        <CommonBlock>
+        <CommonBlock back_button={true}>
             <ContentApiBlock loading={loading} error={errorServer}>
                 <div className="one-room-type-block">
                     <h1 className="title">Номер {roomType.title}</h1>
