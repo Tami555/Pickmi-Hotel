@@ -25,7 +25,6 @@ class RoomTypeDetailResponse(RoomTypeResponse):
             "amenities": [
                 {
                     "title": assoc.amenity.title,
-                    "image": assoc.amenity.image,
                     "is_main": assoc.is_main
                 }
                 for assoc in obj.amenities_association

@@ -5,8 +5,8 @@ import { useFetch } from "../../hooks/useFetch";
 import { room_type_by_slug } from "../../api/services/RoomService/room_types";
 import { ContentApiBlock } from "../../components/layouts/ContentApiBlock";
 import "./styles/one_room_type_page.css";
-import { Wifi } from 'lucide-react';
 import { PickMeButton } from "../../components/UI/buttons/PickMeButton";
+import { AMENITIES_ICON } from "./utils/amenities-icons";
 
 
 export const OneRoomTypePage = () => {
@@ -19,8 +19,6 @@ export const OneRoomTypePage = () => {
         }
     )
     useEffect(() => {get_one_room_type()}, [])
-
-
     const main_amenities  = []
     const other_amenities  = []
     roomType?.amenities?.forEach((amenity) => { 
@@ -44,7 +42,13 @@ export const OneRoomTypePage = () => {
                         <div className="amenities-main-block">
                             {main_amenities?.map((amenity) => (
                                 <div className="amenity-block">
-                                    <Wifi size={35} color={"var(--purple-deep)"}/>
+                                     {(() => {
+                                        const IconComponent = AMENITIES_ICON[amenity.title];
+                                        return IconComponent ? 
+                                            <IconComponent size={35} color={"var(--purple-deep)"} />
+                                            :
+                                            null;
+                                    })()}
                                     <p>{amenity.title}</p>
                                 </div>
                             ))}

@@ -1,0 +1,10 @@
+export { Wifi as WifiIcon } from 'lucide-react';
+export { Wine as MiniBarIcon } from 'lucide-react';
+export { Wind as ConditionerIcon } from 'lucide-react';
+export { Toilet as ToiletIcon } from 'lucide-react';
+export { Bubbles as JacuzziIcon } from 'lucide-react';
+export { House as BalconyViewIcon } from 'lucide-react';
+export { Hamburger as BuffetIcon } from 'lucide-react';
+export { Flower as FlowerIcon } from 'lucide-react';
+export { Clapperboard as CinemaIcon } from 'lucide-react';
+export { Tv as TvIcon } from 'lucide-react';
