@@ -6,7 +6,8 @@ import { room_type_by_slug } from "../../api/services/RoomService/room_types";
 import { ContentApiBlock } from "../../components/layouts/ContentApiBlock";
 import "./styles/one_room_type_page.css";
 import { PickMeButton } from "../../components/UI/buttons/PickMeButton";
-import { AMENITIES_ICON } from "./utils/amenities-icons";
+import { AmenitiesMainList } from "./components/AmenitiesMainList";
+import { AmenitiesOtherList } from "./components/AmenitiesOtherList";
 
 
 export const OneRoomTypePage = () => {
@@ -36,23 +37,9 @@ export const OneRoomTypePage = () => {
                 <div className="one-room-type-block">
                     <h1 className="title">Номер {roomType.title}</h1>
                     <div className="main-infa-block">
-
                         <img src={`https://drive.google.com/thumbnail?id=${roomType.image}&sz=w300`}/>
 
-                        <div className="amenities-main-block">
-                            {main_amenities?.map((amenity) => (
-                                <div className="amenity-block">
-                                     {(() => {
-                                        const IconComponent = AMENITIES_ICON[amenity.title];
-                                        return IconComponent ? 
-                                            <IconComponent size={35} color={"var(--purple-deep)"} />
-                                            :
-                                            null;
-                                    })()}
-                                    <p>{amenity.title}</p>
-                                </div>
-                            ))}
-                        </div>
+                        <AmenitiesMainList amenities_list={main_amenities}/>
 
                         <div className="price-block">
                             <h2>{roomType.price_per_day} руб</h2>
@@ -64,16 +51,7 @@ export const OneRoomTypePage = () => {
                             <p>{roomType.description}</p>
                         </div>
                     </div>
-                    <div className="amenities-other-block">
-                        <h2>Доступные вещи:</h2>
-                        {other_amenities.length ? 
-                            other_amenities.map((amenity) => (
-                                <p>~ {amenity.title}</p>
-                            ))
-                            :
-                            <p>------</p>
-                        }
-                    </div>
+                    <AmenitiesOtherList amenities_list={other_amenities}/>
                 </div>
             </ContentApiBlock>
         </CommonBlock>

@@ -6,12 +6,15 @@
     align-items: center;
     position: relative;
 }
+
+/* Заголовок */
 .one-room-type-block .title{
     color: var(--pink-rose);
     font-family: var(--unquiet);
     font-size: 70px;
     font-weight: 300;
 }
+/* Базовый блок информации */
 .one-room-type-block .main-infa-block{
     display: flex;
     justify-content: end;
@@ -23,6 +26,8 @@
     color: var(--purple-deep);
     position: relative;
 }
+
+/* Изобажение */
 .one-room-type-block .main-infa-block img{
     width: 600px;
     height: 270px;
@@ -30,27 +35,8 @@
     top: -80px;
     right: 50px;
 }
-/* bbbbbbbbbbbbbbbbbbbbbbbb */
-.one-room-type-block .main-infa-block .amenities-main-block{
-    align-self: flex-end;
-    display: flex;
-    gap: 50px;
-    flex-direction: row;
-}
-.amenity-block{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    color: var(--purple-deep);
-    font-family: var(--izvod);
-    font-size: 30px;
-}
 
-
-/* /////////////////// */
-
+/* Цена и Выбрать */
 .one-room-type-block .main-infa-block .price-block{
     display: flex;
     flex-direction: column;
@@ -77,7 +63,7 @@
     background-color: var(--white-creamy);
 }
 
-/* ................ */
+/* Описание */
 .one-room-type-block .main-infa-block .description-block{
     display: flex;
     flex-direction: column;
@@ -103,21 +89,4 @@
 }
 .one-room-type-block .main-infa-block .description-block p{
     font-size: 20px;
-}
-
-/* //////////////////// */
-
-.amenities-other-block{
-    align-self: flex-start;
-    font-family: var(--izvod);
-    position: relative;
-    bottom: 100px;
-    left: -100px;
-}
-.amenities-other-block h2{
-    font-size: 55px;
-    font-weight: 500;
-}
-.amenities-other-block p{
-    font-size: 30px;
 }

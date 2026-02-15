@@ -1,0 +1,33 @@
+/* Main Amenities */
+.amenities-main-block{
+    align-self: flex-end;
+    display: flex;
+    gap: 50px;
+    flex-direction: row;
+    margin: 5px;
+}
+.amenity-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--purple-deep);
+    font-family: var(--izvod);
+    font-size: 30px;
+}
+/* Other Amenities */
+.amenities-other-block{
+    align-self: flex-start;
+    font-family: var(--izvod);
+    position: relative;
+    bottom: 100px;
+    left: -100px;
+}
+.amenities-other-block h2{
+    font-size: 55px;
+    font-weight: 500;
+}
+.amenities-other-block p{
+    font-size: 30px;
+}
