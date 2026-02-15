@@ -1,0 +1,123 @@
+.one-room-type-block{
+    margin-top: 20px;
+    margin-bottom: -10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+.one-room-type-block .title{
+    color: var(--pink-rose);
+    font-family: var(--unquiet);
+    font-size: 70px;
+    font-weight: 300;
+}
+.one-room-type-block .main-infa-block{
+    display: flex;
+    justify-content: end;
+    margin-top: 120px;
+    margin-bottom: 155px;
+    width: 850px;
+    height: 300px;
+    background-color: var(--pink-peach);
+    color: var(--purple-deep);
+    position: relative;
+}
+.one-room-type-block .main-infa-block img{
+    width: 600px;
+    height: 270px;
+    position: absolute;
+    top: -80px;
+    right: 50px;
+}
+/* bbbbbbbbbbbbbbbbbbbbbbbb */
+.one-room-type-block .main-infa-block .amenities-main-block{
+    align-self: flex-end;
+    display: flex;
+    gap: 50px;
+    flex-direction: row;
+}
+.amenity-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: var(--purple-deep);
+    font-family: var(--izvod);
+    font-size: 30px;
+}
+
+
+/* /////////////////// */
+
+.one-room-type-block .main-infa-block .price-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: -5px;
+    width: 300px;
+    height: 170px;
+    background-color: var(--pink-soft);
+    opacity: 0.8;
+    border-radius: 30px;
+    position: absolute;
+    bottom: -40px;
+    left: -140px;
+}
+.one-room-type-block .main-infa-block .price-block h2{
+    color: var(--white-creamy);
+    font-family: var(--izvod);
+    font-size: 60px;
+    font-weight: 500;
+}
+.one-room-type-block .main-infa-block .price-block .change-btn{
+    color: var(--purple-deep);
+    background-color: var(--white-creamy);
+}
+
+/* ................ */
+.one-room-type-block .main-infa-block .description-block{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 10px;
+    width: 500px;
+    height: 170px;
+    padding: 10px;
+    background-color: var(--purple-deep);
+    box-shadow: 0 0 10px 2px var(--pink-rose);
+    opacity: 0.6;
+    color: var(--white-creamy);
+    text-align: end;
+    font-family: var(--izvod);
+    position: absolute;
+    bottom: -170px;
+    right: 0px;
+}
+.one-room-type-block .main-infa-block .description-block h2{
+    font-size: 50px;
+    font-weight: 300;
+}
+.one-room-type-block .main-infa-block .description-block p{
+    font-size: 20px;
+}
+
+/* //////////////////// */
+
+.amenities-other-block{
+    align-self: flex-start;
+    font-family: var(--izvod);
+    position: relative;
+    bottom: 100px;
+    left: -100px;
+}
+.amenities-other-block h2{
+    font-size: 55px;
+    font-weight: 500;
+}
+.amenities-other-block p{
+    font-size: 30px;
+}
