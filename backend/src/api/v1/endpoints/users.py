@@ -1,77 +1,35 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter, HTTPException, status
 from schemas import UserCreate, UserResponse
-from models.users import Role, User
+from models.users import Role
 from core import db_helper
-import crud.users as crud 
+from services.user_service import registration_user
+from exceptions import UserAlreadyExistsError
 
 
 router = APIRouter()
 
-# Проверки перед созданием пользователя
-async def check_email_exists(email: str, session: AsyncSession) -> bool:
-    result = await session.execute(select(User).where(User.email == email))
-    return result.scalar_one_or_none() is not None
 
-async def check_phone_exists(phone: str, session: AsyncSession) -> bool:
-    result = await session.execute(select(User).where(User.phone == phone))
-    return result.scalar_one_or_none() is not None
-
-async def check_passport_exists(series: str, number: str, session: AsyncSession) -> bool:
-    result = await session.execute(
-        select(User).where(
-            User.passport_series == series,
-            User.passport_number == number
-        )
-    )
-    return result.scalar_one_or_none() is not None
-
-async def check_register_user(user_data: UserCreate, session: AsyncSession):
-    if await check_email_exists(user_data.email, session):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Пользователь с таким email уже существует"
-        )
-    if await check_phone_exists(user_data.phone, session):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Пользователь с таким телефоном уже существует"
-        )
-    if await check_passport_exists(
-        user_data.passport_series, 
-        user_data.passport_number, 
-        session
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_409_CONFLICT,
-            detail="Пользователь с такими паспортными данными уже существует"
-        )
-    return True
+async def create_user_by_role(
+    user: UserCreate,
+    role: Role,
+) -> UserResponse:
+    async with db_helper.create_scoped_session() as session:
+        try:
+            return await registration_user(user=user, role_type=role, session=session)
+        except UserAlreadyExistsError as err:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=err.message)
 
 
 @router.post('/registration/guest/', response_model=UserResponse)
-async def create_guest(
-    user: UserCreate,
-    session: AsyncSession=Depends(db_helper.create_scoped_session)
-) -> UserResponse:
-    await check_register_user(user, session)
-    return await crud.registration_user(user=user, role_type=Role.GUEST, session=session)
+async def create_guest(user: UserCreate) -> UserResponse:
+    return await create_user_by_role(user=user, role=Role.GUEST)
 
 
-@router.post('/registration/employee/')
-async def create_guest(
-    user: UserCreate,
-    session: AsyncSession=Depends(db_helper.create_scoped_session)
-) -> UserResponse:
-    await check_register_user(user, session)
-    return await crud.registration_user(user=user, role_type=Role.EMPLOYEE, session=session)
+@router.post('/registration/employee/', response_model=UserResponse)
+async def create_employee(user: UserCreate) -> UserResponse:
+    return await create_user_by_role(user=user, role=Role.EMPLOYEE)
 
 
-@router.post('/registration/admin/')
-async def create_guest(
-    user: UserCreate,
-    session: AsyncSession=Depends(db_helper.create_scoped_session)
-) -> UserResponse:
-    await check_register_user(user, session)
-    return await crud.registration_user(user=user, role_type=Role.ADMIN, session=session)
+@router.post('/registration/admin/', response_model=UserResponse)
+async def create_admin(user: UserCreate) -> UserResponse:
+    return await create_user_by_role(user=user, role=Role.ADMIN)
