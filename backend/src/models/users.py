@@ -1,8 +1,13 @@
 import datetime
 from enum import Enum as PyEnum
 from sqlalchemy import String, Enum as SQLEnum, func, UniqueConstraint
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import TYPE_CHECKING
 from . import Base
+
+
+if TYPE_CHECKING:
+    from . import Employee
 
 
 class Role(PyEnum):
@@ -34,3 +39,5 @@ class User(Base):
     __table_args__ = (
         UniqueConstraint('passport_series', 'passport_number', name='unique_passport'),
     )
+    # Связи
+    employee: Mapped["Employee"] = relationship(back_populates="user")
