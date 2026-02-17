@@ -1,8 +1,8 @@
 """create user table
 
-Revision ID: 6d6a8f4cff7d
+Revision ID: bd4921fa249d
 Revises: caee9614425c
-Create Date: 2026-02-17 12:42:50.064645
+Create Date: 2026-02-17 14:05:52.337386
 
 """
 
@@ -12,7 +12,7 @@ from alembic import op
 import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
-revision: str = "6d6a8f4cff7d"
+revision: str = "bd4921fa249d"
 down_revision: Union[str, Sequence[str], None] = "caee9614425c"
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -25,7 +25,7 @@ def upgrade() -> None:
         "user",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("email", sa.String(), nullable=False),
-        sa.Column("password", sa.String(length=255), nullable=False),
+        sa.Column("password", sa.LargeBinary(), nullable=False),
         sa.Column("first_name", sa.String(length=50), nullable=False),
         sa.Column("last_name", sa.String(length=50), nullable=False),
         sa.Column("patronymic", sa.String(length=50), nullable=True),
@@ -48,6 +48,7 @@ def upgrade() -> None:
         sa.UniqueConstraint(
             "passport_series", "passport_number", name="unique_passport"
         ),
+        sa.UniqueConstraint("phone"),
     )
     # ### end Alembic commands ###
 

@@ -14,11 +14,11 @@ class Role(PyEnum):
 class User(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(unique=True)
-    password: Mapped[bytes] = mapped_column(String(255))
+    password: Mapped[bytes]
     first_name: Mapped[str] = mapped_column(String(50))
     last_name: Mapped[str] = mapped_column(String(50))
     patronymic: Mapped[str] = mapped_column(String(50), nullable=True)
-    phone: Mapped[str] = mapped_column(String(20))
+    phone: Mapped[str] = mapped_column(String(20), unique=True)
     passport_series: Mapped[str] = mapped_column(String(4)) 
     passport_number: Mapped[str] = mapped_column(String(6))  
     role: Mapped[Role] = mapped_column(SQLEnum(Role, name="user_role_enum"), nullable=False)
