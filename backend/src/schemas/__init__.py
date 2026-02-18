@@ -1,8 +1,8 @@
 from .rooms import RoomTypeResponse, RoomTypeDetailResponse
 from .amenity import AmenityResponse
 from .users import UserCreate, UserResponse
-from .positions import PositionBase, PositionCreate, PositionResponse
-from .employees import EmployeeResponse, EmployeeCreate
+from .positions import PositionCreate, PositionResponse, PositionDetailResponse
+from .employees import EmployeeResponse, EmployeeCreate, EmployeeDetailResponse
 
 
 __all__ = [
@@ -13,7 +13,8 @@ __all__ = [
     "UserResponse",
     "EmployeeResponse",
     "EmployeeCreate",
+    "EmployeeDetailResponse",
     "PositionCreate",
     "PositionResponse",
-    "PositionBase"
+    "PositionDetailResponse"
 ]

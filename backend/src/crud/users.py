@@ -1,6 +1,13 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import User
+from models.users import User, Role
+
+
+async def get_users_by_role_guest(session: AsyncSession) -> list[User]:
+    """ Получение пользователей с ролью ГОСТЬ """
+    stmt = select(User).where(User.role == Role.GUEST)
+    guests = await session.scalars(stmt)
+    return list(guests)
 
 
 async def get_user_by_email(email: str, session: AsyncSession) -> User | None:

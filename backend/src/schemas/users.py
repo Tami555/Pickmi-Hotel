@@ -39,3 +39,10 @@ class UserCreate(BaseModel):
         if len(value) < 8:
             raise ValueError('Пароль должен быть не менее 8 символов')
         return value
+
+
+class UserDetailResponse(UserResponse):
+    patronymic: str | None = Field(max_length=50, default=None)
+    phone: PhoneNumber
+    passport_series: str = Field(max_length=4)
+    passport_number: str = Field(max_length=6)

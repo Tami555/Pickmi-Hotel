@@ -2,8 +2,8 @@ from pydantic import BaseModel, Field, field_validator
 from datetime import date
 from typing import Optional, List
 from models.employees import EmployeeStatus
-from .positions import PositionResponse
-from .users import UserResponse
+from .positions import PositionResponse, PositionDetailResponse
+from .users import UserResponse, UserDetailResponse
 
 
 class EmployeeCreate(BaseModel):
@@ -29,7 +29,20 @@ class EmployeeCreate(BaseModel):
     
 
 class EmployeeResponse(BaseModel):
+    id: int
     user: UserResponse
     position: PositionResponse
     salary: int
     status: EmployeeStatus
+
+
+class EmployeeDetailResponse(BaseModel):
+    user: UserDetailResponse
+    position: PositionDetailResponse
+    salary: int
+    advance: Optional[int]
+    hire_date: date
+    bank_account: Optional[str] = Field(None, max_length=20)
+    status: EmployeeStatus
+    fired_date: date | None
+    weekends: List[int] = Field(default=[6, 7])

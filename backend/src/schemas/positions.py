@@ -2,14 +2,15 @@ from pydantic import BaseModel, Field
 from typing import Optional
 
 
-class PositionBase(BaseModel):
+class PositionCreate(BaseModel):
     title: str = Field(max_length=100)
     description: Optional[str] = None
 
 
-class PositionCreate(PositionBase):
-    pass
+class PositionResponse(BaseModel):
+    id: int
+    title: str
 
 
-class PositionResponse(PositionBase):
+class PositionDetailResponse(PositionCreate):
     id: int
