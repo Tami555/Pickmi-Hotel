@@ -1,6 +1,5 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, async_scoped_session
 from asyncio import current_task
-from contextlib import asynccontextmanager
 from core import settings
 from models import Base
 
@@ -24,15 +23,12 @@ class DatabaseHelper:
         async with self.engine.begin() as connect:
             await connect.run_sync(Base.metadata.create_all)
 
-
     async def create_session(self):
         async with self.session_factory() as session:
             yield session
 
-
-    @asynccontextmanager
     async def create_scoped_session(self):
-        session  = async_scoped_session(
+        session = async_scoped_session(
             session_factory=self.session_factory,
             scopefunc=current_task
         )

@@ -1,9 +1,13 @@
-class UserAlreadyExistsError(Exception):
+from . import AppException
+
+
+class UserAlreadyExistsError(AppException):
     """Пользователь уже существует"""
     def __init__(self, field: str):
-        self.field = field
-        self.message = f"Пользователь с таким {field} уже существует"
-        super().__init__(self.message)
+        super().__init__(
+            message=f"Пользователь с таким {field} уже существует",
+            status_code=409
+        )
 
 
 class EmailAlreadyExistsError(UserAlreadyExistsError):

@@ -8,12 +8,13 @@ from .employees import Employee
 from .positions import Position
 
 
-__all__ = ["Base",
-           "RoomTypes",
-           "Rooms",
-           "Amenities",
-           "RoomTypeAmenities",
-           "User",
-           "Employee",
-           "Position"
-           ]
+__all__ = [
+    "Base",
+    "RoomTypes",
+    "Rooms",
+    "Amenities",
+    "RoomTypeAmenities",
+    "User",
+    "Employee",
+    "Position"
+]
