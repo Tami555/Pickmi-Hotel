@@ -2,9 +2,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from crud.users import get_user_by_email, get_user_by_phone, get_user_by_passport, create_user
 from exceptions import EmailAlreadyExistsError, PhoneAlreadyExistsError, PassportAlreadyExistsError, InvalidUserCredentialsError
 from core.auth import hashed_password
-from schemas import UserCreate, LoginUser
+from schemas import UserCreate, LoginUser, TokenResponse
 from models.users import User, Role
-from core.auth import checked_password
+from core.auth import checked_password, create_refresh_token, create_access_token
 
 
 async def registration_user(
@@ -35,11 +35,12 @@ async def registration_user(
 async def login_user(
         user: LoginUser,
         session: AsyncSession
-) -> User:
+) -> TokenResponse:
     """ Авторизация пользователя """
     auth_user = await get_user_by_email(user.email, session)
     if auth_user is None or not checked_password(user.password, auth_user.password):
         raise InvalidUserCredentialsError()
-    return auth_user
-
-
+    
+    access = create_access_token(auth_user)
+    refresh = create_refresh_token(auth_user)
+    return TokenResponse(access_token=access, refresh_token=refresh)

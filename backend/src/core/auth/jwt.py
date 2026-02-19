@@ -1,0 +1,28 @@
+import jwt
+from jwt.exceptions import InvalidTokenError
+from datetime import datetime, timedelta
+from ..config import settings
+
+
+def encode_jwt(
+    payload: dict,
+    expire_minutes: int,
+    key: str = settings.app_secret_key,
+    algorithm: str = settings.jwt_algorithm,
+) -> bytes | str:
+    """ Из данных пользователя формируем токен"""
+    now = datetime.now()
+    payload["iat"] = now
+    payload["exp"] = now + timedelta(minutes=expire_minutes)
+
+    encode = jwt.encode(payload, key, algorithm)
+    return encode
+
+
+def decode_jwt(
+    token:str|bytes,
+    key:str=settings.app_secret_key,
+    algorithm:str=settings.jwt_algorithm
+) -> dict:
+    """ Из токена получаем данные пользователя """
+    return jwt.decode(token, key, algorithms=[algorithm,])

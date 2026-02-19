@@ -11,7 +11,12 @@ class Settings(BaseSettings):
     db_name: str
     db_host: str = "localhost"
     db_port: int = 5432
-    
+
+    app_secret_key: str
+    jwt_algorithm: str = "HS256"
+    expire_access_token_minutes: int = 3
+    expire_refresh_token_minutes: int = 15
+
     @property
     def db_async_url(self) -> str:
         return f"postgresql+asyncpg://{self.db_user}:{self.db_password}@{self.db_host}:{self.db_port}/{self.db_name}"

@@ -1,5 +1,5 @@
 import datetime
-from enum import Enum as PyEnum
+from enum import StrEnum as PyEnum
 from sqlalchemy import String, Enum as SQLEnum, func, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
@@ -11,9 +11,9 @@ if TYPE_CHECKING:
 
 
 class Role(PyEnum):
-    ADMIN = "admin" # администратор
-    EMPLOYEE = "employee" # сотрудник
-    GUEST = "guest" # гость
+    ADMIN = "admin"  # администратор
+    EMPLOYEE = "employee"  # сотрудник
+    GUEST = "guest"  # гость
 
 
 class User(Base):

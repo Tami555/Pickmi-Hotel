@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from schemas import UserCreate, UserResponse, EmployeeCreate, EmployeeResponse, LoginUser
+from schemas import UserCreate, UserResponse, EmployeeCreate, EmployeeResponse, LoginUser, TokenResponse
 from models.users import Role
 from core import db_helper
 from services import user_service, employee_service
@@ -49,8 +49,11 @@ async def create_employee(
         raise HTTPException(status_code=err.status_code, detail=err.message)
     
 
-@router.post("/login/", response_model=UserResponse)
-async def login_user(user: LoginUser, session: AsyncSession = Depends(db_helper.create_scoped_session)):
+@router.post("/login/", response_model=TokenResponse)
+async def login_user(
+        user: LoginUser,
+        session: AsyncSession = Depends(db_helper.create_scoped_session)
+) -> TokenResponse:
     try:
         return await user_service.login_user(user, session)
     except AppException as err:
