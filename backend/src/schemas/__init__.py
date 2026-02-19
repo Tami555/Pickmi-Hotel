@@ -3,6 +3,7 @@ from .amenity import AmenityResponse
 from .users import UserCreate, UserResponse
 from .positions import PositionCreate, PositionResponse, PositionDetailResponse
 from .employees import EmployeeResponse, EmployeeCreate, EmployeeDetailResponse
+from .auth import LoginUser
 
 
 __all__ = [
@@ -16,5 +17,6 @@ __all__ = [
     "EmployeeDetailResponse",
     "PositionCreate",
     "PositionResponse",
-    "PositionDetailResponse"
+    "PositionDetailResponse",
+    "LoginUser"
 ]

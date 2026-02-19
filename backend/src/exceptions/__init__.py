@@ -1,6 +1,6 @@
 from .base import AppException
 from .users import (UserAlreadyExistsError, EmailAlreadyExistsError,
-                    PhoneAlreadyExistsError, PassportAlreadyExistsError)
+                    PhoneAlreadyExistsError, PassportAlreadyExistsError, InvalidUserCredentialsError)
 from .positions import PositionNotFoundError
 
 
@@ -10,5 +10,6 @@ __all__ = [
     "EmailAlreadyExistsError",
     "PhoneAlreadyExistsError",
     "PassportAlreadyExistsError",
+    "InvalidUserCredentialsError",
     "PositionNotFoundError"
 ]

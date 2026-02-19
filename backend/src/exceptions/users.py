@@ -23,3 +23,11 @@ class PhoneAlreadyExistsError(UserAlreadyExistsError):
 class PassportAlreadyExistsError(UserAlreadyExistsError):
     def __init__(self):
         super().__init__("паспортом")
+
+
+class InvalidUserCredentialsError(AppException):
+    def __init__(self):
+        super().__init__(
+            message="Неверный email или пароль",
+            status_code=401
+        )
