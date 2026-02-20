@@ -22,6 +22,7 @@ class TokenTypeMismatchError(AppException):
 
 
 class InvalidUserCredentialsError(AppException):
+    """ Неверные данные для входа """
     def __init__(self):
         super().__init__(
             message="Неверный email или пароль",

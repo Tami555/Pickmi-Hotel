@@ -2,6 +2,7 @@ import bcrypt
 
 
 def hashed_password(password: str) -> bytes:
+    """ Хэширование пароля """
     bytes_psw = password.encode()
     salt = bcrypt.gensalt()
     hash_psw = bcrypt.hashpw(
@@ -12,6 +13,7 @@ def hashed_password(password: str) -> bytes:
 
 
 def checked_password(password: str, hash_password: bytes):
+    """ Проверка пароля на совпадение """
     bytes_psw = password.encode()
     is_equality = bcrypt.checkpw(
         password=bytes_psw,

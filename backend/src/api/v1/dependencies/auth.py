@@ -27,6 +27,7 @@ async def get_current_user(
     
 
 def check_current_user_role(role: Role, user: User):
+    """ Проверка роли пользователя"""
     try:
         return user_service.check_user_role(user, role)
     except AppException as e:

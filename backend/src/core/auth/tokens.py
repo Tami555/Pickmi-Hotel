@@ -17,6 +17,7 @@ def create_token(
         secret_key: str = settings.app_secret_key,
         algorithm: str = settings.jwt_algorithm
 ) -> bytes:
+    """ Генерация jwt токена по типу """
     jwt_payload = {"type": type_token}
     jwt_payload.update(payload)
 
@@ -30,6 +31,7 @@ def create_token(
 
 
 def create_access_token(user: User):
+    """ Генерация access токена """
     payload = AccessTokenContent.from_user(user)
     return create_token(
         type_token=TokenType.ACCESS_TOKEN,
@@ -39,6 +41,7 @@ def create_access_token(user: User):
 
 
 def create_refresh_token(user: User):
+    """ Генерация refresh токена """
     payload = RefreshTokenContent.from_user(user)
     return create_token(
         type_token=TokenType.REFRESH_TOKEN,
@@ -48,6 +51,7 @@ def create_refresh_token(user: User):
 
 
 def check_token_type(type_token: TokenType, token: bytes | str) -> dict | None:
+    """ Проверка типа jwt токена """
     payload = decode_jwt(token)
     if payload["type"] != type_token:
         return None
@@ -55,8 +59,10 @@ def check_token_type(type_token: TokenType, token: bytes | str) -> dict | None:
 
 
 def check_access_token(token: bytes | str):
+    """ Проверка, что токен типа access """
     return check_token_type(TokenType.ACCESS_TOKEN, token)
 
 
 def check_refresh_token(token: bytes | str):
+    """ Проверка, что токен типа refresh """
     return check_token_type(TokenType.REFRESH_TOKEN, token)
