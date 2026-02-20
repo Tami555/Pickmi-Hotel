@@ -1,12 +1,13 @@
+from fastapi import status
 from . import AppException
 
 
 class UserAlreadyExistsError(AppException):
-    """Пользователь уже существует"""
+    """ Пользователь уже существует """
     def __init__(self, field: str):
         super().__init__(
             message=f"Пользователь с таким {field} уже существует",
-            status_code=409
+            status_code=status.HTTP_409_CONFLICT
         )
 
 
@@ -25,9 +26,10 @@ class PassportAlreadyExistsError(UserAlreadyExistsError):
         super().__init__("паспортом")
 
 
-class InvalidUserCredentialsError(AppException):
+class UserNotFoundError(AppException):
+    """ Пользователь не найден """
     def __init__(self):
         super().__init__(
-            message="Неверный email или пароль",
-            status_code=401
+            message="Пользователь не найден",
+            status_code=status.HTTP_404_NOT_FOUND
         )

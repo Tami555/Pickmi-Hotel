@@ -1,4 +1,4 @@
-from .jwt import encode_jwt
+from .jwt import encode_jwt, decode_jwt
 from enum import StrEnum as PyEnum
 from models import User
 from ..config import settings
@@ -45,3 +45,18 @@ def create_refresh_token(user: User):
         payload=payload,
         expire_minutes=settings.expire_refresh_token_minutes
     )
+
+
+def check_token_type(type_token: TokenType, token: bytes | str) -> dict | None:
+    payload = decode_jwt(token)
+    if payload["type"] != type_token:
+        return None
+    return payload
+
+
+def check_access_token(token: bytes | str):
+    return check_token_type(TokenType.ACCESS_TOKEN, token)
+
+
+def check_refresh_token(token: bytes | str):
+    return check_token_type(TokenType.REFRESH_TOKEN, token)

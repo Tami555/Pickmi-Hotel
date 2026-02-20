@@ -14,26 +14,23 @@ class TokenResponse(BaseModel):
 
 
 class RefreshTokenContent(BaseModel):
-    sub: int
+    sub: str
+
+    @classmethod
+    def from_user(cls, user):
+        return cls(
+            sub=user.email,
+        )
+
+
+class AccessTokenContent(RefreshTokenContent):
+    user_id: int
     role: Role
 
     @classmethod
     def from_user(cls, user):
-        data = {
-            "sub": user.id,
-            "role": user.role,
-        }
-        return cls(**data)
-
-
-class AccessTokenContent(RefreshTokenContent):
-    email: str
-
-    @classmethod
-    def from_user(cls, user):
-        data = {
-            "sub": user.id,
-            "email": user.email,
-            "role": user.role,
-        }
-        return cls(**data)
+        return cls(
+            sub=user.email,
+            user_id=user.id,
+            role=user.role
+        )
