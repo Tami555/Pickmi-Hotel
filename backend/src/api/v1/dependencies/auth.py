@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core import db_helper
 from exceptions import AppException
 from models.users import User, Role
-from services import user_service
+from services import token_service, user_service
 
 
 http_bearer = HTTPBearer()
@@ -17,7 +17,7 @@ async def get_current_user(
     """ Получение пользователя по токену """
     try:
         token = credentials.credentials
-        return await user_service.get_user_by_token(token, session)
+        return await token_service.get_user_by_token(token, session)
         
     except AppException as e:
         raise HTTPException(

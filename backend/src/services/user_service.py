@@ -1,11 +1,10 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-import jwt
 from crud.users import get_user_by_email, get_user_by_phone, get_user_by_passport, create_user
 from exceptions import (EmailAlreadyExistsError, PhoneAlreadyExistsError, PassportAlreadyExistsError,
-InvalidUserCredentialsError, TokenTypeMismatchError, UserNotFoundError, ForbiddenRoleError, InvalidTokenError) 
+InvalidUserCredentialsError, ForbiddenRoleError) 
 from schemas import UserCreate, LoginUser, TokenResponse
 from models.users import User, Role
-from core.auth import hashed_password, checked_password, create_refresh_token, create_access_token, check_access_token, TokenType
+from core.auth import hashed_password, checked_password, create_refresh_token, create_access_token
 
 
 async def registration_user(
@@ -45,26 +44,6 @@ async def login_user(
     access = create_access_token(auth_user)
     refresh = create_refresh_token(auth_user)
     return TokenResponse(access_token=access, refresh_token=refresh)
-
-
-async def get_user_by_token(
-    token: str,
-    session: AsyncSession,
-) -> User:
-    """ Получение пользователя по токену с проверкой типа """
-    try:
-        # Проверяем тип токена
-        payload = check_access_token(token)
-        if not payload:
-            raise TokenTypeMismatchError(expected=TokenType.ACCESS_TOKEN)
-    
-        # Получаем пользователя
-        user = await get_user_by_email(payload.get("sub"), session)
-        if not user:
-            raise UserNotFoundError()
-        return user
-    except jwt.exceptions.InvalidTokenError:
-        raise InvalidTokenError()
 
 
 def check_user_role(user: User, need_role: Role) -> User:
