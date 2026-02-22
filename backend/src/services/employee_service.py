@@ -8,6 +8,13 @@ from exceptions import EmailAlreadyExistsError, PhoneAlreadyExistsError, Passpor
 from core.auth import hashed_password
 
 
+async def get_employee_by_id(employee_id: int, session: AsyncSession):
+    employee = await employee_crud.get_employee_by_id(employee_id, session)
+    if not employee:
+        raise EmployeeNotFoundError()
+    return employee
+
+
 async def registration_employee(
     user_data: UserCreate,
     employee_data: EmployeeCreate,
@@ -41,7 +48,7 @@ async def registration_employee(
     employee_dict["user_id"] = new_user.id
     new_employee = await employee_crud.create_employee(employee_dict, session)
     
-    return await employee_crud.get_employee_by_id(new_employee.id, session)
+    return await get_employee_by_id(new_employee.id, session)
 
 
 async def update_employee_partial_by_id(
@@ -52,9 +59,7 @@ async def update_employee_partial_by_id(
 ) -> User:
     """ Обновление сотрудника """
 
-    employee = await employee_crud.get_employee_by_id(employee_id, session)
-    if not employee:
-        raise EmployeeNotFoundError()
+    employee = await get_employee_by_id(employee_id, session)
     
     dump_data_user = user_data.model_dump(exclude_unset=True)
     dump_data_employee = employee_data.model_dump(exclude_unset=True)
@@ -90,5 +95,5 @@ async def update_employee_partial_by_id(
     
     await user_crud.update_user(user_data=dump_data_user, user=employee.user, session=session)
     await employee_crud.update_employee(employee_data=dump_data_employee, employee=employee, session=session)
-    return await employee_crud.get_employee_by_id(employee.id, session)
+    return await get_employee_by_id(employee.id, session)
     

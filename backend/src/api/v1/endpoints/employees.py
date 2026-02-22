@@ -28,10 +28,10 @@ async def get_employees_by_id(
     employee_id: Annotated[int, Path(example=1)],
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ) -> EmployeeDetailResponse:
-    employee = await crud.get_employee_by_id(employee_id, session)
-    if employee is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Employee {employee_id} not found")
-    return employee
+    try:
+        return await employee_service.get_employee_by_id(employee_id, session)
+    except AppException as err:
+        raise HTTPException(status_code=err.status_code, detail=err.message)
 
 
 @router.patch('/edit/{employee_id}', response_model=EmployeeResponse)
