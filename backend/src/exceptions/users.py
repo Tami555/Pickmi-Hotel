@@ -33,3 +33,12 @@ class UserNotFoundError(AppException):
             message="Пользователь не найден",
             status_code=status.HTTP_404_NOT_FOUND
         )
+
+
+class EmployeeNotFoundError(AppException):
+    """ Сотрудник не найден """
+    def __init__(self):
+        super().__init__(
+            message="Сотрудник не найден",
+            status_code=status.HTTP_404_NOT_FOUND
+        )

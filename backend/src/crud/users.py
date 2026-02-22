@@ -1,6 +1,8 @@
 from sqlalchemy import select
+from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 from models.users import User, Role
+from models import Employee
 
 
 async def get_users_by_role_guest(session: AsyncSession) -> list[User]:
@@ -36,6 +38,12 @@ async def get_user_by_passport(series: str, number: str, session: AsyncSession) 
         )
     )
     return result.scalar_one_or_none()
+
+
+async def get_user_with_employee_by_id(user_id: int, session: AsyncSession) -> User | None:
+    """ Получение пользователя по id + связь с сотрудником """
+    stmt = select(User).options(joinedload(User.employee).joinedload(Employee.position)).where(User.id == user_id)
+    return await session.scalar(stmt)
 
 
 async def create_user(user_data: dict, session: AsyncSession) -> User:

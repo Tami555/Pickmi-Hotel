@@ -25,3 +25,11 @@ async def create_employee(employee_data: dict, session: AsyncSession) -> Employe
     session.add(new_employee)
     await session.commit()
     return new_employee
+
+
+async def update_employee(employee_data: dict, employee: Employee, session: AsyncSession) -> Employee:
+    """Обновление сотрудника """
+    for attr, value in employee_data.items():
+        setattr(employee, attr, value)
+    await session.commit()
+    return employee

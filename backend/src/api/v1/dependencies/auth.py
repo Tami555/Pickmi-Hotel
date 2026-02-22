@@ -5,6 +5,7 @@ from core import db_helper
 from exceptions import AppException
 from models.users import User, Role
 from services import token_service, user_service
+from crud import users as user_crud
 
 
 http_bearer = HTTPBearer()
@@ -39,9 +40,14 @@ async def guest_by_token(user: User = Depends(get_current_user)) -> User:
     return check_current_user_role(Role.GUEST, user)
 
 
-async def employee_by_token(user: User = Depends(get_current_user)) -> User:
+async def employee_by_token(
+        user: User = Depends(get_current_user),
+        session: AsyncSession = Depends(db_helper.create_scoped_session)
+) -> User:
     """Зависимость для сотрудников"""
-    return check_current_user_role(Role.EMPLOYEE, user)
+    user = check_current_user_role(Role.EMPLOYEE, user)
+    # для подгрузки связи с employee
+    return await user_crud.get_user_with_employee_by_id(user.id, session)
 
 
 async def admin_by_token(user: User = Depends(get_current_user)) -> User:
