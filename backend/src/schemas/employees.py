@@ -4,6 +4,7 @@ from typing import Optional, List
 from models.employees import EmployeeStatus
 from .positions import PositionResponse, PositionDetailResponse
 from .users import UserResponse, UserDetailResponse
+from utils import validators
 
 
 class EmployeeCreate(BaseModel):
@@ -16,16 +17,11 @@ class EmployeeCreate(BaseModel):
     
     @field_validator('bank_account')
     def validate_bank_account(cls, value):
-        if value and (not value.isdigit() or len(value) != 20):
-            raise ValueError('Расчётный счёт должен содержать 20 цифр')
-        return value
+        return validators.validate_bank_account(value)
     
     @field_validator('weekends')
     def validate_weekends(cls, value):
-        valid_days = [1, 2, 3, 4, 5, 6, 7]
-        if not all(day in valid_days for day in value):
-            raise ValueError('Дни недели должны быть от 1 (пн) до 7 (вс)')
-        return value
+        return validators.validate_weekends(value)
     
 
 class EmployeeResponse(BaseModel):

@@ -14,8 +14,8 @@ class Settings(BaseSettings):
 
     app_secret_key: str
     jwt_algorithm: str = "HS256"
-    expire_access_token_minutes: int = 3
-    expire_refresh_token_minutes: int = 15
+    expire_access_token_minutes: int = 30
+    expire_refresh_token_minutes: int = 60
 
     @property
     def db_async_url(self) -> str:
