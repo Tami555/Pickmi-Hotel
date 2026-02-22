@@ -18,7 +18,7 @@ async def get_guests(session: AsyncSession = Depends(db_helper.create_scoped_ses
 
 
 @router.patch('/edit/{guest_id}', response_model=UserResponse)
-async def update_user(
+async def update_guest(
     guest_id: int,
     user_data: UserUpdate,
     _: User = Depends(admin_by_token),
@@ -36,7 +36,7 @@ def get_guest_profile(user: User = Depends(guest_by_token)):
 
 
 @router.patch('/profile/edit', response_model=UserResponse)
-async def update_user_profile(
+async def update_guest_profile(
     user_data: UserUpdateProfile,
     user: User = Depends(guest_by_token),
     session: AsyncSession = Depends(db_helper.create_scoped_session)

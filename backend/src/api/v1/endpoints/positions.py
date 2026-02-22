@@ -16,7 +16,7 @@ async def get_positions(session: AsyncSession = Depends(db_helper.create_scoped_
 
 
 @router.get('/{position_id}', response_model=PositionDetailResponse)
-async def get_positions(
+async def get_positions_by_id(
     position_id: Annotated[int, Path(example=1)],
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ) -> PositionDetailResponse:
