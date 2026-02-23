@@ -46,6 +46,7 @@ async def registration_employee(
     # Создаём сотрудника
     employee_dict = employee_data.model_dump()
     employee_dict["user_id"] = new_user.id
+    employee_dict["hire_date"] = datetime.datetime.now().date()
     new_employee = await employee_crud.create_employee(employee_dict, session)
     
     return await get_employee_by_id(new_employee.id, session)
