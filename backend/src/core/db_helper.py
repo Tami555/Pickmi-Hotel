@@ -23,14 +23,12 @@ class DatabaseHelper:
         async with self.engine.begin() as connect:
             await connect.run_sync(Base.metadata.create_all)
 
-
     async def create_session(self):
         async with self.session_factory() as session:
             yield session
 
-
     async def create_scoped_session(self):
-        session  = async_scoped_session(
+        session = async_scoped_session(
             session_factory=self.session_factory,
             scopefunc=current_task
         )

@@ -1,21 +1,23 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, Path
 from sqlalchemy.ext.asyncio import AsyncSession
 from core import db_helper
 import crud.rooms as crud
 from schemas import RoomTypeResponse, RoomTypeDetailResponse
+from typing import Annotated
 
 
 router = APIRouter()
 
 
 @router.get('/', response_model=list[RoomTypeResponse], summary="Getting all types of rooms")
-async def get_room_types(session: AsyncSession=Depends(db_helper.create_scoped_session)) -> list[RoomTypeResponse]:
+async def get_room_types(session: AsyncSession = Depends(db_helper.create_scoped_session)) -> list[RoomTypeResponse]:
     return await crud.get_room_types(session)
 
 
 @router.get('/{slug}', response_model=RoomTypeDetailResponse, summary="Getting the type of room by slug")
 async def get_room_type_by_slug(
-    slug: str, session: AsyncSession=Depends(db_helper.create_scoped_session)
+    slug: Annotated[str, Path(example="lyuks")],
+    session: AsyncSession = Depends(db_helper.create_scoped_session)
 ) -> RoomTypeDetailResponse:
     room_type = await crud.get_room_type_by_slug(slug, session)
     if not room_type:
