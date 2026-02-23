@@ -4,6 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core import db_helper
 from exceptions import AppException
 from models.users import User, Role
+from models.employees import EmployeeStatus
 from services import token_service, user_service
 from crud import users as user_crud
 
@@ -47,7 +48,11 @@ async def employee_by_token(
     """Зависимость для сотрудников"""
     user = check_current_user_role(Role.EMPLOYEE, user)
     # для подгрузки связи с employee
-    return await user_crud.get_user_with_employee_by_id(user.id, session)
+    user_employee = await user_crud.get_user_with_employee_by_id(user.id, session)
+    # проверка активности
+    if user_employee.employee.status == EmployeeStatus.FIRED:
+        raise HTTPException(403, "Сотрудник неактивен или уволен")
+    return user_employee
 
 
 async def admin_by_token(user: User = Depends(get_current_user)) -> User:
