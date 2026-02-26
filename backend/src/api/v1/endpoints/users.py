@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends
-from schemas import UserResponse
+from src.schemas import UserResponse
 from .employees import router as employees_router
 from .guests import router as guests_router
 from .admin import router as admin_router
 from ..dependencies.auth import get_current_user
-from models import User
+from src.models import User
 
 
 router = APIRouter()

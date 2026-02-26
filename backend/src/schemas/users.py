@@ -1,6 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
-from utils import validators
+from src.utils import validators
 
 
 class UserResponse(BaseModel):

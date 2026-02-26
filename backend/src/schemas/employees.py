@@ -1,10 +1,10 @@
 from pydantic import BaseModel, Field, field_validator
 from datetime import date, datetime
 from typing import List
-from models.employees import EmployeeStatus
+from src.models.employees import EmployeeStatus
 from .positions import PositionResponse, PositionDetailResponse
 from .users import UserResponse, UserDetailResponse
-from utils import validators
+from src.utils import validators
 
 
 class EmployeeCreate(BaseModel):

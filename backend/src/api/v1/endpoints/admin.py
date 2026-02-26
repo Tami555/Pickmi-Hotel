@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from schemas import UserResponse, UserUpdate, UserDetailResponse
-from core import db_helper
+from src.schemas import UserResponse, UserUpdate, UserDetailResponse
+from src.core import db_helper
 from ..dependencies.auth import admin_by_token
-from models import User
-from services import user_service
-from exceptions import AppException
+from src.models import User
+from src.services import user_service
+from src.exceptions import AppException
 
 
 router = APIRouter()

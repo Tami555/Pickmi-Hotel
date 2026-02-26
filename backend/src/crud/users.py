@@ -1,8 +1,8 @@
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.users import User, Role
-from models import Employee
+from src.models.users import User, Role
+from src.models import Employee
 
 
 async def get_users_by_role_guest(session: AsyncSession) -> list[User]:

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase, declared_attr
-from utils import pascal_to_snake
+from src.utils import pascal_to_snake
 
 
 class Base(DeclarativeBase):

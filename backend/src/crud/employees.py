@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
-from models.employees import Employee, EmployeeStatus
+from src.models.employees import Employee, EmployeeStatus
 
 
 async def cleanup_fired_employees(session: AsyncSession, fired_time: timedelta = timedelta(days=2)):

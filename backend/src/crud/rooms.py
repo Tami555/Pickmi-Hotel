@@ -1,7 +1,7 @@
 from sqlalchemy import select, Result
 from sqlalchemy.orm import selectinload, joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import RoomTypes, RoomTypeAmenities
+from src.models import RoomTypes, RoomTypeAmenities
 
 
 async def get_room_types(session: AsyncSession) -> list[RoomTypes]:

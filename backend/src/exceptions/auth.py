@@ -1,6 +1,6 @@
 from fastapi import status
 from .base import AppException
-from models.users import Role
+from src.models.users import Role
 
 
 class InvalidTokenError(AppException):

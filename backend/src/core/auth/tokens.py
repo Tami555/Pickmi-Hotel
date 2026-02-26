@@ -1,8 +1,8 @@
 from .jwt import encode_jwt, decode_jwt
 from enum import StrEnum as PyEnum
-from models import User
+from src.models import User
 from ..config import settings
-from schemas import RefreshTokenContent, AccessTokenContent
+from src.schemas import RefreshTokenContent, AccessTokenContent
 
 
 class TokenType(PyEnum):
