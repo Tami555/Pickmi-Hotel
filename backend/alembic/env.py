@@ -2,8 +2,8 @@ import sys
 from pathlib import Path
 
 # путь к src директории
-src_dir = Path(__file__).parent.parent / "src"
-sys.path.insert(0, str(src_dir))
+# src_dir = Path(__file__).parent.parent / "src"
+# sys.path.insert(0, str(src_dir))
 
 import asyncio
 from logging.config import fileConfig

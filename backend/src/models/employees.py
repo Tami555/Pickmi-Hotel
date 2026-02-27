@@ -11,10 +11,10 @@ if TYPE_CHECKING:
 
 
 class EmployeeStatus(PyEnum):
-    ACTIVE = "active" # Работает
-    FIRED = "fired" # Уволен
-    ON_LEAVE = "on_leave" # В отпуске
-    PROBATION = "probation" # На испытательном сроке
+    ACTIVE = "active"  # Работает
+    FIRED = "fired"  # Уволен
+    ON_LEAVE = "on_leave"  # В отпуске
+    PROBATION = "probation"  # На испытательном сроке
 
 
 class Employee(Base):    

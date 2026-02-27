@@ -1,11 +1,11 @@
 import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
-from crud import users as user_crud
-from exceptions import (EmailAlreadyExistsError, PhoneAlreadyExistsError, PassportAlreadyExistsError,
-InvalidUserCredentialsError, ForbiddenRoleError, UserNotFoundError) 
-from schemas import UserCreate, LoginUser, TokenResponse, UserUpdateProfile, UserUpdate
-from models.users import User, Role
-from core.auth import hashed_password, checked_password, create_refresh_token, create_access_token
+from src.crud import users as user_crud
+from src.exceptions import (EmailAlreadyExistsError, PhoneAlreadyExistsError, PassportAlreadyExistsError,
+                            InvalidUserCredentialsError, ForbiddenRoleError, UserNotFoundError)
+from src.schemas import UserCreate, LoginUser, TokenResponse, UserUpdateProfile, UserUpdate
+from src.models.users import User, Role
+from src.core.auth import hashed_password, checked_password, create_refresh_token, create_access_token
 
 
 async def get_user_by_id(user_id: int, session: AsyncSession):

@@ -1,8 +1,12 @@
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import uvicorn
 from fastapi import FastAPI
 from contextlib import asynccontextmanager
 from fastapi.middleware.cors import CORSMiddleware
-from api.v1 import router as api_v1_router
+from src.api.v1 import router as api_v1_router
 
 
 @asynccontextmanager

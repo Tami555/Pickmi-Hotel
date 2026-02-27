@@ -1,6 +1,6 @@
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from models import Position
+from src.models import Position
 
 
 async def get_positions(session: AsyncSession) -> list[Position]:

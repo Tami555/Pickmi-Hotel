@@ -1,11 +1,12 @@
 import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
-from crud import employees as employee_crud, positions as position_crud, users as user_crud
-from schemas import UserCreate, EmployeeCreate, UserUpdate, EmployeeUpdate
-from models.users import Role, User
-from models.employees import EmployeeStatus
-from exceptions import EmailAlreadyExistsError, PhoneAlreadyExistsError, PassportAlreadyExistsError, PositionNotFoundError, EmployeeNotFoundError
-from core.auth import hashed_password
+from src.crud import employees as employee_crud, positions as position_crud, users as user_crud
+from src.schemas import UserCreate, EmployeeCreate, UserUpdate, EmployeeUpdate
+from src.models.users import Role, User
+from src.models.employees import EmployeeStatus
+from src.exceptions import (EmailAlreadyExistsError, PhoneAlreadyExistsError, PassportAlreadyExistsError,
+                            PositionNotFoundError, EmployeeNotFoundError)
+from src.core.auth import hashed_password
 
 
 async def get_employee_by_id(employee_id: int, session: AsyncSession):

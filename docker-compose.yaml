@@ -1,0 +1,53 @@
+services:
+  postgresql:
+    image: postgres:17-alpine
+    container_name: postgres_database
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - "data-db:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_DB=${DB_NAME}
+    networks:
+     - pickmi-network
+
+  adminer:
+    image: adminer
+    container_name: adminer_database
+    ports:
+      - "8080:8080"
+    links:
+      - 'postgresql:db'
+    networks:
+     - pickmi-network
+    depends_on:
+      - postgresql
+
+  fastapi:
+    build: ./backend
+    image: fastapi_backend
+    restart: always
+    container_name: fastapi_backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    links:
+      - 'postgresql:db'
+    volumes:
+      - ./backend:/app/www/pickmi_hotel
+
+    networks:
+      - pickmi-network
+    depends_on:
+      - postgresql
+
+volumes:
+  data-db:
+
+networks:
+ pickmi-network:
+   driver: bridge

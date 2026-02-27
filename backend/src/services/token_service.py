@@ -1,9 +1,9 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 import jwt
-from crud.users import get_user_by_email
-from exceptions import TokenTypeMismatchError, UserNotFoundError, InvalidTokenError
-from models.users import User
-from core.auth import check_access_token, check_refresh_token, create_access_token, TokenType
+from src.crud.users import get_user_by_email
+from src.exceptions import TokenTypeMismatchError, UserNotFoundError, InvalidTokenError
+from src.models.users import User
+from src.core.auth import check_access_token, check_refresh_token, create_access_token, TokenType
 
 
 async def get_user_by_token(

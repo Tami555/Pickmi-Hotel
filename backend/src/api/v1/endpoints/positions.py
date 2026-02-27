@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, Path, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 
-from core import db_helper
-import crud.positions as crud
-from schemas import PositionResponse, PositionDetailResponse
+from src.core import db_helper
+import src.crud.positions as crud
+from src.schemas import PositionResponse, PositionDetailResponse
 
 
 router = APIRouter()

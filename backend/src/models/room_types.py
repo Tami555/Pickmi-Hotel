@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Text, Integer, event
 from typing import TYPE_CHECKING
-from utils import create_slug
+from src.utils import create_slug
 from . import Base
 
 
