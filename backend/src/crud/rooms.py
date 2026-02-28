@@ -1,22 +1,54 @@
-from sqlalchemy import select, Result
-from sqlalchemy.orm import selectinload, joinedload
+import datetime
+from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models import RoomTypes, RoomTypeAmenities
+from src.models import RoomTypes, Rooms, Reservation
+from src.models.enums import ReservationStatus
 
 
-async def get_room_types(session: AsyncSession) -> list[RoomTypes]:
-    """ Получение списка типов номеров """
-    stmt = select(RoomTypes).order_by(-RoomTypes.price_per_day)
-    room_types = await session.scalars(stmt)
-    return list(room_types)
+async def get_available_rooms(
+        room_type_slug: str,
+        quantity_places: int,
+        check_in: datetime.datetime,
+        check_out: datetime.datetime,
+        session: AsyncSession
+) -> list[Rooms]:
+    """Поиск доступных номеров по критериям"""
+    stmt = (
+        select(Rooms)
+        .join(RoomTypes)
+        .where(
+            RoomTypes.slug == room_type_slug,
+            Rooms.quantity_places >= quantity_places,
+        )
+        .order_by(Rooms.quantity_places)
+    )
+
+    result = await session.execute(stmt)
+    all_rooms = result.scalars().all()
+
+    # Фильтруем по пересечению броней
+    available_rooms = []
+    for room in all_rooms:
+        if await is_room_available(room.id, check_in, check_out, session):
+            available_rooms.append(room)
+
+    return available_rooms
 
 
-async def get_room_type_by_slug(slug: str, session: AsyncSession) -> RoomTypes:
-    """ Получение типа номера по slug """
-    stmt = select(RoomTypes).\
-        options(
-        selectinload(RoomTypes.amenities_association).joinedload(RoomTypeAmenities.amenity)).\
-        where(RoomTypes.slug == slug)
-    res: Result = await session.execute(stmt)
-    room_type = res.scalar_one_or_none()
-    return room_type
+async def is_room_available(
+        room_id: int,
+        check_in: datetime.date,
+        check_out: datetime.date,
+        session: AsyncSession
+) -> bool:
+    """Проверка, свободен ли номер в указанные даты"""
+    stmt = select(Reservation).where(
+        Reservation.room_id == room_id,
+        Reservation.status.in_([ReservationStatus.ACTIVE, ReservationStatus.PENDING]),
+        and_(
+            Reservation.check_in_date < check_out,  # пересечение дат
+            Reservation.check_out_date > check_in
+        )
+    )
+    result = await session.execute(stmt)
+    return result.first() is None

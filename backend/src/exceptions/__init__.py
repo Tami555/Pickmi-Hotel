@@ -3,6 +3,7 @@ from .users import (UserAlreadyExistsError, EmailAlreadyExistsError,
                     PhoneAlreadyExistsError, PassportAlreadyExistsError, UserNotFoundError, EmployeeNotFoundError)
 from .positions import PositionNotFoundError
 from .auth import InvalidTokenError, TokenTypeMismatchError, InvalidUserCredentialsError, ForbiddenRoleError
+from .rooms import NoAvailableRoomsError, RoomTypeNotFoundError
 
 
 __all__ = [
@@ -17,5 +18,7 @@ __all__ = [
     "InvalidTokenError",
     "TokenTypeMismatchError",
     "InvalidUserCredentialsError",
-    "ForbiddenRoleError"
+    "ForbiddenRoleError",
+    "NoAvailableRoomsError",
+    "RoomTypeNotFoundError"
 ]
