@@ -1,7 +1,8 @@
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.crud import room_types as room_types_crud, rooms as rooms_crud
-from src.exceptions import RoomTypeNotFoundError, NoAvailableRoomsError
+from src.exceptions import RoomTypeNotFoundError, NoAvailableRoomsError, AppException, IntervalReservationError
+from src.utils.validators import validate_check_in, validate_dates
 
 
 async def get_room_type_by_slug(slug: str, session: AsyncSession):
@@ -18,9 +19,19 @@ async def get_available_rooms(
         check_out: datetime,
         session: AsyncSession
 ):
-    # проверка существования типа номера
-    await get_room_type_by_slug(room_type_slug, session)
-    rooms = await rooms_crud.get_available_rooms(room_type_slug, quantity_places, check_in, check_out, session)
-    if rooms:
-        return rooms
-    raise NoAvailableRoomsError()
+    try:
+        if validate_check_in(check_in) and validate_dates(check_in, check_out):
+            # Проверка промежутка бронирования
+            if not (check_out.date() - check_in.date()).days:
+                raise IntervalReservationError()
+            
+            # проверка существования типа номера
+            await get_room_type_by_slug(room_type_slug, session)
+
+            rooms = await rooms_crud.get_available_rooms(room_type_slug, quantity_places, check_in, check_out, session)
+            if rooms:
+                return rooms
+            raise NoAvailableRoomsError() 
+        
+    except ValueError as err:
+        raise AppException(message=str(err))

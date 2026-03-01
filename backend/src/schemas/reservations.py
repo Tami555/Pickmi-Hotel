@@ -1,24 +1,22 @@
 import datetime
-from pydantic import BaseModel, field_validator, model_validator
-from .rooms import RoomResult, RoomDetailResult
+from pydantic import BaseModel, field_validator, model_validator, Field
+from .rooms import RoomDetailResult
+from src.utils import validators
 
 
 class ReservationCreate(BaseModel):
     room_number: str
-    check_in_date: datetime.datetime
-    check_out_date: datetime.datetime
+    check_in_date: datetime.datetime = Field(examples=["2026-05-02 09:00"])
+    check_out_date: datetime.datetime = Field(examples=["2026-05-03 09:00"])
 
     @field_validator('check_in_date')
     @classmethod
     def validate_check_in(cls, v):
-        if v < datetime.datetime.today():
-            raise ValueError('Дата заезда не может быть в прошлом')
-        return v
+        return validators.validate_check_in(v)
 
     @model_validator(mode='after')
     def validate_dates(self):
-        if self.check_out_date <= self.check_in_date:
-            raise ValueError('Дата выезда должна быть позже даты заезда')
+        validators.validate_dates(self.check_in_date, self.check_out_date)
         return self
 
 

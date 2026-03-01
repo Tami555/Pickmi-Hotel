@@ -23,7 +23,7 @@ async def create_reservation(
     # Проверка промежутка бронирования
     nights = (reservation_data.check_out_date.date() - reservation_data.check_in_date.date()).days
     if not nights:
-        raise IntervalReservationError(msg="Бронирование не может быть меньше дня")
+        raise IntervalReservationError()
 
     # проверка свободен ли он
     is_available_room = await rooms_crud.is_room_available(
