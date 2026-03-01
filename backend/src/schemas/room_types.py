@@ -5,12 +5,15 @@ from .amenity import AmenityResponse
 class RoomTypeResponse(BaseModel):
     slug: str
     title: str
-    description: str
-    image: str | None
     price_per_day: int
 
 
 class RoomTypeDetailResponse(RoomTypeResponse):
+    description: str
+    image: str | None
+
+
+class RoomTypeAmenitiesResponse(RoomTypeDetailResponse):
     amenities: list[AmenityResponse]
 
     @classmethod

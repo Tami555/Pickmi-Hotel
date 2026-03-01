@@ -1,6 +1,7 @@
 import datetime
 from sqlalchemy import select, and_
 from sqlalchemy.ext.asyncio import AsyncSession
+from  sqlalchemy.orm import joinedload
 from src.models import RoomTypes, Rooms, Reservation
 from src.models.enums import ReservationStatus
 
@@ -52,3 +53,9 @@ async def is_room_available(
     )
     result = await session.execute(stmt)
     return result.first() is None
+
+
+async def get_room_by_number(room_number: str, session: AsyncSession) -> Rooms | None:
+    stmt = select(Rooms).options(joinedload(Rooms.room_type)).where(Rooms.room_number == room_number)
+    room = await session.scalar(stmt)
+    return room
