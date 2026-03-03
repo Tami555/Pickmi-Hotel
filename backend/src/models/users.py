@@ -41,4 +41,5 @@ class User(Base):
     )
     # Связи
     employee: Mapped["Employee"] = relationship(back_populates="user")
-    reservations: Mapped["Reservation"] = relationship(back_populates="user")
+    reservations: Mapped[list["Reservation"]] = relationship(back_populates="user")
+    

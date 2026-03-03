@@ -1,6 +1,6 @@
 from .room_types import RoomTypeResponse, RoomTypeDetailResponse, RoomTypeAmenitiesResponse
 from .amenity import AmenityResponse
-from .users import UserCreate, UserResponse, UserDetailResponse, UserUpdate, UserUpdateProfile
+from .users import UserCreate, UserResponse, UserDetailResponse, UserUpdate, UserUpdateProfile, GuestResponse
 from .positions import PositionCreate, PositionResponse, PositionDetailResponse
 from .employees import EmployeeResponse, EmployeeCreate, EmployeeDetailResponse, EmployeeUpdate
 from .auth import LoginUser, TokenResponse, RefreshTokenContent, AccessTokenContent
@@ -18,6 +18,7 @@ __all__ = [
     "UserDetailResponse",
     "UserUpdate",
     "UserUpdateProfile",
+    "GuestResponse",
     "EmployeeResponse",
     "EmployeeCreate",
     "EmployeeDetailResponse",

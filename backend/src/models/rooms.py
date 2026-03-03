@@ -17,4 +17,4 @@ class Rooms(Base):
 
     # Связи
     room_type: Mapped["RoomTypes"] = relationship(back_populates="rooms")
-    reservations: Mapped["Reservation"] = relationship(back_populates="room")
+    reservations: Mapped[list["Reservation"]] = relationship(back_populates="room")
