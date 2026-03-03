@@ -12,7 +12,7 @@ from src.exceptions import AppException
 router = APIRouter()
 
 
-@router.get('/{room_type_slug}', response_model=list[RoomResult])
+@router.get('/available/by-type/{room_type_slug}', response_model=list[RoomResult])
 async def get_available_rooms(
         room_type_slug: Annotated[str, Path(example='lyuks')],
         quantity_places: Annotated[int, Query(gt=0, example=2)],

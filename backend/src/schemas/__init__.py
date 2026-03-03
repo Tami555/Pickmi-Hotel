@@ -1,4 +1,4 @@
-from .room_types import RoomTypeResponse, RoomTypeDetailResponse, RoomTypeAmenitiesResponse
+from .room_types import RoomTypeResponse, RoomTypeDetailResponse, RoomTypeAmenitiesResponse, RoomTypeAvailabilityResponse
 from .amenity import AmenityResponse
 from .users import UserCreate, UserResponse, UserDetailResponse, UserUpdate, UserUpdateProfile, GuestResponse
 from .positions import PositionCreate, PositionResponse, PositionDetailResponse
@@ -12,6 +12,7 @@ __all__ = [
     "RoomTypeResponse",
     "RoomTypeDetailResponse",
     "RoomTypeAmenitiesResponse",
+    "RoomTypeAvailabilityResponse",
     "AmenityResponse",
     "UserCreate",
     "UserResponse",

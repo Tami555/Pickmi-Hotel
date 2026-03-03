@@ -34,3 +34,10 @@ class RoomTypeAmenitiesResponse(RoomTypeDetailResponse):
             ]
         }
         return cls(**data)
+    
+
+class RoomTypeAvailabilityResponse(BaseModel):
+    slug: str
+    title: str
+    price_per_day: int
+    available_rooms: int
