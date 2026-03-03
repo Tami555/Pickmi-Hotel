@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.models import User, Reservation
 from src.crud import rooms as rooms_crud, reservations as reservations_crud
 from src.schemas import ReservationCreate
-from src.exceptions import RoomNotFoundError, NoAvailableRoomsError, AppException, IntervalReservationError
-from src.models.enums import ReservationStatus
+from src.exceptions import RoomNotFoundError, NoAvailableRoomsError, AppException, IntervalReservationError, ReservationNotFoundError, ForbiddenError, CannotCancelReservationError
+from src.models.enums import ReservationStatus, Role
 
 
 async def create_reservation(
@@ -60,3 +60,25 @@ async def create_reservation(
     }
     reservation = await reservations_crud.create_reservation(reservation_dict, session)
     return await reservations_crud.get_reservation_by_id(reservation.id, session)
+
+
+async def cancel_reservation(
+    reservation_id: int,
+    user: User,
+    session: AsyncSession
+) -> Reservation:
+    """Отмена брони (доступно гостю-владельцу или админу)"""
+    
+    reservation = await reservations_crud.get_reservation_by_id(reservation_id, session)
+    if not reservation:
+        raise ReservationNotFoundError()
+    
+    if user.role != Role.ADMIN and reservation.user_id != user.id:
+        raise ForbiddenError("Не достаточно прав для отмены брони")
+    
+    if reservation.status != ReservationStatus.PENDING:
+        raise CannotCancelReservationError(f"Бронь уже {reservation.status.value}")
+    # Отменяем    
+    await reservations_crud.update_reservation_status(reservation.id, ReservationStatus.CANCELED, session)
+    await session.refresh(reservation)
+    return reservation

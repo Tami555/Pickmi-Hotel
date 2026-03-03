@@ -36,7 +36,7 @@ async def update_reservation_statuses_by_dates(session: AsyncSession):
             Reservation.check_in_date <= now,
             Reservation.check_out_date >= now
         )
-        .values(status=ReservationStatus.ACTIVE)
+        .values(status=ReservationStatus.ACTIVE, updated_at = datetime.datetime.now())
     )
     await session.execute(pending_stmt)
     
@@ -46,7 +46,14 @@ async def update_reservation_statuses_by_dates(session: AsyncSession):
         .where(
             Reservation.check_out_date < now
         )
-        .values(status=ReservationStatus.COMPLETED)
+        .values(status=ReservationStatus.COMPLETED, updated_at = datetime.datetime.now())
     )
     await session.execute(active_stmt)
+    await session.commit()
+
+
+async def update_reservation_status(id_reservation: int, status: ReservationStatus, session: AsyncSession):
+    """Обновление статуса брони """
+    stmt = update(Reservation).where(Reservation.id == id_reservation).values(status=status, updated_at = datetime.datetime.now())
+    await session.execute(stmt)
     await session.commit()

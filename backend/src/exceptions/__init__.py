@@ -2,9 +2,9 @@ from .base import AppException
 from .users import (UserAlreadyExistsError, EmailAlreadyExistsError,
                     PhoneAlreadyExistsError, PassportAlreadyExistsError, UserNotFoundError, EmployeeNotFoundError)
 from .positions import PositionNotFoundError
-from .auth import InvalidTokenError, TokenTypeMismatchError, InvalidUserCredentialsError, ForbiddenRoleError
+from .auth import InvalidTokenError, TokenTypeMismatchError, InvalidUserCredentialsError, ForbiddenRoleError, ForbiddenError
 from .rooms import NoAvailableRoomsError, RoomTypeNotFoundError, RoomNotFoundError
-from .reservations import IntervalReservationError
+from .reservations import IntervalReservationError, ReservationNotFoundError, CannotCancelReservationError
 
 
 __all__ = [
@@ -20,8 +20,11 @@ __all__ = [
     "TokenTypeMismatchError",
     "InvalidUserCredentialsError",
     "ForbiddenRoleError",
+    "ForbiddenError",
     "NoAvailableRoomsError",
     "RoomTypeNotFoundError",
     "RoomNotFoundError",
-    "IntervalReservationError"
+    "IntervalReservationError",
+    "ReservationNotFoundError",
+    "CannotCancelReservationError"
 ]

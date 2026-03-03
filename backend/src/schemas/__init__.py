@@ -5,7 +5,7 @@ from .positions import PositionCreate, PositionResponse, PositionDetailResponse
 from .employees import EmployeeResponse, EmployeeCreate, EmployeeDetailResponse, EmployeeUpdate
 from .auth import LoginUser, TokenResponse, RefreshTokenContent, AccessTokenContent
 from .rooms import RoomResult
-from .reservations import ReservationResponse, ReservationCreate
+from .reservations import ReservationResponse, ReservationCreate, ReservationDetailResponse
 
 
 __all__ = [
@@ -32,5 +32,6 @@ __all__ = [
     "AccessTokenContent",
     "RoomResult",
     "ReservationResponse",
+    "ReservationDetailResponse",
     "ReservationCreate"
 ]

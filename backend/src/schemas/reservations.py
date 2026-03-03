@@ -1,6 +1,6 @@
 import datetime
 from pydantic import BaseModel, field_validator, model_validator, Field
-from .rooms import RoomDetailResult
+from .rooms import RoomDetailResult, RoomResult
 from src.utils import validators
 
 
@@ -21,9 +21,18 @@ class ReservationCreate(BaseModel):
 
 
 class ReservationResponse(BaseModel):
-    room: RoomDetailResult
+    id: int
+    check_in_date: datetime.datetime
+    check_out_date: datetime.datetime
+    status: str
+    # room: RoomResult
+    
+
+class ReservationDetailResponse(BaseModel):
+    id: int
     check_in_date: datetime.datetime
     check_out_date: datetime.datetime
     total_price: int
     status: str
     created_at: datetime.datetime
+    room: RoomDetailResult

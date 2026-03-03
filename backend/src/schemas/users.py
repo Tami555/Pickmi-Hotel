@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
 from src.utils import validators
-from .reservations import ReservationResponse
+from .reservations import ReservationDetailResponse
 
 
 class UserResponse(BaseModel):
@@ -63,5 +63,5 @@ class UserDetailResponse(UserResponse):
 
 
 class GuestResponse(UserDetailResponse):
-    reservations: list[ReservationResponse]
+    reservations: list[ReservationDetailResponse]
     
