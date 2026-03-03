@@ -8,9 +8,9 @@ from src.models.users import User, Role
 from src.core.auth import hashed_password, checked_password, create_refresh_token, create_access_token
 
 
-async def get_user_by_id(user_id: int, session: AsyncSession):
+async def get_user_by_id(user_id: int, user_role: Role, session: AsyncSession):
     user = await user_crud.get_user_by_id(user_id, session)
-    if user is None:
+    if user is None or user.role != user_role:
         raise UserNotFoundError()
     return user
 
@@ -78,12 +78,3 @@ async def update_user_partial(user_data: UserUpdateProfile | UserUpdate, user: U
     data = user_data.model_dump(exclude_unset=True)
     data["updated_at"] = datetime.datetime.now()
     return await user_crud.update_user(user_data=data, user=user, session=session)
-
-
-async def update_user_partial_by_id(user_id: int, user_data: UserUpdate, session: AsyncSession):
-    """ Обновление пользователя по id"""
-    user = await get_user_by_id(user_id, session)
-    if user:
-        return await update_user_partial(user_data, user, session)
-    raise UserNotFoundError()
-

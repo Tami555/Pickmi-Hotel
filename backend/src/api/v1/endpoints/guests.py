@@ -8,6 +8,7 @@ from ..dependencies.auth import guest_by_token, admin_by_token
 from src.models import User
 from src.services import user_service
 from src.exceptions import AppException
+from src.models.enums import Role
 
 
 router = APIRouter()
@@ -26,7 +27,8 @@ async def update_guest(
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ) -> UserResponse:
     try:
-        return await user_service.update_user_partial_by_id(guest_id, user_data, session)
+        guest = await user_service.get_user_by_id(guest_id, Role.GUEST, session)
+        return await user_service.update_user_partial(user_data, guest, session)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)
     
@@ -42,7 +44,7 @@ async def get_guest_by_id(
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ) -> UserDetailResponse:
     try:
-        return await user_service.get_user_by_id(guest_id, session)
+        return await user_service.get_user_by_id(guest_id, Role.GUEST, session)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)
 
