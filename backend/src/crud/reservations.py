@@ -1,7 +1,9 @@
-from sqlalchemy import select
+import datetime
+from sqlalchemy import select, update
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.models import Reservation
+from src.models.enums import ReservationStatus
 
 
 async def get_reservation_by_id(id_reservation: int, session: AsyncSession) -> Reservation | None:
@@ -21,3 +23,30 @@ async def create_reservation(
     session.add(reservation)
     await session.commit()
     return reservation
+
+
+async def update_reservation_statuses_by_dates(session: AsyncSession):
+    """Обновление статусов броней по датам"""
+    now = datetime.datetime.now()
+    
+    # наступила дата заезда
+    pending_stmt = (
+        update(Reservation)
+        .where(
+            Reservation.check_in_date <= now,
+            Reservation.check_out_date >= now
+        )
+        .values(status=ReservationStatus.ACTIVE)
+    )
+    await session.execute(pending_stmt)
+    
+    # прошла дата выезда
+    active_stmt = (
+        update(Reservation)
+        .where(
+            Reservation.check_out_date < now
+        )
+        .values(status=ReservationStatus.COMPLETED)
+    )
+    await session.execute(active_stmt)
+    await session.commit()

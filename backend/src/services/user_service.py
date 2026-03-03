@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.crud import users as user_crud
+from src.crud import users as user_crud, reservations as reservations_crud
 from src.exceptions import (EmailAlreadyExistsError, PhoneAlreadyExistsError, PassportAlreadyExistsError,
                             InvalidUserCredentialsError, ForbiddenRoleError, UserNotFoundError)
 from src.schemas import UserCreate, LoginUser, TokenResponse, UserUpdateProfile, UserUpdate
@@ -81,6 +81,7 @@ async def update_user_partial(user_data: UserUpdateProfile | UserUpdate, user: U
 
 
 async def get_guest_with_reservations(user_id: int, session: AsyncSession):
+    await reservations_crud.update_reservation_statuses_by_dates(session) # обновление статусов бронирования
     user = await user_crud.get_user_with_reservations_by_id(user_id, session)
     if user is None:
         raise UserNotFoundError()

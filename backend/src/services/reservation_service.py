@@ -24,6 +24,9 @@ async def create_reservation(
     nights = (reservation_data.check_out_date.date() - reservation_data.check_in_date.date()).days
     if not nights:
         raise IntervalReservationError()
+    
+    # Обновление статусов бронирования
+    await reservations_crud.update_reservation_statuses_by_dates(session)
 
     # проверка свободен ли он
     is_available_room = await rooms_crud.is_room_available(
