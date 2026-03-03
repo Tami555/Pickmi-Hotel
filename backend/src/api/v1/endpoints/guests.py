@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.schemas import UserResponse, UserUpdateProfile, UserUpdate, GuestResponse
+from src.schemas import UserResponse, UserUpdateProfile, UserUpdate, GuestResponse, GuestWithStatusResponse
 from typing import Annotated
 from src.core import db_helper
-import src.crud.users as crud
 from ..dependencies.auth import guest_by_token, admin_by_token
 from src.models import User
 from src.services import user_service
@@ -14,9 +13,9 @@ from src.models.enums import Role
 router = APIRouter()
 
 
-@router.get('/', response_model=list[UserResponse])
-async def get_guests(session: AsyncSession = Depends(db_helper.create_scoped_session)) -> list[UserResponse]:
-    return await crud.get_users_by_role_guest(session)
+@router.get('/', response_model=list[GuestWithStatusResponse])
+async def get_guests(session: AsyncSession = Depends(db_helper.create_scoped_session)) -> list[GuestWithStatusResponse]:
+    return await user_service.get_guests_with_staying_status(session)
 
 
 @router.patch('/edit/{guest_id}', response_model=UserResponse)

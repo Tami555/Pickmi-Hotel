@@ -80,5 +80,4 @@ async def cancel_reservation(
         raise CannotCancelReservationError(f"Бронь уже {reservation.status.value}")
     # Отменяем    
     await reservations_crud.update_reservation_status(reservation.id, ReservationStatus.CANCELED, session)
-    await session.refresh(reservation)
-    return reservation
+    return await reservations_crud.get_reservation_by_id(reservation.id, session)

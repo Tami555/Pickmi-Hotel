@@ -14,6 +14,21 @@ async def get_reservation_by_id(id_reservation: int, session: AsyncSession) -> R
     return reservation
 
 
+async def get_active_reservation_by_user(user_id: int, session: AsyncSession) -> Reservation | None:
+    """Получение активной брони пользователя"""
+    stmt = (
+        select(Reservation)
+        .where(
+            Reservation.user_id == user_id,
+            Reservation.status == ReservationStatus.ACTIVE
+        )
+        .options(joinedload(Reservation.room))
+        .limit(1)
+    )
+    result = await session.execute(stmt)
+    return result.scalar_one_or_none()
+
+
 async def create_reservation(
     reservation_data: dict,
     session: AsyncSession

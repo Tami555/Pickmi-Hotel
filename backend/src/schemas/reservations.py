@@ -25,7 +25,7 @@ class ReservationResponse(BaseModel):
     check_in_date: datetime.datetime
     check_out_date: datetime.datetime
     status: str
-    # room: RoomResult
+    room: RoomResult
     
 
 class ReservationDetailResponse(BaseModel):
