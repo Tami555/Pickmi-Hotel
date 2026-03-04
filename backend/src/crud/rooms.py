@@ -6,6 +6,20 @@ from src.models import RoomTypes, Rooms, Reservation
 from src.models.enums import ReservationStatus
 
 
+async def get_rooms_by_type(
+    room_type_slug: str,
+    session: AsyncSession
+) -> list[Rooms]:
+    """Получение всех номеров определённого типа"""
+    stmt = (
+        select(Rooms)
+        .join(RoomTypes).where(RoomTypes.slug == room_type_slug)
+        .order_by(Rooms.room_number)
+    )
+    result = await session.execute(stmt)
+    return list(result.scalars().all())
+
+
 async def get_available_rooms(
         room_type_slug: str,
         quantity_places: int,

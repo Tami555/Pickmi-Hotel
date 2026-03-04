@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.crud import room_types as room_types_crud, rooms as rooms_crud, reservations as reservations_crud
 from src.exceptions import RoomTypeNotFoundError, NoAvailableRoomsError, AppException, IntervalReservationError
 from src.utils.validators import validate_check_in, validate_dates
-from src.schemas import RoomTypeAvailabilityResponse
+from src.schemas import RoomTypeAvailabilityResponse, RoomTypeOccupancyResponse, RoomOccupancyInfo, UserResponse
 
 
 async def get_room_type_by_slug(slug: str, session: AsyncSession):
@@ -75,3 +75,60 @@ async def get_available_rooms_count(
             return result
     except ValueError as err:
         raise AppException(message=str(err))
+    
+
+async def get_rooms_by_type_with_occupancy(
+    room_type_slug: str,
+    session: AsyncSession
+) -> RoomTypeOccupancyResponse:
+    """Получение всех номеров типа с информацией о загруженности"""
+    
+    # Проверяем существование типа
+    room_type = await room_types_crud.get_room_type_by_slug(room_type_slug, session)
+    if not room_type:
+        raise RoomTypeNotFoundError()
+    
+    # Получаем все номера этого типа
+    rooms = await rooms_crud.get_rooms_by_type(room_type_slug, session)
+
+    # Обновляем статусы броней
+    await reservations_crud.update_reservation_statuses_by_dates(session)
+    
+    occupied_count = 0
+    rooms_info = []
+    
+    for room in rooms:
+        # Ищем активную бронь
+        active_reservation = await reservations_crud.get_active_reservation_by_room(room.id, session)
+        
+        is_occupied = active_reservation is not None
+        if is_occupied:
+            occupied_count += 1
+        
+        # Собираем информацию о номере
+        room_info = RoomOccupancyInfo(
+            room_number=room.room_number,
+            floor=room.floor,
+            quantity_places=room.quantity_places,
+            is_occupied=is_occupied,
+            current_guest=UserResponse(
+                id=active_reservation.user.id,
+                email=active_reservation.user.email,
+                first_name=active_reservation.user.first_name,
+                last_name=active_reservation.user.last_name
+            ) if is_occupied else None,
+            days_occupied=(
+                (active_reservation.check_out_date - active_reservation.check_in_date).days
+            ) if is_occupied else None,
+        )
+        rooms_info.append(room_info)
+
+    # Считаем процент загруженности
+    percentage = (occupied_count / len(rooms) * 100) if rooms else 0
+    
+    return RoomTypeOccupancyResponse(
+        percentage_occupied=round(percentage, 1),
+        total_rooms=len(rooms),
+        occupied_rooms=occupied_count,
+        rooms=rooms_info
+    )

@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from src.core import db_helper
 import src.crud.room_types as crud
-from src.schemas import RoomTypeDetailResponse, RoomTypeAmenitiesResponse, RoomTypeAvailabilityResponse
+from src.schemas import RoomTypeDetailResponse, RoomTypeAmenitiesResponse, RoomTypeAvailabilityResponse, RoomTypeOccupancyResponse
 from src.services import rooms_service
 from src.exceptions import AppException
 
@@ -29,7 +29,7 @@ async def get_room_type_by_slug(
         raise HTTPException(status_code=err.status_code, detail=err.message)
     
 
-@router.get('/available/rooms/count', response_model=list[RoomTypeAvailabilityResponse])
+@router.get('/rooms/available/count', response_model=list[RoomTypeAvailabilityResponse])
 async def get_available_rooms_count(
     quantity_places: Annotated[int, Query(gt=0, example=2)],
     check_in: Annotated[datetime.datetime, Query(example='2026-12-10 10:10')],
@@ -41,3 +41,4 @@ async def get_available_rooms_count(
         return await rooms_service.get_available_rooms_count( quantity_places, check_in, check_out, session)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)
+    

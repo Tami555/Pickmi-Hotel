@@ -1,7 +1,11 @@
 import datetime
 from pydantic import BaseModel, field_validator, model_validator, Field
-from .rooms import RoomDetailResult, RoomResult
 from src.utils import validators
+from typing import TYPE_CHECKING
+
+
+if TYPE_CHECKING:
+    from .rooms import RoomDetailResult, RoomResult
 
 
 class ReservationCreate(BaseModel):
@@ -25,7 +29,7 @@ class ReservationResponse(BaseModel):
     check_in_date: datetime.datetime
     check_out_date: datetime.datetime
     status: str
-    room: RoomResult
+    room: 'RoomResult'
     
 
 class ReservationDetailResponse(BaseModel):
@@ -35,4 +39,4 @@ class ReservationDetailResponse(BaseModel):
     total_price: int
     status: str
     created_at: datetime.datetime
-    room: RoomDetailResult
+    room: 'RoomDetailResult'

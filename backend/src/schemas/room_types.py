@@ -1,5 +1,10 @@
 from pydantic import BaseModel
+from typing import TYPE_CHECKING
 from .amenity import AmenityResponse
+
+
+if TYPE_CHECKING:
+    from .rooms import RoomOccupancyInfo
 
 
 class RoomTypeResponse(BaseModel):
@@ -41,3 +46,10 @@ class RoomTypeAvailabilityResponse(BaseModel):
     title: str
     price_per_day: int
     available_rooms: int
+
+
+class RoomTypeOccupancyResponse(BaseModel):
+    percentage_occupied: float  # от 0 до 100
+    total_rooms: int
+    occupied_rooms: int
+    rooms: list['RoomOccupancyInfo']

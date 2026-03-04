@@ -29,6 +29,24 @@ async def get_active_reservation_by_user(user_id: int, session: AsyncSession) ->
     return result.scalar_one_or_none()
 
 
+async def get_active_reservation_by_room(
+    room_id: int,
+    session: AsyncSession
+) -> Reservation | None:
+    """Получение активной брони на номер"""
+    stmt = (
+        select(Reservation)
+        .where(
+            Reservation.room_id == room_id,
+            Reservation.status == ReservationStatus.ACTIVE
+        )
+        .options(joinedload(Reservation.user))
+        .limit(1)
+    )
+    result = await session.execute(stmt)
+    return result.scalar_one_or_none()
+
+
 async def create_reservation(
     reservation_data: dict,
     session: AsyncSession
