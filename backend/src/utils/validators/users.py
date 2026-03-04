@@ -28,11 +28,3 @@ def validate_bank_account(value):
     if value and (not value.isdigit() or len(value) != 20):
         raise ValueError('Расчётный счёт должен содержать 20 цифр')
     return value
-
-
-def validate_weekends(value):
-    """Проверка дней недели """
-    valid_days = [1, 2, 3, 4, 5, 6, 7]
-    if not all(day in valid_days for day in value):
-        raise ValueError('Дни недели должны быть от 1 (пн) до 7 (вс)')
-    return value

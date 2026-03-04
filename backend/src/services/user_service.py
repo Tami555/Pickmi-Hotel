@@ -1,16 +1,16 @@
 import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.crud import users as user_crud
+from src.crud import users as user_crud, reservations as reservations_crud
 from src.exceptions import (EmailAlreadyExistsError, PhoneAlreadyExistsError, PassportAlreadyExistsError,
                             InvalidUserCredentialsError, ForbiddenRoleError, UserNotFoundError)
-from src.schemas import UserCreate, LoginUser, TokenResponse, UserUpdateProfile, UserUpdate
+from src.schemas import UserCreate, LoginUser, TokenResponse, UserUpdateProfile, UserUpdate, GuestWithStatusResponse
 from src.models.users import User, Role
 from src.core.auth import hashed_password, checked_password, create_refresh_token, create_access_token
 
 
-async def get_user_by_id(user_id: int, session: AsyncSession):
+async def get_user_by_role_by_id(user_id: int, user_role: Role, session: AsyncSession):
     user = await user_crud.get_user_by_id(user_id, session)
-    if user is None:
+    if user is None or user.role != user_role:
         raise UserNotFoundError()
     return user
 
@@ -80,10 +80,34 @@ async def update_user_partial(user_data: UserUpdateProfile | UserUpdate, user: U
     return await user_crud.update_user(user_data=data, user=user, session=session)
 
 
-async def update_user_partial_by_id(user_id: int, user_data: UserUpdate, session: AsyncSession):
-    """ Обновление пользователя по id"""
-    user = await get_user_by_id(user_id, session)
-    if user:
-        return await update_user_partial(user_data, user, session)
-    raise UserNotFoundError()
+async def get_guest_with_reservations(user_id: int, session: AsyncSession):
+    """ Получение гостей со списком их броней """
+    await reservations_crud.update_reservation_statuses_by_dates(session) # обновление статусов бронирования
+    user = await user_crud.get_user_with_reservations_by_id(user_id, session)
+    if user is None:
+        raise UserNotFoundError()
+    return user
 
+
+async def get_guests_with_staying_status(
+    session: AsyncSession
+) -> list[GuestWithStatusResponse]:
+    """Получение всех гостей с информацией о текущем проживании"""
+    
+    guests = await user_crud.get_users_by_role_guest(session)
+    
+    result = []
+    for guest in guests:
+        # Ищем активную бронь
+        active_reservation = await reservations_crud.get_active_reservation_by_user(guest.id, session)
+        is_staying = active_reservation is not None
+        
+        guest_data = GuestWithStatusResponse(
+            id=guest.id,
+            email=guest.email,
+            first_name=guest.first_name,
+            last_name=guest.last_name,
+            is_currently_staying=is_staying
+        )
+        result.append(guest_data)
+    return result

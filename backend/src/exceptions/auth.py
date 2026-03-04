@@ -30,6 +30,15 @@ class InvalidUserCredentialsError(AppException):
         )
 
 
+class ForbiddenError(AppException):
+    """ Доступ запрещён """
+    def __init__(self, message: str = "Доступ запрещён"):
+        super().__init__(
+            message=message,
+            status_code=status.HTTP_403_FORBIDDEN
+        )
+
+
 class ForbiddenRoleError(AppException):
     """ Недостаточно прав """
     def __init__(self, need_role: Role):

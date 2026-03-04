@@ -1,7 +1,8 @@
 from sqlalchemy import select
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models.users import User, Role
+from src.models import User, Reservation, Rooms
+from src.models.enums import Role
 from src.models import Employee
 
 
@@ -44,6 +45,16 @@ async def get_user_with_employee_by_id(user_id: int, session: AsyncSession) -> U
     """ Получение пользователя по id + связь с сотрудником """
     stmt = select(User).options(joinedload(User.employee).joinedload(Employee.position)).where(User.id == user_id)
     return await session.scalar(stmt)
+
+
+async def get_user_with_reservations_by_id(user_id: int, session: AsyncSession) -> User | None:
+    """ Получение гостя по id + связь с бронями"""
+    stmt = select(User).options(selectinload(User.reservations)
+                                .joinedload(Reservation.room)
+                                .joinedload(Rooms.room_type)
+                            ).where(User.id == user_id, User.role == Role.GUEST)
+    user = await session.scalar(stmt)
+    return user
 
 
 async def create_user(user_data: dict, session: AsyncSession) -> User:

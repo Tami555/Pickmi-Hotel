@@ -6,6 +6,7 @@ from .room_type_amenities_association import RoomTypeAmenities
 from .users import User
 from .employees import Employee
 from .positions import Position
+from .reservations import Reservation
 
 
 __all__ = [
@@ -16,5 +17,6 @@ __all__ = [
     "RoomTypeAmenities",
     "User",
     "Employee",
-    "Position"
+    "Position",
+    "Reservation"
 ]
