@@ -31,6 +31,7 @@
 **Ответ (200 OK):**
 ```json
 {
+  "id": 30,
   "email": "ivan@gmail.com",
   "first_name": "Иван",
   "last_name": "Иванов"
@@ -48,13 +49,35 @@
 **Ответ (200 OK):**
 ```json
 {
+  "id": 30,
   "email": "ivan@gmail.com",
   "first_name": "Иван",
   "last_name": "Иванов",
   "patronymic": "Иванович",
   "phone": "tel:+7-917-866-71-12",
   "passport_series": "1235",
-  "passport_number": "123455"
+  "passport_number": "123455",
+  "reservations": [
+    {
+      "id": 24,
+      "check_in_date": "2026-03-02T09:00:00",
+      "check_out_date": "2026-03-03T09:00:00",
+      "total_price": 3000,
+      "status": "completed",
+      "created_at": "2026-03-01T16:47:11.208348",
+      "room": {
+        "room_number": "400",
+        "floor": 4,
+        "quantity_places": 2,
+        "room_type": {
+          "slug": "standart",
+          "title": "Стандарт",
+          "price_per_day": 3000
+        }
+      }
+    },
+    ...
+  ]
 }
 ```
 <br>
@@ -77,6 +100,7 @@
 **Ответ (200 OK):**
 ```json
 {
+  "id": 30,
   "email": "ivan@gmail.com",
   "first_name": "Иванушка",
   "last_name": "Ивонович"
@@ -128,6 +152,112 @@
   ]
 }
 ```
+<br>
+
+- ##### Получить количество свободных номеров, всех типов, по критериям (кол.мест, даты въезда\выезда):
+> **GET: /room-types/rooms/available/count?quantity_places={quantity_places}&check_in={check_in}&check_out={check_out}**
+
+>**Параметры запроса:<br>
+  quantity_places - количество мест в номере<br>
+  check_in - дата заезда<br>
+  check_out - дата выезда**
+
+**Ответ (200 OK):**
+```json
+[
+  {
+    "slug": "prezidentskiy",
+    "title": "Президентский ",
+    "price_per_day": 12000,
+    "available_rooms": 2
+  },
+  ...
+]
+```
+<br>
+
+
+- ##### Получить свободные номера, конкретного типа, по критериям (кол.мест, даты въезда\выезда):
+> **GET: rooms/available/by-type/{room_type_slug}?quantity_places={quantity_places}&check_in={check_in}&check_out={check_out}**
+
+>**Параметры запроса:<br>
+  quantity_places - количество мест в номере<br>
+  check_in - дата заезда<br>
+  check_out - дата выезда**
+
+**Ответ (200 OK):**
+```json
+[
+  {
+    "room_number": "501",
+    "floor": 5,
+    "quantity_places": 3
+  },
+  ...
+]
+```
+<br>
+
+
+### Бронировние 
+- #####  Создание брони:
+> **POST: /reservations**
+
+**Заголовок запроса:**
+``` Authorization: Bearer <access token> ```
+
+**Тело запроса:**
+```json
+{
+  "room_number": "301",
+  "check_in_date": "2026-05-02 09:00",
+  "check_out_date": "2026-05-03 09:00"
+}
+```
+**Ответ (200 OK):**
+```json
+{
+  "id": 1,
+  "check_in_date": "2026-05-02T09:00:00",
+  "check_out_date": "2026-05-03T09:00:00",
+  "total_price": 1500,
+  "status": "pending",
+  "created_at": "2026-03-04T14:31:31.925002",
+  "room": {
+    "room_number": "301",
+    "floor": 3,
+    "quantity_places": 2,
+    "room_type": {
+      "slug": "ekonom",
+      "title": "Эконом",
+      "price_per_day": 1500
+    }
+  }
+}
+```
+<br>
+
+- #####  Отмена брони:
+> **PATCH: /reservations/{reservation_id}/cancel**
+
+**Заголовок запроса:**
+``` Authorization: Bearer <access token> ```
+
+**Ответ (200 OK):**
+```json
+{
+  "id": 1,
+  "check_in_date": "2026-05-02T09:00:00",
+  "check_out_date": "2026-05-03T09:00:00",
+  "status": "canceled",
+  "room": {
+    "room_number": "301",
+    "floor": 3,
+    "quantity_places": 2
+  }
+}
+```
+<br>
 
 
 ##  2. API для мобильного приложения (Сотрудники)
@@ -142,6 +272,7 @@
 ```json
 {
   "user": {
+    "id": 8,
     "email": "valerkadobrov@mail.ru",
     "first_name": "Валерка",
     "last_name": "Добровка",
@@ -181,6 +312,7 @@
 **Ответ (200 OK):**
 ```json
 {
+  "id": 1,
   "email": "tamiron@gmail.com",
   "first_name": "Тамирон",
   "last_name": "Пост",
@@ -213,6 +345,7 @@
 **Ответ (200 OK):**
 ```json
 {
+  "id": 1,
   "email": "tamipost@gmail.com",
   "first_name": "Тами",
   "last_name": "Пост"
@@ -255,6 +388,7 @@
 {
   "id": 16,
   "user": {
+    "id": 8,
     "email": "valerka@mail.ru",
     "first_name": "Валерий",
     "last_name": "Добров"
@@ -278,6 +412,7 @@
   {
     "id": 16,
     "user": {
+      "id": 8,
       "email": "valerka@mail.ru",
       "first_name": "Валерий",
       "last_name": "Добров"
@@ -301,6 +436,7 @@
 ```json
 {
   "user": {
+    "id": 8,
     "email": "valerka@mail.ru",
     "first_name": "Валерий",
     "last_name": "Добров",
@@ -363,6 +499,7 @@
 {
   "id": 16,
   "user": {
+    "id": 8,
     "email": "valerkadobrov@mail.ru",
     "first_name": "Валерка",
     "last_name": "Добровка"
@@ -386,9 +523,11 @@
 ```json
 [
   {
+    "id": 30,
     "email": "ivan@gmail.com",
     "first_name": "Иванушка",
-    "last_name": "Ивонович"
+    "last_name": "Ивонович",
+    "is_currently_staying": true
   },
   ...
 ]
@@ -401,13 +540,35 @@
 **Ответ (200 OK):**
 ```json
 {
+  "id": 30,
   "email": "ivan@gmail.com",
   "first_name": "Иванушка",
   "last_name": "Ивонович",
   "patronymic": "Иванов",
   "phone": "tel:+7-917-866-71-14",
   "passport_series": "1235",
-  "passport_number": "123455"
+  "passport_number": "123455",
+  "reservations": [
+    {
+      "id": 24,
+      "check_in_date": "2026-03-02T09:00:00",
+      "check_out_date": "2026-03-03T09:00:00",
+      "total_price": 3000,
+      "status": "completed",
+      "created_at": "2026-03-01T16:47:11.208348",
+      "room": {
+        "room_number": "400",
+        "floor": 4,
+        "quantity_places": 2,
+        "room_type": {
+          "slug": "standart",
+          "title": "Стандарт",
+          "price_per_day": 3000
+        }
+      }
+    },
+    ...
+  ]
 }
 ```
 <br>
@@ -433,6 +594,7 @@
 **Ответ (200 OK):**
 ```json
 {
+  "id": 30,
   "email": "ivankrytov@mail.ru",
   "first_name": "Иван",
   "last_name": "Иванов"
@@ -457,6 +619,44 @@
   },
   ...
 ]
+```
+<br>
+
+
+- #####  Получить все номера, конкретного типа, а также общий процент загруженности на данный момент:
+> **GET: /rooms/occupancy/by-type/{room_type_slug}**
+
+**Ответ (200 OK):**
+```json
+{
+  "percentage_occupied": 25,
+  "total_rooms": 4,
+  "occupied_rooms": 1,
+  "rooms": [
+    {
+      "room_number": "501",
+      "floor": 5,
+      "quantity_places": 1,
+      "is_occupied": false,
+      "current_guest": null,
+      "days_occupied": null
+    },
+    {
+      "room_number": "503",
+      "floor": 5,
+      "quantity_places": 5,
+      "is_occupied": true,
+      "current_guest": {
+        "id": 30,
+        "email": "anton@gmail.com",
+        "first_name": "Антон",
+        "last_name": "Зайчиков"
+      },
+      "days_occupied": 6
+    },
+    ...
+  ]
+}
 ```
 <br>
 
@@ -489,6 +689,30 @@
   "title": "Горничная",
   "description": "Любительница идеального порядка и ароматов свежего белья — спокойная, внимательная к деталям и всегда готова удивить чистотой.",
   "id": 1
+}
+```
+<br>
+
+
+### Бронировние 
+- #####  Отмена брони:
+> **PATCH: /reservations/{reservation_id}/cancel**
+
+**Заголовок запроса:**
+``` Authorization: Bearer <access token> ```
+
+**Ответ (200 OK):**
+```json
+{
+  "id": 1,
+  "check_in_date": "2026-05-02T09:00:00",
+  "check_out_date": "2026-05-03T09:00:00",
+  "status": "canceled",
+  "room": {
+    "room_number": "301",
+    "floor": 3,
+    "quantity_places": 2
+  }
 }
 ```
 <br>
