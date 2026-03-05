@@ -3,10 +3,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from typing import TYPE_CHECKING
 from src.utils import create_slug
 from . import Base
-
+from .position_services_association import PositionServices
 
 if TYPE_CHECKING:
-    from . import ServiceCategories
+    from . import ServiceCategories, Position
 
 
 class Services(Base):
@@ -19,6 +19,7 @@ class Services(Base):
     category_id: Mapped[int] = mapped_column(ForeignKey("service_categories.id"))
     # Связи
     category: Mapped['ServiceCategories'] = relationship(back_populates='services')
+    positions: Mapped[list['Position']] = relationship(secondary=PositionServices, back_populates='services')
 
 
 @event.listens_for(Services, 'before_insert')

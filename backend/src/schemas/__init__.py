@@ -16,7 +16,7 @@ RoomDetailResult.model_rebuild()
 ReservationDetailResponse.model_rebuild()
 ReservationResponse.model_rebuild()
 GuestResponse.model_rebuild()
-
+PositionDetailResponse.model_rebuild()
 
 __all__ = [
     "RoomTypeResponse",

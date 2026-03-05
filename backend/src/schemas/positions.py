@@ -1,5 +1,8 @@
 from pydantic import BaseModel, Field
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from . import ServiceResponse
 
 
 class PositionCreate(BaseModel):
@@ -14,3 +17,4 @@ class PositionResponse(BaseModel):
 
 class PositionDetailResponse(PositionCreate):
     id: int
+    services: list['ServiceResponse']

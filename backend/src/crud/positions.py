@@ -1,4 +1,5 @@
 from sqlalchemy import select
+from sqlalchemy.orm import selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.models import Position
 
@@ -12,5 +13,6 @@ async def get_positions(session: AsyncSession) -> list[Position]:
 
 async def get_position_by_id(position_id: int, session: AsyncSession) -> Position | None:
     """ Получение должности по id """
-    position = await session.get(Position, position_id)
+    stmt = select(Position).options(selectinload(Position.services)).where(Position.id == position_id)
+    position = await session.scalar(stmt)
     return position
