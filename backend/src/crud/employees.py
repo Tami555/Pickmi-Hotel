@@ -2,7 +2,8 @@ from datetime import datetime, timedelta
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models.employees import Employee, EmployeeStatus
+from src.models import Employee
+from src.models.enums import EmployeeStatus
 
 
 async def cleanup_fired_employees(session: AsyncSession, fired_time: timedelta = timedelta(days=2)):
@@ -32,8 +33,10 @@ async def get_employees(session: AsyncSession) -> list[Employee]:
 async def get_employee_by_id(employee_id: int, session: AsyncSession) -> Employee | None:
     """ Получение сотрудника по id"""
     await cleanup_fired_employees(session) # чистка уволенных
-    stmt = select(Employee).options(joinedload(Employee.user), joinedload(Employee.position)).\
-        where(Employee.id == employee_id)
+    stmt = select(Employee).options(
+            joinedload(Employee.user),
+            joinedload(Employee.position)
+        ).where(Employee.id == employee_id)
     employee = await session.scalar(stmt)
     return employee
 

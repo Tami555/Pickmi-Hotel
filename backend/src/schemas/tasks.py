@@ -25,6 +25,7 @@ class TaskResponse(BaseModel):
     scheduled_time: datetime.datetime
     comment: str
     service: 'ServiceResponse'
+    status: str
 
 
 class TaskDetailResponse(TaskResponse):

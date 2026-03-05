@@ -1,10 +1,10 @@
 import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.models import User, Reservation, Task, Services
+from src.models import User, Task
 from src.crud import services as service_crud, reservations as reservation_crud, positions as position_crud, tasks as task_crud
 from src.schemas import TaskCreate
-from src.exceptions import ServiceNotFoundError, ReservationNotFoundError, ForbiddenError, CannotCreateTaskError
+from src.exceptions import ServiceNotFoundError, ReservationNotFoundError, ForbiddenError, CannotCreateTaskError, TaskNotFoundError, CannotChangeStatusTaskError
 from src.models.enums import ReservationStatus, TaskStatus, Role
 
 
@@ -37,7 +37,6 @@ async def create_task(
     positions = await position_crud.get_positions_by_service(task_data.service_id, session) # получаем должности, получаем сотрудников
     active_employees = [] # берем тех, и у кого нет выходных
     for position in positions:
-        print("ЭТООО СОТРУДНИКИ: ")
         for employee in position.employees:
             if task_data.scheduled_time.weekday() + 1 not in employee.weekends:
                 active_employees.append(employee)
@@ -60,3 +59,45 @@ async def create_task(
 
     task = await task_crud.create_task(task_dict, session)
     return await task_crud.get_task_by_id(task.id, session)
+
+
+async def started_task_by_id(user: User, task_id: int, session: AsyncSession) -> Task:
+    """Начало выполнения задачи (заказанной услуги) сотрудником"""
+    task = await task_crud.get_task_by_id(task_id, session)
+    if not task:
+        raise TaskNotFoundError()
+    if task.employee != user.employee:
+        raise ForbiddenError(message="Только ответственный за эту задачу сотрудник может ее начать")
+    if task.status != TaskStatus.PENDING:
+        raise CannotChangeStatusTaskError(reason=f"Задача уже {task.status.value}")
+    
+    await task_crud.update_task_status_by_id(task_id, TaskStatus.IN_PROGRESS, session)
+    return await task_crud.get_task_by_id(task_id, session)
+    
+    
+async def completed_task_by_id(user: User, task_id: int, session: AsyncSession) -> Task:
+    """Завершение выполнения задачи (заказанной услуги) сотрудником"""
+    task = await task_crud.get_task_by_id(task_id, session)
+    if not task:
+        raise TaskNotFoundError()
+    if task.employee != user.employee:
+        raise ForbiddenError(message="Только ответственный за эту задачу сотрудник может ее завершить")
+    if task.status != TaskStatus.IN_PROGRESS:
+        raise CannotChangeStatusTaskError(reason=f"Задача уже {task.status.value}")
+    
+    await task_crud.update_task_status_by_id(task_id, TaskStatus.COMPLETED, session)
+    return await task_crud.get_task_by_id(task_id, session)
+
+
+async def canceled_task_by_id(user: User, task_id: int, session: AsyncSession) -> Task:
+    """Завершение выполнения задачи (заказанной услуги) сотрудником"""
+    task = await task_crud.get_task_by_id(task_id, session)
+    if not task:
+        raise TaskNotFoundError()
+    if task.reservation.user_id != user.id and user.role != Role.ADMIN:
+        raise ForbiddenError(message="Только гость заказавший эту услугу может ее отменить")
+    if task.status != TaskStatus.PENDING:
+        raise CannotChangeStatusTaskError(reason=f"Задача уже {task.status.value}")
+    
+    await task_crud.update_task_status_by_id(task_id, TaskStatus.CANCELED, session)
+    return await task_crud.get_task_by_id(task_id, session)

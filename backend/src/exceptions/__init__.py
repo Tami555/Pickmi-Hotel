@@ -6,7 +6,7 @@ from .auth import InvalidTokenError, TokenTypeMismatchError, InvalidUserCredenti
 from .rooms import NoAvailableRoomsError, RoomTypeNotFoundError, RoomNotFoundError
 from .reservations import IntervalReservationError, ReservationNotFoundError, CannotCancelReservationError
 from .services import ServiceCategoriesNotFoundError, ServiceNotFoundError
-from .tasks import CannotCreateTaskError
+from .tasks import CannotCreateTaskError, TaskNotFoundError, CannotChangeStatusTaskError
 
 
 __all__ = [
@@ -31,5 +31,7 @@ __all__ = [
     "CannotCancelReservationError",
     "ServiceCategoriesNotFoundError",
     "ServiceNotFoundError",
-    "CannotCreateTaskError"
+    "CannotCreateTaskError",
+    "TaskNotFoundError",
+    "CannotChangeStatusTaskError"
 ]

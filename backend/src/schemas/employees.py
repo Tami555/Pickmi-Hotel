@@ -2,7 +2,7 @@ from pydantic import BaseModel, Field, field_validator
 from datetime import date, datetime
 from typing import List
 from src.models.employees import EmployeeStatus
-from .positions import PositionResponse, PositionDetailResponse
+from .positions import PositionResponse
 from .users import UserResponse, UserDetailResponse
 from src.utils import validators
 
@@ -50,7 +50,7 @@ class EmployeeResponse(BaseModel):
 
 class EmployeeDetailResponse(BaseModel):
     user: UserDetailResponse
-    position: PositionDetailResponse
+    position: PositionResponse
     salary: int
     advance: int
     hire_date: date
