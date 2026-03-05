@@ -5,6 +5,7 @@ from .positions import PositionNotFoundError
 from .auth import InvalidTokenError, TokenTypeMismatchError, InvalidUserCredentialsError, ForbiddenRoleError, ForbiddenError
 from .rooms import NoAvailableRoomsError, RoomTypeNotFoundError, RoomNotFoundError
 from .reservations import IntervalReservationError, ReservationNotFoundError, CannotCancelReservationError
+from .services import ServiceCategoriesNotFoundError, ServiceNotFoundError
 
 
 __all__ = [
@@ -26,5 +27,7 @@ __all__ = [
     "RoomNotFoundError",
     "IntervalReservationError",
     "ReservationNotFoundError",
-    "CannotCancelReservationError"
+    "CannotCancelReservationError",
+    "ServiceCategoriesNotFoundError",
+    "ServiceNotFoundError"
 ]

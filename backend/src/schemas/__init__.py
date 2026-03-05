@@ -6,6 +6,8 @@ from .employees import EmployeeResponse, EmployeeCreate, EmployeeDetailResponse,
 from .auth import LoginUser, TokenResponse, RefreshTokenContent, AccessTokenContent
 from .rooms import RoomResult, RoomDetailResult, RoomOccupancyInfo
 from .reservations import ReservationResponse, ReservationCreate, ReservationDetailResponse
+from .service_categories import ServiceCategoryResponse
+from .services import ServiceResponse, ServiceDetailResponse
 
 
 RoomTypeOccupancyResponse.model_rebuild()
@@ -46,5 +48,8 @@ __all__ = [
     "RoomOccupancyInfo",
     "ReservationResponse",
     "ReservationDetailResponse",
-    "ReservationCreate"
+    "ReservationCreate",
+    "ServiceCategoryResponse",
+    "ServiceResponse",
+    "ServiceDetailResponse"
 ]
