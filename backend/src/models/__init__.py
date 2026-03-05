@@ -7,6 +7,8 @@ from .users import User
 from .employees import Employee
 from .positions import Position
 from .reservations import Reservation
+from .service_categories import ServiceCategories
+from .services import Services
 
 
 __all__ = [
@@ -18,5 +20,7 @@ __all__ = [
     "User",
     "Employee",
     "Position",
-    "Reservation"
+    "Reservation",
+    "ServiceCategories",
+    "Services"
 ]
