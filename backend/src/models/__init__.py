@@ -10,6 +10,7 @@ from .reservations import Reservation
 from .service_categories import ServiceCategories
 from .services import Services
 from .position_services_association import PositionServices
+from .tasks import Task
 
 
 __all__ = [
@@ -24,5 +25,6 @@ __all__ = [
     "Reservation",
     "ServiceCategories",
     "Services",
-    "PositionServices"
+    "PositionServices",
+    "Task"
 ]

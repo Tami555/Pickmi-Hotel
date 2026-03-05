@@ -6,7 +6,7 @@ from . import Base
 from .position_services_association import PositionServices
 
 if TYPE_CHECKING:
-    from . import ServiceCategories, Position
+    from . import ServiceCategories, Position, Task
 
 
 class Services(Base):
@@ -20,6 +20,7 @@ class Services(Base):
     # Связи
     category: Mapped['ServiceCategories'] = relationship(back_populates='services')
     positions: Mapped[list['Position']] = relationship(secondary=PositionServices, back_populates='services')
+    tasks: Mapped[list['Task']] = relationship(back_populates='service')
 
 
 @event.listens_for(Services, 'before_insert')
