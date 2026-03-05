@@ -1,0 +1,62 @@
+import datetime
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.models import User, Reservation, Task, Services
+from src.crud import services as service_crud, reservations as reservation_crud, positions as position_crud, tasks as task_crud
+from src.schemas import TaskCreate
+from src.exceptions import ServiceNotFoundError, ReservationNotFoundError, ForbiddenError, CannotCreateTaskError
+from src.models.enums import ReservationStatus, TaskStatus, Role
+
+
+async def create_task(
+        user: User,
+        task_data: TaskCreate,
+        session: AsyncSession
+) -> Task:
+    """Создание заказа услуги (задачи для сотрудника)"""
+
+    # Проверяем услугу на существование
+    service = await service_crud.get_service_by_id(task_data.service_id, session)
+    if not service:
+        raise ServiceNotFoundError()
+    
+    # Проверяем бронь на существование + ее активность
+    reservation = await reservation_crud.get_reservation_by_id(task_data.reservation_id, session)
+    if reservation is None:
+        raise ReservationNotFoundError()
+    if reservation.user != user and user.role != Role.ADMIN:
+        raise ForbiddenError(message="Вы можете заказывать услуги только на свои брони")
+    if reservation.status != ReservationStatus.ACTIVE:
+        raise CannotCreateTaskError(reason="Услугу можно заказать только на активную бронь")
+
+    # Проверяем время планирования (входит в промежуток брони)
+    if not(reservation.check_in_date <= task_data.scheduled_time <= reservation.check_out_date):
+        raise CannotCreateTaskError(reason="Услугу можно заказать только в промежуток действия брони")
+    
+    #  Назначаем сотрудника на выполнение
+    positions = await position_crud.get_positions_by_service(task_data.service_id, session) # получаем должности, получаем сотрудников
+    active_employees = [] # берем тех, и у кого нет выходных
+    for position in positions:
+        print("ЭТООО СОТРУДНИКИ: ")
+        for employee in position.employees:
+            if task_data.scheduled_time.weekday() + 1 not in employee.weekends:
+                active_employees.append(employee)
+
+    # сортируем по возрастанию по кол активных задач
+    active_employees.sort(key=lambda employee: len([t for t in employee.tasks if t.status in [TaskStatus.PENDING, TaskStatus.IN_PROGRESS]]))
+
+    if not active_employees:
+        raise CannotCreateTaskError(reason="Не можем найти сотрудника для выполнения услуги! Пожалуйста попробуйте заказать позже")
+    
+    task_dict = {
+        "service_id": service.id,
+        "reservation_id": reservation.id,
+        "employee_id": active_employees[0].id,
+        "scheduled_time": task_data.scheduled_time,
+        "comment": task_data.comment,
+    }
+    reservation.total_price = reservation.total_price + service.price # добавляем сумму за услугу в счет брони
+    session.add(reservation)
+
+    task = await task_crud.create_task(task_dict, session)
+    return await task_crud.get_task_by_id(task.id, session)

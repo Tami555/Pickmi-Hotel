@@ -8,6 +8,7 @@ from .rooms import RoomResult, RoomDetailResult, RoomOccupancyInfo
 from .reservations import ReservationResponse, ReservationCreate, ReservationDetailResponse
 from .service_categories import ServiceCategoryResponse
 from .services import ServiceResponse, ServiceDetailResponse
+from .tasks import TaskCreate, TaskResponse, TaskDetailResponse
 
 
 RoomTypeOccupancyResponse.model_rebuild()
@@ -17,6 +18,9 @@ ReservationDetailResponse.model_rebuild()
 ReservationResponse.model_rebuild()
 GuestResponse.model_rebuild()
 PositionDetailResponse.model_rebuild()
+TaskResponse.model_rebuild()
+TaskDetailResponse.model_rebuild()
+
 
 __all__ = [
     "RoomTypeResponse",
@@ -51,5 +55,8 @@ __all__ = [
     "ReservationCreate",
     "ServiceCategoryResponse",
     "ServiceResponse",
-    "ServiceDetailResponse"
+    "ServiceDetailResponse",
+    "TaskCreate",
+    "TaskResponse",
+    "TaskDetailResponse"
 ]
