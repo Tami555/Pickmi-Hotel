@@ -1,6 +1,6 @@
 import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.crud import employees as employee_crud, positions as position_crud, users as user_crud
+from src.crud import employees as employee_crud, positions as position_crud, users as user_crud, tasks as tasks_crud
 from src.schemas import UserCreate, EmployeeCreate, UserUpdate, EmployeeUpdate
 from src.models.users import Role, User
 from src.models.employees import EmployeeStatus
@@ -99,3 +99,8 @@ async def update_employee_partial_by_id(
     await employee_crud.update_employee(employee_data=dump_data_employee, employee=employee, session=session)
     return await get_employee_by_id(employee.id, session)
     
+
+async def get_employee_tasks_by_id(employee_id, session):
+    """Получение всех задач сотрудника """
+    await get_employee_by_id(employee_id, session)
+    return await tasks_crud.get_tasks_by_employee(employee_id, session)

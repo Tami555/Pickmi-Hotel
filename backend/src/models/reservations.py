@@ -7,7 +7,7 @@ from . import Base
 
 
 if TYPE_CHECKING:
-    from . import Rooms, User
+    from . import Rooms, User, Task
 
 
 class ReservationStatus(PyEnum):
@@ -40,3 +40,4 @@ class Reservation(Base):
     # Связи
     room: Mapped["Rooms"] = relationship(back_populates="reservations")
     user: Mapped["User"] = relationship(back_populates="reservations")
+    tasks: Mapped[list["Task"]] = relationship(back_populates="reservation")

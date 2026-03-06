@@ -9,6 +9,9 @@ if TYPE_CHECKING:
 
 
 class RoomTypeAmenities(Base):
+
+    __tablename__ = "room_type_amenities_association"
+
     room_type_id: Mapped[int] = mapped_column(ForeignKey("room_types.id"), primary_key=True)
     amenity_id: Mapped[int] = mapped_column(ForeignKey("amenities.id"), primary_key=True)
     is_main: Mapped[bool] = mapped_column(default=False, server_default=text('false'))

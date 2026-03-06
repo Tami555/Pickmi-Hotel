@@ -66,10 +66,6 @@ class UserDetailResponse(UserResponse):
     passport_number: str = Field(max_length=6)
 
 
-class GuestResponse(UserDetailResponse):
-    reservations: list['ReservationDetailResponse']
-
-
 class GuestWithStatusResponse(UserResponse):
     is_currently_staying: bool
     

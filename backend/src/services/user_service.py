@@ -6,6 +6,7 @@ from src.exceptions import (EmailAlreadyExistsError, PhoneAlreadyExistsError, Pa
 from src.schemas import UserCreate, LoginUser, TokenResponse, UserUpdateProfile, UserUpdate, GuestWithStatusResponse
 from src.models.users import User, Role
 from src.core.auth import hashed_password, checked_password, create_refresh_token, create_access_token
+from src.crud import tasks as tasks_crud
 
 
 async def get_user_by_role_by_id(user_id: int, user_role: Role, session: AsyncSession):
@@ -80,13 +81,11 @@ async def update_user_partial(user_data: UserUpdateProfile | UserUpdate, user: U
     return await user_crud.update_user(user_data=data, user=user, session=session)
 
 
-async def get_guest_with_reservations(user_id: int, session: AsyncSession):
+async def get_guest_reservations(guest_id: int, session: AsyncSession):
     """ Получение гостей со списком их броней """
+    await get_user_by_role_by_id(guest_id, Role.GUEST, session)
     await reservations_crud.update_reservation_statuses_by_dates(session) # обновление статусов бронирования
-    user = await user_crud.get_user_with_reservations_by_id(user_id, session)
-    if user is None:
-        raise UserNotFoundError()
-    return user
+    return await reservations_crud.get_reservations_by_user_id(guest_id, session)
 
 
 async def get_guests_with_staying_status(
@@ -111,3 +110,9 @@ async def get_guests_with_staying_status(
         )
         result.append(guest_data)
     return result
+
+
+async def get_guest_ordered_services_by_id(guest_id, session):
+    """Получение всех заказанных услуг гостя """
+    await get_user_by_role_by_id(guest_id, Role.GUEST, session)
+    return await tasks_crud.get_tasks_by_guest(guest_id, session)

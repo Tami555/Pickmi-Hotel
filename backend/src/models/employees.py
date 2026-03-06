@@ -7,7 +7,7 @@ from . import Base
 
 
 if TYPE_CHECKING:
-    from . import User, Position
+    from . import User, Position, Task
 
 
 class EmployeeStatus(PyEnum):
@@ -35,3 +35,4 @@ class Employee(Base):
     # Связи
     user: Mapped["User"] = relationship(back_populates="employee")
     position: Mapped["Position"] = relationship(back_populates="employees")
+    tasks: Mapped[list["Task"]] = relationship(back_populates="employee")
