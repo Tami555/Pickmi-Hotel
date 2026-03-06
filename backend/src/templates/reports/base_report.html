@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 2cm;
+            @frame footer {
+                -pdf-frame-content: footerContent;
+                bottom: 1cm;
+                margin-left: 2cm;
+                margin-right: 2cm;
+                height: 1cm;
+            }
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            color: {{ colors.purple_deep }};
+            background-color: {{ colors.white_creamy }};
+        }
+        
+        h1 {
+            color: {{ colors.purple_deep }};
+            border-bottom: 3px solid {{ colors.pink_rose }};
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: {{ colors.pink_rose }};
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .date {
+            color: {{ colors.pink_soft }};
+            font-size: 14px;
+        }
+        
+        .chart-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .chart-container img {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th {
+            background-color: {{ colors.pink_rose }};
+            color: {{ colors.white_creamy }};
+            padding: 12px;
+            text-align: left;
+        }
+        
+        td {
+            padding: 10px;
+            border-bottom: 1px solid {{ colors.pink_peach }};
+        }
+        
+        tr:nth-child(even) {
+            background-color: {{ colors.pink_peach }};
+        }
+        
+        .footer {
+            text-align: center;
+            color: {{ colors.pink_soft }};
+            font-size: 12px;
+            margin-top: 50px;
+        }
+        
+        .badge {
+            background-color: {{ colors.pink_soft }};
+            color: {{ colors.white_creamy }};
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>{% block title %}{{ title }}{% endblock %}</h1>
+        <div class="date">Дата формирования: {{ date }}</div>
+    </div>
+    
+    {% block content %}{% endblock %}
+    
+    <div id="footerContent" class="footer">
+        Отель Pickmi | Отчет сгенерирован автоматически
+    </div>
+</body>
+</html>

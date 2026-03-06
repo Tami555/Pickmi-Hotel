@@ -1,8 +1,8 @@
 import datetime
-from sqlalchemy import select, update
+from sqlalchemy import select, update, func
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models import Task, Employee, Reservation, User
+from src.models import Task, Employee, Reservation, User, Services
 from src.models.enums import TaskStatus
 
 
@@ -64,3 +64,38 @@ async def update_task_status_by_id(task_id: int, status: TaskStatus,  session: A
         )
     await session.execute(stmt)
     await session.commit()
+
+
+async def get_services_popularity(
+    session: AsyncSession,
+    start_date: datetime.datetime | None = None,
+    end_date: datetime.datetime | None = None,
+    limit: int = 10
+) -> list[dict]:
+    """
+    Получает статистику популярности услуг
+    Возвращает список словарей с названием услуги и количеством выполненных заказов
+    """
+    query = (
+        select(
+            Services.title,
+            Services.slug,
+            func.count(Task.id).label('order_count')
+        )
+        .join(Task, Task.service_id == Services.id)
+        .where(Task.status == TaskStatus.COMPLETED)
+    )
+    # Фильтр по дате
+    if start_date:
+        query = query.where(Task.created_at >= start_date)
+    if end_date:
+        query = query.where(Task.created_at <= end_date)
+    
+    query = (
+        query.group_by(Services.id, Services.title, Services.slug)
+        .order_by(func.count(Task.id).desc())
+        .limit(limit)
+    )
+    
+    result = await session.execute(query)
+    return [{"title": title, "slug": slug, "count": count} for title, slug, count in result.all()]

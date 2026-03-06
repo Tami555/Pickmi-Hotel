@@ -1,0 +1,44 @@
+{% extends "reports/base_report.html" %}
+
+{% block content %}
+<div class="chart-container">
+    <h2>Распределение популярных услуг</h2>
+    <img src="{{ popularity_chart }}" alt="Диаграмма популярности услуг">
+</div>
+
+<div>
+    <h2>Детальная статистика</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Услуга</th>
+                <th>Количество выполнений</th>
+                <th>Доля</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for service in popular_services %}
+            <tr>
+                <td>{{ service.title }}</td>
+                <td>{{ service.count }}</td>
+                <td>
+                    <span class="badge">
+                        {{ "%.1f"|format(service.count / popular_services|sum(attribute='count') * 100) }}%
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 30px;">
+    <h3>Цветовая легенда</h3>
+    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+        <div><span style="color: {{ colors.purple_deep }};">●</span> Основной цвет</div>
+        <div><span style="color: {{ colors.pink_rose }};">●</span> Акценты</div>
+        <div><span style="color: {{ colors.pink_soft }};">●</span> Второстепенный</div>
+        <div><span style="color: {{ colors.pink_peach }};">●</span> Фон таблиц</div>
+    </div>
+</div>
+{% endblock %}
