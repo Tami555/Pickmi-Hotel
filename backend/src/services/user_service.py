@@ -6,6 +6,7 @@ from src.exceptions import (EmailAlreadyExistsError, PhoneAlreadyExistsError, Pa
 from src.schemas import UserCreate, LoginUser, TokenResponse, UserUpdateProfile, UserUpdate, GuestWithStatusResponse
 from src.models.users import User, Role
 from src.core.auth import hashed_password, checked_password, create_refresh_token, create_access_token
+from src.crud import tasks as tasks_crud
 
 
 async def get_user_by_role_by_id(user_id: int, user_role: Role, session: AsyncSession):
@@ -111,3 +112,9 @@ async def get_guests_with_staying_status(
         )
         result.append(guest_data)
     return result
+
+
+async def get_guest_ordered_services_by_id(guest_id, session):
+    """Получение всех заказанных услуг гостя """
+    await get_user_by_role_by_id(guest_id, Role.GUEST, session)
+    return await tasks_crud.get_tasks_by_guest(guest_id, session)

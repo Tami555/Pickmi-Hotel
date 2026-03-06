@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.schemas import UserResponse, UserUpdateProfile, UserUpdate, GuestResponse, GuestWithStatusResponse
+from src.schemas import UserResponse, UserUpdateProfile, UserUpdate, GuestResponse, GuestWithStatusResponse, TaskResponse
 from typing import Annotated
 from src.core import db_helper
 from ..dependencies.auth import guest_by_token, admin_by_token
@@ -62,5 +62,27 @@ async def update_guest_profile(
 ) -> UserResponse:
     try:
         return await user_service.update_user_partial(user_data, user, session)
+    except AppException as err:
+        raise HTTPException(status_code=err.status_code, detail=err.message)
+
+
+@router.get("/profile/tasks", response_model=list[TaskResponse])
+async def get_guest_ordered_services(
+    user: User = Depends(guest_by_token),
+    session: AsyncSession = Depends(db_helper.create_scoped_session)
+):
+    try:
+        return await user_service.get_guest_ordered_services_by_id(user.id, session)
+    except AppException as err:
+        raise HTTPException(status_code=err.status_code, detail=err.message)
+
+
+@router.get("/{guest_id}/tasks", response_model=list[TaskResponse])
+async def get_guest_ordered_services_by_id(
+    guest_id: int,
+    session: AsyncSession = Depends(db_helper.create_scoped_session)
+):
+    try:
+        return await user_service.get_guest_ordered_services_by_id(guest_id, session)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)

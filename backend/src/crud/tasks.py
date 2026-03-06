@@ -2,7 +2,7 @@ import datetime
 from sqlalchemy import select, update
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models import Task
+from src.models import Task, Employee, Reservation, User
 from src.models.enums import TaskStatus
 
 
@@ -15,6 +15,29 @@ async def get_task_by_id(id_task: int, session: AsyncSession) -> Task | None:
     ).where(Task.id == id_task)
 
     task = await session.scalar(stmt)
+    return task
+
+
+async def get_tasks_by_employee(id_employee: int, session: AsyncSession) -> list[Task] | None:
+    """Получение задачь сотрудника по его id"""
+    stmt = select(Task).options(
+        joinedload(Task.service),
+        joinedload(Task.reservation),
+    ).join(Task.employee).where(Employee.id == id_employee)
+
+    task = await session.scalars(stmt)
+    return task
+
+
+async def get_tasks_by_guest(id_guest: int, session: AsyncSession) -> list[Task] | None:
+    """Получение заказанных услуг (задач) гостя по его id"""
+    stmt = select(Task).\
+        options(joinedload(Task.service)).\
+            join(Task.reservation).\
+                join(Reservation.user).\
+        where(User.id == id_guest)
+
+    task = await session.scalars(stmt)
     return task
 
 
