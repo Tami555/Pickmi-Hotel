@@ -2,7 +2,7 @@ import datetime
 from sqlalchemy import select, update
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models import Reservation
+from src.models import Reservation, User, Rooms
 from src.models.enums import ReservationStatus
 
 
@@ -12,6 +12,15 @@ async def get_reservation_by_id(id_reservation: int, session: AsyncSession) -> R
                                        joinedload(Reservation.user)).where(Reservation.id == id_reservation)
     reservation = await session.scalar(stmt)
     return reservation
+
+
+async def get_reservations_by_user_id(id_user: int, session: AsyncSession) -> list[Reservation]:
+    """Получение всех записей о бронировании пользователя по id"""
+    stmt = select(Reservation).options(
+        joinedload(Reservation.room).joinedload(Rooms.room_type)
+        ).join(Reservation.user).where(User.id == id_user)
+    reservations = await session.scalars(stmt)
+    return reservations
 
 
 async def get_active_reservation_by_user(user_id: int, session: AsyncSession) -> Reservation | None:

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.schemas import UserResponse, UserUpdateProfile, UserUpdate, GuestResponse, GuestWithStatusResponse, TaskResponse
+from src.schemas import UserResponse, UserUpdateProfile, UserUpdate, ReservationDetailResponse, GuestWithStatusResponse, TaskResponse, UserDetailResponse
 from typing import Annotated
 from src.core import db_helper
 from ..dependencies.auth import guest_by_token, admin_by_token
@@ -32,24 +32,18 @@ async def update_guest(
         raise HTTPException(status_code=err.status_code, detail=err.message)
     
 
-@router.get("/profile", response_model=GuestResponse)
-async def get_guest_profile(
-    user: User = Depends(guest_by_token),
-    session: AsyncSession = Depends(db_helper.create_scoped_session)
-):
-    try:
-        return await user_service.get_guest_with_reservations(user.id, session)
-    except AppException as err:
-        raise HTTPException(status_code=err.status_code, detail=err.message)
+@router.get("/profile", response_model=UserDetailResponse)
+async def get_guest_profile(user: User = Depends(guest_by_token)):
+    return user
 
 
-@router.get('/{guest_id}', response_model=GuestResponse)
+@router.get('/{guest_id}', response_model=UserDetailResponse)
 async def get_guest_by_id(
     guest_id: Annotated[int, Path(example=1)],
     session: AsyncSession = Depends(db_helper.create_scoped_session)
-) -> GuestResponse:
+):
     try:
-        return await user_service.get_guest_with_reservations(guest_id, session)
+        return await user_service.get_user_by_role_by_id(guest_id, Role.GUEST, session)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)
 
@@ -66,6 +60,28 @@ async def update_guest_profile(
         raise HTTPException(status_code=err.status_code, detail=err.message)
 
 
+@router.get("/profile/reservations", response_model=list[ReservationDetailResponse])
+async def get_guest_ordered_services(
+    user: User = Depends(guest_by_token),
+    session: AsyncSession = Depends(db_helper.create_scoped_session)
+):
+    try:
+        return await user_service.get_guest_reservations(user.id, session)
+    except AppException as err:
+        raise HTTPException(status_code=err.status_code, detail=err.message)
+
+
+@router.get("/{guest_id}/reservations", response_model=list[ReservationDetailResponse])
+async def get_guest_ordered_services_by_id(
+    guest_id: Annotated[int, Path(example=1)],
+    session: AsyncSession = Depends(db_helper.create_scoped_session)
+):
+    try:
+        return await user_service.get_guest_reservations(guest_id, session)
+    except AppException as err:
+        raise HTTPException(status_code=err.status_code, detail=err.message)
+    
+
 @router.get("/profile/tasks", response_model=list[TaskResponse])
 async def get_guest_ordered_services(
     user: User = Depends(guest_by_token),
@@ -79,7 +95,7 @@ async def get_guest_ordered_services(
 
 @router.get("/{guest_id}/tasks", response_model=list[TaskResponse])
 async def get_guest_ordered_services_by_id(
-    guest_id: int,
+    guest_id: Annotated[int, Path(example=1)],
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ):
     try:

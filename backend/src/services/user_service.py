@@ -81,13 +81,11 @@ async def update_user_partial(user_data: UserUpdateProfile | UserUpdate, user: U
     return await user_crud.update_user(user_data=data, user=user, session=session)
 
 
-async def get_guest_with_reservations(user_id: int, session: AsyncSession):
+async def get_guest_reservations(guest_id: int, session: AsyncSession):
     """ Получение гостей со списком их броней """
+    await get_user_by_role_by_id(guest_id, Role.GUEST, session)
     await reservations_crud.update_reservation_statuses_by_dates(session) # обновление статусов бронирования
-    user = await user_crud.get_user_with_reservations_by_id(user_id, session)
-    if user is None:
-        raise UserNotFoundError()
-    return user
+    return await reservations_crud.get_reservations_by_user_id(guest_id, session)
 
 
 async def get_guests_with_staying_status(

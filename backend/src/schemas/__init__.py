@@ -1,6 +1,6 @@
 from .room_types import RoomTypeResponse, RoomTypeDetailResponse, RoomTypeAmenitiesResponse, RoomTypeAvailabilityResponse, RoomTypeOccupancyResponse
 from .amenity import AmenityResponse
-from .users import UserCreate, UserResponse, UserDetailResponse, UserUpdate, UserUpdateProfile, GuestResponse, GuestWithStatusResponse
+from .users import UserCreate, UserResponse, UserDetailResponse, UserUpdate, UserUpdateProfile, GuestWithStatusResponse
 from .positions import PositionCreate, PositionResponse, PositionDetailResponse
 from .employees import EmployeeResponse, EmployeeCreate, EmployeeDetailResponse, EmployeeUpdate
 from .auth import LoginUser, TokenResponse, RefreshTokenContent, AccessTokenContent
@@ -16,7 +16,6 @@ RoomOccupancyInfo.model_rebuild()
 RoomDetailResult.model_rebuild()
 ReservationDetailResponse.model_rebuild()
 ReservationResponse.model_rebuild()
-GuestResponse.model_rebuild()
 PositionDetailResponse.model_rebuild()
 TaskResponse.model_rebuild()
 TaskDetailResponse.model_rebuild()
@@ -34,7 +33,6 @@ __all__ = [
     "UserDetailResponse",
     "UserUpdate",
     "UserUpdateProfile",
-    "GuestResponse",
     "GuestWithStatusResponse",
     "EmployeeResponse",
     "EmployeeCreate",
