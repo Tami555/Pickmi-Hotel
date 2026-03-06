@@ -6,8 +6,9 @@ class ServiceResponse(BaseModel):
     slug: str
     title: str
     price: int
+    description: str
+    image: str | None
 
 
 class ServiceDetailResponse(ServiceResponse):
-    description: str
-    image: str | None
+    pass
