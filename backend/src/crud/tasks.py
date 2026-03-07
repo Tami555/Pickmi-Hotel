@@ -1,9 +1,9 @@
 import datetime
-from sqlalchemy import select, update, func
+from sqlalchemy import select, update, func, case
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models import Task, Employee, Reservation, User, Services, Rooms, RoomTypes
-from src.models.enums import TaskStatus
+from src.models import Task, Employee, Reservation, User, Services, Rooms, RoomTypes, Position
+from src.models.enums import TaskStatus, EmployeeStatus
 
 
 async def get_task_by_id(id_task: int, session: AsyncSession) -> Task | None:
@@ -124,6 +124,89 @@ async def get_services_by_room_type(
         query = query.where(Task.created_at <= end_date)
     
     query = query.group_by(RoomTypes.id, RoomTypes.title, Services.id, Services.title)
+    
+    result = await session.execute(query)
+    return result.all()
+
+
+async def get_completed_tasks_count_by_employee(
+    session: AsyncSession,
+    start_date: datetime.datetime | None = None,
+    end_date: datetime.datetime | None = None
+) -> list[tuple]:
+    """ Возвращает количество выполненных задач по каждому сотруднику """
+    query = (
+        select(
+            Employee.id,
+            User.first_name,
+            User.last_name,
+            Position.title.label('position'),
+            func.count(Task.id).label('completed_tasks')
+        )
+        .select_from(Task)
+        .join(Employee, Task.employee_id == Employee.id)
+        .join(User, Employee.user_id == User.id)
+        .join(Position, Employee.position_id == Position.id)
+        .where(Task.status == TaskStatus.COMPLETED)
+    )
+    
+    if start_date:
+        query = query.where(Task.completed_at >= start_date)
+    if end_date:
+        query = query.where(Task.completed_at <= end_date)
+    
+    query = (
+        query.group_by(Employee.id, User.id, Position.id)
+        .order_by(func.count(Task.id).desc())
+    )
+    
+    result = await session.execute(query)
+    return result.all()
+
+
+async def get_employee_performance_stats(
+    session: AsyncSession,
+    start_date: datetime.datetime | None = None,
+    end_date: datetime.datetime | None = None
+) -> list[tuple]:
+    """
+    Возвращает расширенную статистику по сотрудникам:
+    - общее количество задач
+    - среднее время выполнения
+    - количество отмененных задач
+    """    
+    # Вычисляем время выполнения задачи (в часах)
+    time_diff = func.extract('epoch', Task.completed_at - Task.started_at) / 3600
+    
+    query = (
+        select(
+            Employee.id,
+            User.first_name,
+            User.last_name,
+            Position.title.label('position'),
+            func.count(Task.id).label('total_tasks'),
+            func.count(case((Task.status == TaskStatus.COMPLETED, Task.id))).label('completed_tasks'),
+            func.count(case((Task.status == TaskStatus.CANCELED, Task.id))).label('canceled_tasks'),
+            func.avg(
+                case(
+                    (Task.status == TaskStatus.COMPLETED, time_diff),
+                    else_=None
+                )
+            ).label('avg_completion_time_hours')
+        )
+        .select_from(Employee)
+        .outerjoin(Task, Task.employee_id == Employee.id)
+        .join(User, Employee.user_id == User.id)
+        .join(Position, Employee.position_id == Position.id)
+        .where(Employee.status != EmployeeStatus.FIRED)
+    )
+    
+    if start_date:
+        query = query.where(Task.created_at >= start_date)
+    if end_date:
+        query = query.where(Task.created_at <= end_date)
+    
+    query = query.group_by(Employee.id, User.id, Position.id)
     
     result = await session.execute(query)
     return result.all()
