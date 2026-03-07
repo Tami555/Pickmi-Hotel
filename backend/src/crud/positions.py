@@ -30,30 +30,11 @@ async def get_position_by_id(position_id: int, session: AsyncSession) -> Positio
     return position
 
 
-async def get_positions_with_services(session: AsyncSession) -> list[dict]:
-    """ Получает список должностей с их услугами """
-    
+async def get_positions_with_services_raw(session: AsyncSession) -> list[Position]:
+    """ Возвращает список должностей с загруженными услугами """
     stmt = select(Position).options(
         selectinload(Position.services)
     ).order_by(Position.id)
     
     result = await session.execute(stmt)
-    positions = result.scalars().all()
-    
-    return [
-        {
-            'id': pos.id,
-            'title': pos.title,
-            'description': pos.description,
-            'services': [
-                {
-                    'id': service.id,
-                    'title': service.title,
-                    'slug': service.slug,
-                    'price': service.price
-                }
-                for service in pos.services
-            ]
-        }
-        for pos in positions
-    ]
+    return result.scalars().all()

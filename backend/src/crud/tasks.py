@@ -71,11 +71,8 @@ async def get_services_popularity(
     start_date: datetime.datetime | None = None,
     end_date: datetime.datetime | None = None,
     limit: int = 10
-) -> list[dict]:
-    """
-    Получает статистику популярности услуг
-    Возвращает список словарей с названием услуги и количеством выполненных заказов
-    """
+) -> list[tuple]:
+    """ Возвращает данные по популярности услуг """
     query = (
         select(
             Services.title,
@@ -85,7 +82,7 @@ async def get_services_popularity(
         .join(Task, Task.service_id == Services.id)
         .where(Task.status == TaskStatus.COMPLETED)
     )
-    # Фильтр по дате
+    
     if start_date:
         query = query.where(Task.created_at >= start_date)
     if end_date:
@@ -98,27 +95,23 @@ async def get_services_popularity(
     )
     
     result = await session.execute(query)
-    return [{"title": title, "slug": slug, "count": count} for title, slug, count in result.all()]
+    return result.all() 
 
 
 async def get_services_by_room_type(
     session: AsyncSession,
     start_date: datetime.datetime | None = None,
     end_date: datetime.datetime | None = None
-) -> list[dict]:
-    """
-    Получает статистику услуг по типам номеров
-    Возвращает список с информацией о том, какие услуги чаще всего заказывают в каждом типе номеров
-    """
-    
+) -> list[tuple]:
+    """ Возвращает данные по услугам в разрезе типов номеров """
     query = (
         select(
             RoomTypes.title.label('room_type'),
             Services.title.label('service_name'),
             func.count(Task.id).label('order_count')
         )
-        .select_from(Task)  # Явно указываем начальную таблицу
-        .join(Reservation, Task.reservation_id == Reservation.id)  # Явно указываем условие JOIN
+        .select_from(Task)
+        .join(Reservation, Task.reservation_id == Reservation.id)
         .join(Rooms, Reservation.room_id == Rooms.id)
         .join(RoomTypes, Rooms.room_type_id == RoomTypes.id)
         .join(Services, Task.service_id == Services.id)
@@ -133,37 +126,4 @@ async def get_services_by_room_type(
     query = query.group_by(RoomTypes.id, RoomTypes.title, Services.id, Services.title)
     
     result = await session.execute(query)
-    rows = result.all()
-    
-    # Группируем по типам номеров
-    room_type_stats = {}
-    for row in rows:  # Изменено: используем row вместо распаковки
-        room_type = row.room_type
-        service_name = row.service_name
-        count = row.order_count
-        
-        if room_type not in room_type_stats:
-            room_type_stats[room_type] = []
-        room_type_stats[room_type].append({
-            'service': service_name,
-            'count': count
-        })
-    
-    # Для каждого типа номера находим самую популярную услугу
-    result_data = []
-    for room_type, services in room_type_stats.items():
-        services.sort(key=lambda x: x['count'], reverse=True)
-        total_orders = sum(s['count'] for s in services)
-        
-        result_data.append({
-            'room_type': room_type,
-            'total_orders': total_orders,
-            'services': services[:5],  # Топ-5 услуг
-            'most_popular': services[0]['service'] if services else None,
-            'most_popular_count': services[0]['count'] if services else 0
-        })
-    
-    # Сортируем по общему количеству заказов
-    result_data.sort(key=lambda x: x['total_orders'], reverse=True)
-    
-    return result_data
+    return result.all()
