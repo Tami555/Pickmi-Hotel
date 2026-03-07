@@ -1,0 +1,64 @@
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin: 20px 0;
+}
+
+.service-card {
+    background-color: #FEFAF9;
+    border: 2px solid #F6D2D6;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+.service-card h4 {
+    color: #6A4163;
+    margin: 0 0 10px 0;
+    border-bottom: 2px solid #F39DB6;
+    padding-bottom: 5px;
+}
+
+.room-type-stats {
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #F6D2D6;
+    border-radius: 5px;
+}
+
+.room-type-title {
+    color: #D46A92;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.popular-service {
+    background-color: #F39DB6;
+    color: #FEFAF9;
+    padding: 2px 8px;
+    border-radius: 15px;
+    font-size: 12px;
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.position-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.service-tag {
+    background-color: #F6D2D6;
+    color: #6A4163;
+    padding: 2px 8px;
+    border-radius: 15px;
+    font-size: 11px;
+    border: 1px solid #D46A92;
+}
+
+.emoji-large {
+    font-size: 24px;
+    margin-right: 5px;
+}

@@ -1,0 +1,197 @@
+{% extends "reports/base_report.html" %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ css_url }}">
+{% endblock %}
+
+{% block content %}
+<!-- Статистика в цифрах -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ total_employees }}</div>
+        <div class="stat-label"> Всего сотрудников</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ total_completed_tasks }}</div>
+        <div class="stat-label"> Выполнено задач</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ avg_tasks_per_employee }}</div>
+        <div class="stat-label"> Среднее задач на сотрудника</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ total_salary_fund }} ₽</div>
+        <div class="stat-label"> Фонд оплаты труда</div>
+    </div>
+</div>
+
+<!-- Сотрудник месяца -->
+{% if employee_of_month %}
+<div class="employee-of-month">
+    <h2>Сотрудник месяца</h2>
+    <div class="employee-month-content">
+        <div class="employee-month-info">
+            <h3>{{ employee_of_month.full_name }}</h3>
+            <div>{{ employee_of_month.position }}</div>
+            <div class="employee-month-stats">
+                <div class="employee-month-stat">
+                    <div class="number">{{ employee_of_month.completed_tasks }}</div>
+                    <div class="label">выполнено задач</div>
+                </div>
+                <div class="employee-month-stat">
+                    <div class="number">{{ employee_of_month.salary }} ₽</div>
+                    <div class="label">оклад</div>
+                </div>
+                <div class="employee-month-stat">
+                    <div class="number">{{ employee_of_month.hire_date }}</div>
+                    <div class="label">в команде с</div>
+                </div>
+            </div>
+        </div>
+        <div class="employee-month-badge">
+            + ПРЕМИЯ ❤️
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Диаграмма активности -->
+{% if activity_chart %}
+<div class="chart-container">
+    <h2> Активность сотрудников</h2>
+    <img src="{{ activity_chart }}" alt="Активность сотрудников">
+</div>
+{% endif %}
+
+<!-- Диаграмма эффективности -->
+{% if efficiency_chart %}
+<div class="chart-container">
+    <h2>⚡ Эффективность сотрудников</h2>
+    <img src="{{ efficiency_chart }}" alt="Эффективность сотрудников">
+</div>
+{% endif %}
+
+<!-- Детальная статистика сотрудников -->
+<h2> Детальная статистика</h2>
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Сотрудник</th>
+            <th>Должность</th>
+            <th>Всего задач</th>
+            <th> Выполнено</th>
+            <th> Отменено</th>
+            <th> Среднее время</th>
+            <th>⚡ Эффективность</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for stat in detailed_stats %}
+        <tr>
+            <td>
+                {% if loop.index == 1 %}
+                <span class="employee-rank rank-1">1</span>
+                {% elif loop.index == 2 %}
+                <span class="employee-rank rank-2">2</span>
+                {% elif loop.index == 3 %}
+                <span class="employee-rank rank-3">3</span>
+                {% else %}
+                <span class="employee-rank">{{ loop.index }}</span>
+                {% endif %}
+            </td>
+            <td><strong>{{ stat.full_name }}</strong></td>
+            <td>{{ stat.position }}</td>
+            <td>{{ stat.total_tasks }}</td>
+            <td>{{ stat.completed_tasks }}</td>
+            <td>{{ stat.canceled_tasks }}</td>
+            <td>{{ stat.avg_completion_time }} ч</td>
+            <td>
+                {{ stat.efficiency }}%
+                <div class="efficiency-bar">
+                    <div class="efficiency-fill" style="width: {{ stat.efficiency }}%;"></div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Таблица зарплат -->
+<h2>Зарплатная ведомость</h2>
+<table class="salary-table">
+    <thead>
+        <tr>
+            <th>Сотрудник</th>
+            <th>Должность</th>
+            <th>Оклад (мес)</th>
+            <th>Аванс</th>
+            <th>Годовой доход</th>
+            <th>Дата найма</th>
+            <th>Статус</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for emp in salary_data %}
+        <tr>
+            <td><strong>{{ emp.full_name }}</strong></td>
+            <td>{{ emp.position }}</td>
+            <td>{{ emp.salary }} ₽</td>
+            <td>{{ emp.advance }} ₽</td>
+            <td class="salary-highlight">{{ emp.yearly_salary }} ₽</td>
+            <td>{{ emp.hire_date }}</td>
+            <td>
+                <span class="status-badge status-{{ emp.status }}">
+                    {% if emp.status == 'active' %} Работает
+                    {% elif emp.status == 'on_leave' %} В отпуске
+                    {% elif emp.status == 'probation' %} Исп. срок
+                    {% else %}{{ emp.status }}{% endif %}
+                </span>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2"><strong>Итого:</strong></td>
+            <td><strong>{{ total_salary_fund }} ₽</strong></td>
+            <td></td>
+            <td><strong>{{ total_salary_fund * 12 }} ₽</strong></td>
+            <td colspan="2"></td>
+        </tr>
+    </tfoot>
+</table>
+
+<!-- Аналитические выводы -->
+<div class="info-box" style="margin-top: 30px;">
+    <strong>HR-аналитика:</strong><br>
+    
+    {% if detailed_stats %}
+        {% set best_employee = detailed_stats[0] %}
+        • Самый продуктивный сотрудник: <strong>{{ best_employee.full_name }}</strong> 
+        ({{ best_employee.completed_tasks }} задач, эффективность {{ best_employee.efficiency }}%)<br>
+        
+        {% set avg_efficiency = (detailed_stats | sum(attribute='efficiency') / detailed_stats | length) | round(1) %}
+        • Средняя эффективность по отделу: {{ avg_efficiency }}%<br>
+        
+        • Общий фонд оплаты труда: <strong>{{ total_salary_fund }} ₽</strong> в месяц<br>
+        
+        {% if employee_of_month %}
+        • Сотрудник месяца <strong>{{ employee_of_month.full_name }}</strong> 
+        получает премию ❤️
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- Цветовая легенда -->
+<div class="legend">
+    <div class="legend-item"><span class="color-dot purple"></span> Основной цвет</div>
+    <div class="legend-item"><span class="color-dot rose"></span> Акценты</div>
+    <div class="legend-item"><span class="color-dot soft"></span> Детали</div>
+    <div class="legend-item"><span class="color-dot peach"></span> Фон</div>
+</div>
+
+<div style="text-align: center; margin: 20px 0; font-size: 20px;">
+    ❤️ Pickmi Отель - лучшие сотрудники для лучших гостей ❤️
+</div>
+{% endblock %}

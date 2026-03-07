@@ -28,3 +28,13 @@ async def get_position_by_id(position_id: int, session: AsyncSession) -> Positio
     stmt = select(Position).options(selectinload(Position.services)).where(Position.id == position_id)
     position = await session.scalar(stmt)
     return position
+
+
+async def get_positions_with_services_raw(session: AsyncSession) -> list[Position]:
+    """ Возвращает список должностей с загруженными услугами """
+    stmt = select(Position).options(
+        selectinload(Position.services)
+    ).order_by(Position.id)
+    
+    result = await session.execute(stmt)
+    return result.scalars().all()

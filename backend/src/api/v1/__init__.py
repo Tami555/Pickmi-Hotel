@@ -8,6 +8,7 @@ from .endpoints.reservations import router as reservation_router
 from .endpoints.service_categories import router as service_categories_router
 from .endpoints.services import router as service_router
 from .endpoints.tasks import router as task_router
+from .endpoints.reports import router as report_router
 
 
 router = APIRouter()
@@ -20,6 +21,7 @@ router.include_router(positions_router, prefix='/positions', tags=["Positions"])
 router.include_router(service_categories_router, prefix='/services-categories', tags=["Service"])
 router.include_router(service_router, prefix='/services', tags=["Service"])
 router.include_router(task_router, prefix='/tasks', tags=["Tasks"])
+router.include_router(report_router, prefix="/reports", tags=["Reports"])
 
 
 __all__ = ["router"]
