@@ -5,7 +5,7 @@ from src.models import User, Task
 from src.crud import services as service_crud, reservations as reservation_crud, positions as position_crud, tasks as task_crud
 from src.schemas import TaskCreate
 from src.exceptions import ServiceNotFoundError, ReservationNotFoundError, ForbiddenError, CannotCreateTaskError, TaskNotFoundError, CannotChangeStatusTaskError
-from src.models.enums import ReservationStatus, TaskStatus, Role
+from src.models.enums import ReservationStatus, TaskStatus, Role, EmployeeStatus
 
 
 async def create_task(
@@ -38,7 +38,7 @@ async def create_task(
     active_employees = [] # берем тех, и у кого нет выходных
     for position in positions:
         for employee in position.employees:
-            if task_data.scheduled_time.weekday() + 1 not in employee.weekends:
+            if task_data.scheduled_time.weekday() + 1 not in employee.weekends and employee.status in [EmployeeStatus.ACTIVE, EmployeeStatus.PROBATION]:
                 active_employees.append(employee)
 
     # сортируем по возрастанию по кол активных задач
