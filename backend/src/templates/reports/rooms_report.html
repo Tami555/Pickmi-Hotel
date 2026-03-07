@@ -1,0 +1,198 @@
+{% extends "reports/base_report.html" %}
+
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ css_url }}">
+{% endblock %}
+
+{% block content %}
+<!-- Статистика в цифрах -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-value">{{ total_bookings }}</div>
+        <div class="stat-label">Всего броней</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ total_revenue }} ₽</div>
+        <div class="stat-label">Общая выручка</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-value">{{ avg_booking_value }} ₽</div>
+        <div class="stat-label">Средний чек</div>
+    </div>
+</div>
+
+<!-- График бронирований по месяцам -->
+{% if bookings_chart %}
+<div class="chart-container">
+    <h2> Динамика бронирований за {{ year }} год</h2>
+    <img src="{{ bookings_chart }}" alt="Бронирования по месяцам">
+    
+    {% if peak_months %}
+    <div class="peak-months">
+        <span style="color: #6A4163;">Пиковые месяцы:</span>
+        {% for month in peak_months %}
+        <span class="peak-badge">{{ month }} ({{ peak_value }} броней)</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <p style="color: #6A4163; margin-top: 10px;">
+        Среднемесячное количество броней: <strong>{{ avg_monthly }}</strong>
+    </p>
+</div>
+{% endif %}
+
+<!-- Популярность типов номеров -->
+{% if room_types_chart %}
+<div class="chart-container">
+    <h2> Популярность типов номеров</h2>
+    <img src="{{ room_types_chart }}" alt="Популярность типов номеров">
+</div>
+
+<div class="room-type-card">
+    <h3 style="color: #6A4163; margin-top: 0;">Анализ типов номеров</h3>
+    
+    <div class="room-type-comparison">
+        {% if most_popular %}
+        <div class="comparison-item most">
+            <div class="label"> Самый популярный</div>
+            <div class="value">{{ most_popular.label }}</div>
+            <div class="count">{{ most_popular.value }} броней</div>
+        </div>
+        {% endif %}
+        
+        {% if least_popular and least_popular.label != most_popular.label %}
+        <div class="comparison-item least">
+            <div class="label"> Наименее популярный</div>
+            <div class="value">{{ least_popular.label }}</div>
+            <div class="count">{{ least_popular.value }} броней</div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <table style="margin-top: 20px;">
+        <thead>
+            <tr>
+                <th>Тип номера</th>
+                <th>Количество броней</th>
+                <th>Доля</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in popularity_data %}
+            <tr>
+                <td><strong>{{ item.label }}</strong></td>
+                <td>{{ item.value }}</td>
+                <td>
+                    <span class="badge">
+                        {{ "%.1f"|format(item.value / total_bookings * 100) }}%
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<!-- Постоянные клиенты -->
+<h2> Постоянные клиенты</h2>
+<div class="top-clients">
+    {% for client in top_clients %}
+    <div class="client-card rank-{{ client.rank }}">
+        <div class="client-rank">
+            {% if client.rank == 1 %}  1
+            {% elif client.rank == 2 %} 2
+            {% elif client.rank == 3 %} 3
+            {% endif %}
+        </div>
+        <div class="client-name">{{ client.full_name }}</div>
+        <div class="client-contact">{{ client.email }}</div>
+        <div class="client-contact">{{ client.phone }}</div>
+        <div class="client-stats">
+            <div class="client-stat">
+                <div class="number">{{ client.bookings_count }}</div>
+                <div class="label">броней</div>
+            </div>
+            <div class="client-stat">
+                <div class="number">{{ client.total_spent }} ₽</div>
+                <div class="label">потрачено</div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Таблица с детальной статистикой по месяцам -->
+<h2> Детальная статистика по месяцам</h2>
+<table class="booking-table">
+    <thead>
+        <tr>
+            <th>Месяц</th>
+            <th>Количество броней</th>
+            <th>Динамика</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for month in monthly_data %}
+        <tr>
+            <td><strong>{{ month.label }}</strong></td>
+            <td>{{ month.value }}</td>
+            <td>
+                {% if month.value > avg_monthly %}
+                <span style="color: #6A4163;"> выше среднего</span>
+                {% elif month.value < avg_monthly and month.value > 0 %}
+                <span style="color: #F39DB6;"> ниже среднего</span>
+                {% elif month.value == 0 %}
+                <span style="color: #D46A92;">нет броней</span>
+                {% else %}
+                <span style="color: #6A4163;">средний</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Инсайты и рекомендации -->
+<div class="insight-box">
+    <div class="insight-title"> Аналитические выводы</div>
+    <div class="insight-text">
+        {% if most_popular %}
+        • Наибольшей популярностью пользуются номера типа <strong>{{ most_popular.label }}</strong> 
+        ({{ most_popular.value }} броней)<br>
+        {% endif %}
+        
+        {% if least_popular and least_popular.label != most_popular.label %}
+        • Номера типа <strong>{{ least_popular.label }}</strong> бронируют реже всего 
+        ({{ least_popular.value }} броней) - возможно, стоит пересмотреть ценовую политику<br>
+        {% endif %}
+        
+        {% if peak_months %}
+        • Пик бронирований приходится на <strong>{{ peak_months|join(', ') }}</strong><br>
+        {% endif %}
+        
+        {% if top_clients %}
+        • Топ-3 клиента принесли отелю <strong>{{ top_clients_total }}</strong> броней<br>
+        {% endif %}
+        
+        • Средняя стоимость бронирования: <strong>{{ avg_booking_value }} ₽</strong><br>
+        
+        {% if total_bookings > 0 %}
+        • Загруженность отеля: <strong>{{ "%.1f"|format(total_bookings / (room_types_count * 30) * 100) }}%</strong>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Цветовая легенда -->
+<div class="legend">
+    <div class="legend-item"><span class="color-dot purple"></span> Основной цвет</div>
+    <div class="legend-item"><span class="color-dot rose"></span> Акценты</div>
+    <div class="legend-item"><span class="color-dot soft"></span> Детали</div>
+    <div class="legend-item"><span class="color-dot peach"></span> Фон</div>
+</div>
+
+<div style="text-align: center; margin: 20px 0; font-size: 20px;">
+    ❤️ Pickmi Отель - твой дом вдали от дома! ❤️
+</div>
+{% endblock %}

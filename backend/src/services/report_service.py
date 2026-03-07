@@ -8,7 +8,7 @@ from src.utils.reports import (
 from src.utils.reports.data_handlers import (
     get_popular_services, get_room_type_stats, get_positions_services,
     get_employee_activity_data, get_detailed_employee_stats,
-    get_employees_salary_data, get_employee_of_month_data
+    get_employees_salary_data, get_employee_of_month_data, get_rooms_summary_stats
 )
 
 
@@ -143,4 +143,63 @@ async def generate_employees_report(
     context = add_css_paths_to_context("employees_style.css", context)
     
     pdf_bytes = await generate_pdf_from_html('employees_report.html', context)
+    return pdf_bytes
+
+
+async def generate_rooms_report(
+    session: AsyncSession,
+    start_date: datetime.datetime | None = None,
+    end_date: datetime.datetime | None = None
+) -> bytes:
+    """Генерирует отчет по номерам и бронированиям"""
+    
+    stats = await get_rooms_summary_stats(session, start_date, end_date)
+    
+    # Создаем график бронирований по месяцам
+    bookings_chart = None
+    if stats['monthly_data']['chart_data']:
+        bookings_chart = create_bar_chart(
+            data=stats['monthly_data']['chart_data'],
+            title=f'Динамика бронирований за {stats["monthly_data"]["year"]} год',
+            x_label='Месяц',
+            y_label='Количество броней',
+            figsize=(12, 6)
+        )
+    
+    # популярность типов номеров
+    room_types_chart = None
+    if stats['popularity_data']['chart_data']:
+        room_types_chart = create_pie_chart(
+            data=stats['popularity_data']['chart_data'],
+            title='Популярность типов номеров',
+            figsize=(10, 8)
+        )
+    
+    #  контекст для шаблона
+    context = {
+        'title': 'Отчет по номерам Pickmi Отеля',
+        'date': datetime.datetime.now().strftime('%d.%m.%Y %H:%M'),
+        'period': get_period_string(start_date, end_date),
+        'bookings_chart': bookings_chart,
+        'room_types_chart': room_types_chart,
+        'total_bookings': stats['total_stats']['total_bookings'],
+        'total_revenue': stats['total_stats']['total_revenue'],
+        'avg_booking_value': stats['total_stats']['avg_booking_value'],
+        'monthly_data': stats['monthly_data']['chart_data'],
+        'peak_months': stats['monthly_data']['peak_months'],
+        'peak_value': stats['monthly_data']['peak_value'],
+        'avg_monthly': stats['monthly_data']['avg_monthly'],
+        'year': stats['monthly_data']['year'],
+        'popularity_data': stats['popularity_data']['chart_data'],
+        'most_popular': stats['popularity_data']['most_popular'],
+        'least_popular': stats['popularity_data']['least_popular'],
+        'room_types_count': stats['popularity_data']['room_types_count'],
+        'top_clients': stats['top_clients']['clients'],
+        'top_clients_total': stats['top_clients']['total_bookings'],
+        'colors': COLORS
+    }
+    
+    context = add_css_paths_to_context("rooms_style.css", context)
+    
+    pdf_bytes = await generate_pdf_from_html('rooms_report.html', context)
     return pdf_bytes

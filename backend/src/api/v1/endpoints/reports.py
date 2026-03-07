@@ -64,3 +64,31 @@ async def get_employees_report(
             status_code=500, 
             detail=f"Ошибка при генерации отчета: {str(e)}"
         )
+    
+
+@router.get("/rooms")
+async def get_rooms_report(
+    start_date: date | None = Query(None, description="Начальная дата (YYYY-MM-DD)"),
+    end_date: date | None = Query(None, description="Конечная дата (YYYY-MM-DD)"),
+    session: AsyncSession = Depends(db_helper.create_scoped_session)
+):
+    try:
+        start_datetime = datetime.combine(start_date, datetime.min.time()) if start_date else None
+        end_datetime = datetime.combine(end_date, datetime.max.time()) if end_date else None
+        
+        pdf_content = await report_service.generate_rooms_report(session, start_datetime, end_datetime)
+        
+        filename = generate_filename("rooms", start_date, end_date)
+        
+        return Response(
+            content=pdf_content,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f"attachment; filename={filename}"
+            }
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Ошибка при генерации отчета: {str(e)}"
+        )
