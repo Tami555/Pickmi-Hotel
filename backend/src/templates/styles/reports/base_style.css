@@ -1,0 +1,158 @@
+@page {
+    size: A4;
+    margin: 2cm;
+    @frame footer {
+        -pdf-frame-content: footerContent;
+        bottom: 1cm;
+        margin-left: 2cm;
+        margin-right: 2cm;
+        height: 1cm;
+    }
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    color: #6A4163;
+    background-color: #FEFAF9;
+    line-height: 1.6;
+}
+
+h1 {
+    color: #6A4163;
+    border-bottom: 3px solid #D46A92;
+    padding-bottom: 10px;
+    font-size: 24px;
+}
+
+h2 {
+    color: #D46A92;
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+h3 {
+    color: #F39DB6;
+    font-size: 18px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    border-bottom: none;
+    margin-bottom: 5px;
+}
+
+.date {
+    color: #F39DB6;
+    font-size: 14px;
+}
+
+.chart-container {
+    text-align: center;
+    margin: 30px 0;
+    padding: 20px;
+    background-color: #FEFAF9;
+    border: 2px solid #F6D2D6;
+    border-radius: 10px;
+}
+
+.chart-container img {
+    max-width: 100%;
+    height: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: #FEFAF9;
+}
+
+th {
+    background-color: #D46A92;
+    color: #FEFAF9;
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #F6D2D6;
+}
+
+tr:nth-child(even) {
+    background-color: #F6D2D6;
+}
+
+tr:hover {
+    background-color: #F39DB6;
+    color: #FEFAF9;
+}
+
+.footer {
+    text-align: center;
+    color: #F39DB6;
+    font-size: 12px;
+    margin-top: 50px;
+    border-top: 1px solid #F6D2D6;
+    padding-top: 10px;
+}
+
+.badge {
+    background-color: #F39DB6;
+    color: #FEFAF9;
+    padding: 3px 8px;
+    border-radius: 15px;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.hotel-name {
+    font-size: 16px;
+    color: #D46A92;
+    margin-bottom: 10px;
+}
+
+.hotel-name span {
+    font-size: 20px;
+}
+
+.info-box {
+    background-color: #F6D2D6;
+    border-left: 5px solid #D46A92;
+    padding: 15px;
+    margin: 20px 0;
+    border-radius: 0 10px 10px 0;
+}
+
+.legend {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #F6D2D6;
+    border-radius: 10px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.color-dot {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.color-dot.purple { background-color: #6A4163; }
+.color-dot.rose { background-color: #D46A92; }
+.color-dot.soft { background-color: #F39DB6; }
+.color-dot.peach { background-color: #F6D2D6; }

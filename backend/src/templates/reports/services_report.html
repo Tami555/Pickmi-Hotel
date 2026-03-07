@@ -1,14 +1,24 @@
 {% extends "reports/base_report.html" %}
 
+{% block extra_styles %}
+<link rel="stylesheet" href="{{ css_url }}">
+{% endblock %}
+
 {% block content %}
-<div class="chart-container">
-    <h2>Распределение популярных услуг</h2>
-    <img src="{{ popularity_chart }}" alt="Диаграмма популярности услуг">
+<!-- Информационный блок -->
+<div class="info-box">
+    <strong>Период отчета:</strong> {{ period }}<br>
+    <strong>Всего выполненных услуг:</strong> {{ total_services }}<br>
+    <strong>Уникальных услуг:</strong> {{ unique_services }}
 </div>
 
-<div>
-    <h2>Детальная статистика</h2>
-    <table>
+<!-- Круговая диаграмма популярности услуг -->
+{% if popularity_chart %}
+<div class="chart-container">
+    <h2> Топ популярных услуг</h2>
+     <img src="{{ popularity_chart }}" alt="Популярные услуги">
+    
+    <table style="margin-top: 20px;">
         <thead>
             <tr>
                 <th>Услуга</th>
@@ -23,7 +33,7 @@
                 <td>{{ service.count }}</td>
                 <td>
                     <span class="badge">
-                        {{ "%.1f"|format(service.count / popular_services|sum(attribute='count') * 100) }}%
+                        {{ "%.1f"|format(service.count / total_services * 100) }}%
                     </span>
                 </td>
             </tr>
@@ -31,14 +41,101 @@
         </tbody>
     </table>
 </div>
+{% endif %}
 
-<div style="margin-top: 30px;">
-    <h3>Цветовая легенда</h3>
-    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        <div><span style="color: {{ colors.purple_deep }};">●</span> Основной цвет</div>
-        <div><span style="color: {{ colors.pink_rose }};">●</span> Акценты</div>
-        <div><span style="color: {{ colors.pink_soft }};">●</span> Второстепенный</div>
-        <div><span style="color: {{ colors.pink_peach }};">●</span> Фон таблиц</div>
+<!-- Анализ по типам номеров -->
+{% if room_type_chart %}
+<div class="chart-container">
+    <h2> Анализ услуг по типам номеров</h2>
+    <img src="{{ room_type_chart }}" alt="Услуги по типам номеров">
+</div>
+
+<div class="services-grid">
+    {% for stat in room_type_stats %}
+    <div class="service-card">
+        <h4> {{ stat.room_type }}</h4>
+        <div class="room-type-stats">
+            <div>Всего заказов: <strong>{{ stat.total_orders }}</strong></div>
+            <div>Самая популярная услуга: 
+                <span class="popular-service">{{ stat.most_popular }}</span>
+                <br><small>({{ stat.most_popular_count }} заказов)</small>
+            </div>
+        </div>
+        
+        <h5>Топ-5 услуг в этом типе номеров:</h5>
+        <table style="width: 100%; font-size: 12px;">
+            {% for service in stat.services %}
+            <tr>
+                <td>{{ service.service }}</td>
+                <td style="text-align: right;">{{ service.count }}</td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Справочная таблица: Должности и услуги -->
+<div style="margin-top: 40px;">
+    <h2> Должности сотрудников и выполняемые услуги</h2>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Должность</th>
+                <th>Описание</th>
+                <th>Доступные услуги</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for position in positions_services %}
+            <tr>
+                <td><strong>{{ position.title }}</strong></td>
+                <td>{{ position.description or '—' }}</td>
+                <td>
+                    <div class="position-services">
+                        {% for service in position.services %}
+                        <span class="service-tag" title="{{ service.description|default('') }}">
+                            {{ service.title }}
+                            {% if service.price %}({{ service.price }} ₽){% endif %}
+                        </span>
+                        {% else %}
+                        <span style="color: #F39DB6;">Нет назначенных услуг</span>
+                        {% endfor %}
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Цветовая легенда -->
+<div class="legend">
+    <div class="legend-item"><span class="color-dot purple"></span> Основной цвет Pickmi</div>
+    <div class="legend-item"><span class="color-dot rose"></span> Акценты и заголовки</div>
+    <div class="legend-item"><span class="color-dot soft"></span> Детали и бейджи</div>
+    <div class="legend-item"><span class="color-dot peach"></span> Фон и выделения</div>
+</div>
+
+<!-- Выводы и рекомендации -->
+<div class="info-box" style="margin-top: 30px;">
+    <strong>Аналитические выводы:</strong><br>
+    {% if room_type_stats %}
+        {% set most_active = room_type_stats[0] %}
+        • Наибольшее количество услуг заказывают в номерах типа "{{ most_active.room_type }}" 
+        ({{ most_active.total_orders }} заказов)<br>
+        
+        • Самая популярная услуга в отеле: "{{ popular_services[0].title if popular_services else '—' }}"<br>
+        
+        {% set least_active = room_type_stats[-1] %}
+        • Меньше всего услуг заказывают в номерах типа "{{ least_active.room_type }}" 
+        ({{ least_active.total_orders }} заказов) - возможно, стоит предложить специальные предложения
+    {% endif %}
+</div>
+
+<div style="text-align: center; margin: 20px 0; font-size: 20px;">
+    ❤️ Pickmi Отель - всегда для вас! ❤️
 </div>
 {% endblock %}
