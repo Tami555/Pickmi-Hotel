@@ -1,7 +1,7 @@
 import React from "react";
 import './styles/header.css';
 import { logotype } from "../../images";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 
 export const Header = () => {
@@ -11,6 +11,7 @@ export const Header = () => {
         { title: 'Услуги', path: '/services' },
     ];
     const location = useLocation();
+    const nav = useNavigate()
     return (
         <div className="header-block">
             <img src={logotype} className="logotype"/>
@@ -25,7 +26,7 @@ export const Header = () => {
             </Link>
             )}
             
-            <button className="login-btn">+ </button>
+            <button className="login-btn" onClick={() => nav("/users/login")}>+ </button>
         </div>
     )
 }
