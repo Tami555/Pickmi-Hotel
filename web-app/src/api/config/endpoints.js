@@ -7,3 +7,7 @@ export const getBackendUrl = (endpoint) => BACKEND_URL + API_VERSION + endpoint;
 export const ROOMS_ENDPOINTS = {
   ROOMS_TYPES: '/room-types',
 };
+
+export const USER_ENDPOINTS = {
+  LOGIN: '/auth/login/',
+};

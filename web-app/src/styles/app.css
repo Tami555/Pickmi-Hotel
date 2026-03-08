@@ -43,3 +43,8 @@ html, body {
     font-family: var(--izvod);
     background-color: var(--white-creamy);
 }
+.errors{
+    color: var(--error);
+    font-size: 20px;
+    font-family: var(--izvod);
+}

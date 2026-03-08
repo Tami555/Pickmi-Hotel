@@ -1,11 +1,12 @@
 import './styles/app.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { common_routes } from './routes';
+import { common_routes, authorized_routes, no_authorized_routes } from './routes';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 
 
-
-function App() {
-  const routes_path = common_routes // потом + пути которые доступны смотря по авторизации
+function AppContent() {
+  const { isAuth } = useAuth();
+  const routes_path = common_routes.concat(isAuth ? authorized_routes : no_authorized_routes);
   return (
     <div className="App">
       <BrowserRouter>
@@ -16,6 +17,14 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
+  );
+}
+
+function App() {
+  return (
+  <AuthProvider>
+    <AppContent />
+  </AuthProvider>
   );
 }
 
