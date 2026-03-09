@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getCookie } from "../api/utils/auth/cookies";
+import { check_token } from "../api/services/UserService/tokens";
 
 
 const AuthContext = createContext();
@@ -14,12 +14,30 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(false);
-  const [user, setUser] = useState({ first_name: "", last_name: "", email: "" });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const initializeAuth = async () => {
+      try {
+        setIsLoading(true);
+        const isAuthenticated = await check_token();
+        setIsAuth(isAuthenticated);
+      } 
+      catch (error) {
+        console.error("Auth initialization failed:", error);
+        setIsAuth(false);
+      }
+      finally{
+        setIsLoading(false);
+      }
+  };
+    
+    initializeAuth();
+  }, [isAuth]);
 
   const value = {
     isAuth,
-    user,
-    setUser,
+    isLoading,
     setIsAuth,
   };
 

@@ -2,10 +2,14 @@ import './styles/app.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { common_routes, authorized_routes, no_authorized_routes } from './routes';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { Loader } from "./components/UI/feedback/Loader";
 
 
 function AppContent() {
-  const { isAuth } = useAuth();
+  const { isAuth, isLoading } = useAuth();
+  if (isLoading) {
+    return <Loader/>;
+  }
   const routes_path = common_routes.concat(isAuth ? authorized_routes : no_authorized_routes);
   return (
     <div className="App">
