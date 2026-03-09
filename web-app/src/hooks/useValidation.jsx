@@ -8,7 +8,7 @@ export const useValidation = () => {
     
     for (const [fieldName, value] of Object.entries(fields)) {
       if (validations[fieldName]) {
-        const errorMsg = validations[fieldName](value);
+        const errorMsg = validations[fieldName](value, fields);
         if (errorMsg) {
           setError(errorMsg);
           return false;

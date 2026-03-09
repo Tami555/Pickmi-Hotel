@@ -4,4 +4,4 @@
 export { room_types_list } from "./RoomService/room_types";
 
 // Users
-export { login } from "./UserService/auth";
+export { login, registration, logout } from "./UserService/auth";

@@ -4,9 +4,10 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     background-color: var(--pink-peach);
     gap: 30px;
+    padding: 50px;
 }
 
 .form-conteiner-block .main-title{
@@ -33,4 +34,19 @@
     font-size: 60px;
     font-family: var(--izvod);
     color: var(--purple-deep);
+}
+
+.reverse-block {
+  align-self: center;
+  font-size: 25px;
+  color: var(--purple-deep);
+}
+
+.link {
+  align-self: center;
+  color: var(--pink-rose);
+  font-weight: 400;
+  font-size: 25px;
+  text-decoration: none;
+  cursor: pointer;
 }

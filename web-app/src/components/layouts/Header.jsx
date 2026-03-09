@@ -3,7 +3,7 @@ import './styles/header.css';
 import { logotype } from "../../images";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { logout } from "../../api/services/UserService/auth";
+import { logout } from "../../api/services";
 
 
 export const Header = () => {

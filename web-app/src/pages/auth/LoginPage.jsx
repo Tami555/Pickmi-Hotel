@@ -1,10 +1,10 @@
-import react, { useEffect, useState } from "react";
+import react, { useState } from "react";
 import { FormContainer } from "./components/FormContainer";
 import { PickMeButton } from "../../components/UI/buttons/PickMeButton";
 import { InputBlock } from "../../components/UI/inputs/InputBlock";
 import { useFetch } from "../../hooks/useFetch";
 import { login } from "../../api/services";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Loader } from "../../components/UI/feedback/Loader";
 import { useAuth } from "../../contexts/AuthContext";
 import { useValidation } from "../../hooks/useValidation";
@@ -62,6 +62,10 @@ export const LoginPage = () => {
             {/* Загрузка */}
             {loading && <Loader/>}
             <PickMeButton onClick={handleLogin}>Войти</PickMeButton>
+            <p className='reverse-block'>
+                Нет профиля?
+                <Link to='/users/registration' className='link'>Зарегестрироваться</Link>
+            </p>
         </FormContainer>
     )
 }

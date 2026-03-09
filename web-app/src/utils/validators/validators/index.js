@@ -1,2 +1,2 @@
-export { checkRequired } from "./general";
-export { checkEmail, checkMinLength } from "./users";
+export { checkRequired, checkMinLength } from "./general";
+export { checkEmail, checkPhone, checkPassportSeries, checkPassportNumber, checkPasswordMatch } from "./users";

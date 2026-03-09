@@ -11,6 +11,7 @@ export const ROOMS_ENDPOINTS = {
 
 export const USER_ENDPOINTS = {
   LOGIN: '/auth/login/',
+  REGISTRATION: '/auth/registration/guest/',
   VERIFY: '/auth/verify',
   REFRESH: '/auth/refresh/',
 };
