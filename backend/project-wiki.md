@@ -1089,38 +1089,54 @@
 
 **Тело запроса:**
 ```json
-[
-  {
-    "email": "ivan@gmail.com",
-    "password": "12345678"
-  }
-]
+{
+  "email": "ivan@gmail.com",
+  "password": "12345678"
+}
 ```
 **Ответ (200 OK):**
 ```json
-[
-  {
-    "access_token": "eyJhbGciOiJI.....",
-    "refresh_token": "eyJhbGciOiJ....",
-    "token_type": "Bearer"
-  }
-]
+{
+  "access_token": "eyJhbGciOiJI.....",
+  "refresh_token": "eyJhbGciOiJ....",
+  "token_type": "Bearer"
+}
 ```
 <br>
 
 - ####  Обновление JWT-токена
-> **GET: /auth/refresh/**
+> **POST: /auth/refresh/**
 
-**Заголовок запроса:**
-``` Authorization: Bearer <refresh token> ```
+**Тело запроса:**
+```json
+{
+  "token": "your_refresh_token"
+}
+```
 
 **Ответ (200 OK):**
 ```json
-[
-  {
-    "access_token": "eyJhbGciOiJI.....",
-    "token_type": "Bearer"
-  }
-]
+{
+  "access_token": "eyJhbGciOiJI.....",
+  "token_type": "Bearer"
+}
+```
+<br>
+
+- ####  Проверка действия JWT-токена
+> **POST: /auth/verify/**
+
+**Тело запроса:**
+```json
+{
+  "token": "your_access_token"
+}
+```
+
+**Ответ (200 OK):**
+```json
+{
+  "is_verify_token": true
+}
 ```
 <br>

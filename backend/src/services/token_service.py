@@ -47,3 +47,15 @@ async def refresh_access_token(
     
     except (jwt.exceptions.InvalidTokenError, InvalidTokenError):
         raise InvalidTokenError()
+
+
+async def verify_access_token(token: str) -> bool:
+    """ Проверка валидности access токена """
+    try:
+        # Проверяем что access
+        payload = check_access_token(token)
+        if payload is None:
+            raise TokenTypeMismatchError(expected=TokenType.ACCESS_TOKEN)
+        return True
+    except (jwt.exceptions.InvalidTokenError, InvalidTokenError):
+        raise InvalidTokenError()

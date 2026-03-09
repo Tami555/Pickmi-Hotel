@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.schemas import UserCreate, UserResponse, EmployeeCreate, EmployeeResponse, LoginUser, TokenResponse
+from src.schemas import (UserCreate, UserResponse, EmployeeCreate, EmployeeResponse, LoginUser,
+                         TokenResponse, TokenVerifyResponse, TokenRequest)
 from src.models.users import Role
 from src.core import db_helper
 from src.services import user_service, employee_service, token_service
@@ -9,7 +9,6 @@ from src.exceptions import AppException
 
 
 router = APIRouter()
-http_bearer = HTTPBearer()
 
 
 async def create_user_by_role(
@@ -62,15 +61,26 @@ async def login_user(
         raise HTTPException(status_code=err.status_code, detail=err.message)
     
 
-@router.get("/refresh/", response_model=TokenResponse, response_model_exclude_none=True)
+@router.post("/refresh/", response_model=TokenResponse, response_model_exclude_none=True)
 async def get_new_tokens(
-    bearer: HTTPAuthorizationCredentials = Depends(http_bearer),
+    credentials: TokenRequest,
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ) -> TokenResponse:
     try:
-        token = bearer.credentials
+        token = credentials.token
         access = await token_service.refresh_access_token(token, session)
         return TokenResponse(access_token=access)
+    except AppException as err:
+        raise HTTPException(status_code=err.status_code, detail=err.message)
+
+
+@router.post("/verify/", response_model=TokenVerifyResponse)
+async def get_new_tokens(
+    credentials: TokenRequest
+) -> TokenVerifyResponse:
+    try:
+        is_verify = await token_service.verify_access_token(credentials.token)
+        return TokenVerifyResponse(is_verify_token=is_verify)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)
     

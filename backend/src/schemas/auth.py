@@ -13,6 +13,14 @@ class TokenResponse(BaseModel):
     token_type: str = "Bearer"
 
 
+class TokenVerifyResponse(BaseModel):
+    is_verify_token: bool
+
+
+class TokenRequest(BaseModel):
+    token: str
+
+
 class RefreshTokenContent(BaseModel):
     sub: str
 
