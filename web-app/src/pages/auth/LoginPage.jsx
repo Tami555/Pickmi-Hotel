@@ -7,6 +7,8 @@ import { login } from "../../api/services";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../../components/UI/feedback/Loader";
 import { useAuth } from "../../contexts/AuthContext";
+import { useValidation } from "../../hooks/useValidation";
+import { loginSchema } from "../../utils/validators/schemas";
 
 
 export const LoginPage = () => {
@@ -23,6 +25,13 @@ export const LoginPage = () => {
             }
         }
     )
+
+    // Локальные ошибки валидации   
+    const { error: localError, validate } = useValidation();
+    const handleLogin = () => {
+        if (!validate(userLogin, loginSchema)) return;
+        login_func();
+    };
 
     return (
         <FormContainer form_title={"Вход"}>
@@ -43,12 +52,16 @@ export const LoginPage = () => {
                 onChange={e => setUserLogin({...userLogin, password: e.target.value})}
                 placeholder="введите свой пароль"
             />
+
+            {/* локальные ошибки */}
+            {localError && <p className="errors">{localError}</p>}
+
             {/* Серверные ошибки */}
             {serverError && <p className="errors">{serverError}</p>}
             
             {/* Загрузка */}
             {loading && <Loader/>}
-            <PickMeButton onClick={login_func}>Войти</PickMeButton>
+            <PickMeButton onClick={handleLogin}>Войти</PickMeButton>
         </FormContainer>
     )
 }
