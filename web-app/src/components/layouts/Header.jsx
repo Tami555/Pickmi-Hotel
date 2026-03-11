@@ -3,7 +3,6 @@ import './styles/header.css';
 import { logotype } from "../../images";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { logout } from "../../api/services";
 
 
 export const Header = () => {
@@ -16,10 +15,6 @@ export const Header = () => {
     const location = useLocation();
     const nav = useNavigate();
 
-    const logout_func = () => {
-        logout();
-        window.location.href = '/'
-    }
     return (
         <div className="header-block">
             <img src={logotype} className="logotype"/>
@@ -37,7 +32,7 @@ export const Header = () => {
                 isAuth ? 
                 <img src="https://avatars.mds.yandex.net/i?id=2e19c0cc5788dd99e73e223e37e77b32_l-9151930-images-thumbs&n=13"
                     className="avatars-img"
-                    onDoubleClick={logout_func}
+                    onClick={() => nav('/users/profile')}
                 /> : 
                 <button className="login-btn" onClick={() => nav("/users/login")}>+ </button>
             }

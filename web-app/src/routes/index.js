@@ -1,4 +1,5 @@
 import { LoginPage } from '../pages/auth/LoginPage';
+import { ProfilePage } from '../pages/auth/ProfilePage';
 import { RegistrationPage } from '../pages/auth/RegistrationPage';
 import { MainPage } from '../pages/main/MainPage';
 import { OneRoomTypePage } from '../pages/rooms/OneRoomTypePage';
@@ -20,4 +21,6 @@ export const no_authorized_routes = [
 ]
 
 // для авторизованных
-export const authorized_routes = []
+export const authorized_routes = [
+    {path: '/users/profile', element: ProfilePage}
+]

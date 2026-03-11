@@ -1,0 +1,23 @@
+.infa-fixed-block {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+.infa-fixed-block h2{
+    color: black;
+    font-family: var(--izvod);
+    font-weight: 400;
+    font-size: 45px;
+}
+
+.infa-fixed-block .infa-fixed-input{
+    display: flex;
+    align-items: center;
+    color: black;
+    width: 250px;
+    height: 40px;
+    background-color: var(--pink-peach);
+    font-family: var(--actor);
+    font-size: 25px;
+}

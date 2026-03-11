@@ -4,7 +4,7 @@ import { getCookie } from "../utils/auth/cookies";
 
 
 const apiClient = axios.create({
-    baseURL: getApiBase(),
+    baseURL: getApiBase,
     timeout: 10000,
 });
 
