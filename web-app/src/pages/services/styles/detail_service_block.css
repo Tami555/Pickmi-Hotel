@@ -26,9 +26,10 @@
     right: -20px;
     width: 100px;
     height: 40px;
-    border-radius: 10px;
+    border-radius: 30px;
     color: var(--white-creamy);
     background-color: var(--pink-soft);
+    font-family: var(--unquiet);
 }
 
 .detail-service-block .service-img{
@@ -63,4 +64,8 @@
     align-self: flex-end;
     background-color: var(--error);
     margin-bottom: 10px;
+    border-radius: 7px;
+}
+.detail-service-block .cancel-btn:hover{
+    box-shadow: 0px 0px 10px 1px var(--error);
 }

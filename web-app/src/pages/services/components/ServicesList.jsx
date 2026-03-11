@@ -5,8 +5,7 @@ import { ContentApiBlock } from "../../../components/layouts/ContentApiBlock";
 import { ServiceBlock } from "./ServiceBlock";
 import "../styles/services_list.css"
 import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
-import { ModalWindow } from "../../../components/UI/feedback/ModalWindow";
-import { DetailServiceBlock } from "./DetailServiceBlock";
+import { DetailServicesWindow } from "./DetailServicesWindow";
 
 
 export const ServicesList = () => {
@@ -21,7 +20,7 @@ export const ServicesList = () => {
 
     useEffect(() => {get_user_services()}, [])
     return (
-        <div className="services-lict-block">
+        <div className="services-list-block">
             <h1 className="main-title">Ваши услуги</h1>
             <ContentApiBlock loading={loading} error={errorServer}>
                 {
@@ -34,11 +33,11 @@ export const ServicesList = () => {
                     :
                     <div className={"create-service-btn"}>+</div>
                 }
-                <ModalWindow isOpen={isOpenDetailWindow} closeFunc={() => openDetailWindow(false)}>
-                    <h1 className="detail-window-title">Ваши услуги <span style={{fontSize: "25px"}}>(всего {userServices.length})</span></h1>
-                    {userServices.map(service => (<DetailServiceBlock service={service} key={service.id}/>))}
-                    <PickMeButton onClick={() => openDetailWindow(false)}>Закрыть</PickMeButton>
-                </ModalWindow>
+                <DetailServicesWindow
+                    isOpen={isOpenDetailWindow}
+                    closeFunc={() => openDetailWindow(false)}
+                    services_list={userServices}
+                />
             </ContentApiBlock>
         </div>
     )

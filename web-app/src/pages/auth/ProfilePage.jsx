@@ -6,7 +6,8 @@ import { logout, read_profile } from "../../api/services";
 import { PickMeButton } from "../../components/UI/buttons/PickMeButton";
 import "./styles/profile.css"
 import { FixedInput } from "../../components/UI/inputs/FixedInput";
-import { ServicesList } from "./components/ServicesList";
+import { ServicesList } from "../services/components/ServicesList";
+
 
 export const ProfilePage = () => {
     const [userProfile, setUserProfile] = useState({})
