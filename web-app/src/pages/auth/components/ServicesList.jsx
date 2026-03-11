@@ -3,6 +3,11 @@ import { useFetch } from "../../../hooks/useFetch";
 import { current_user_services } from "../../../api/services";
 import { ContentApiBlock } from "../../../components/layouts/ContentApiBlock";
 import { ServiceBlock } from "./ServiceBlock";
+import "../styles/services_list.css"
+import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
+import { ModalWindow } from "../../../components/UI/feedback/ModalWindow";
+import { DetailServiceBlock } from "./DetailServiceBlock";
+
 
 export const ServicesList = () => {
     const [userServices, setUserServices] = useState([])
@@ -12,28 +17,29 @@ export const ServicesList = () => {
             setUserServices(res);
         }
     )
+    const [isOpenDetailWindow, openDetailWindow] = useState(false)
+
     useEffect(() => {get_user_services()}, [])
     return (
-        <div>
-            <h1>Ваши услуги</h1>
+        <div className="services-lict-block">
+            <h1 className="main-title">Ваши услуги</h1>
             <ContentApiBlock loading={loading} error={errorServer}>
-                {userServices.map(service => (<ServiceBlock service={service} key={service.id}/>))}
+                {
+                    userServices.length > 0 ?
+                    <>
+                        {userServices.slice(0, 2).map(service => (<ServiceBlock service={service} key={service.id}/>))}
+                        {userServices.length > 2 && <p>...</p>}
+                        <PickMeButton onClick={() => openDetailWindow(true)}>Подробнее</PickMeButton>
+                    </>
+                    :
+                    <div className={"create-service-btn"}>+</div>
+                }
+                <ModalWindow isOpen={isOpenDetailWindow} closeFunc={() => openDetailWindow(false)}>
+                    <h1 className="detail-window-title">Ваши услуги <span style={{fontSize: "25px"}}>(всего {userServices.length})</span></h1>
+                    {userServices.map(service => (<DetailServiceBlock service={service} key={service.id}/>))}
+                    <PickMeButton onClick={() => openDetailWindow(false)}>Закрыть</PickMeButton>
+                </ModalWindow>
             </ContentApiBlock>
         </div>
     )
 }
-
-// {
-//     "id": 0,
-//     "scheduled_time": "2026-03-10T20:42:47.454Z",
-//     "comment": "string",
-//     "service": {
-//       "id": 0,
-//       "slug": "string",
-//       "title": "string",
-//       "price": 0,
-//       "description": "string",
-//       "image": "string"
-//     },
-//     "status": "string"
-//   }
