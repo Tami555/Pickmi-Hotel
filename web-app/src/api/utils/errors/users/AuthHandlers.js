@@ -11,7 +11,7 @@ export const handleAuthError = (error) => {
 
 
 // обработка при регистрации
-export const handleRegistrationError = (error) => {
+export const handleCreateUpdateUserError = (error) => {
   if (error.response?.status === 409) {
     throw new Error(error.response?.data?.detail);
   }

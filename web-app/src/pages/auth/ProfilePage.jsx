@@ -7,10 +7,13 @@ import { PickMeButton } from "../../components/UI/buttons/PickMeButton";
 import "./styles/profile.css"
 import { FixedInput } from "../../components/UI/inputs/FixedInput";
 import { ServicesList } from "../services/components/ServicesList";
+import { EditProfileWindow } from "./components/EditProfileWindow";
 
 
 export const ProfilePage = () => {
     const [userProfile, setUserProfile] = useState({})
+    const [isOpenEditWindow, openEditWindow] = useState(false)
+
     const [get_profile, loading, errorServer] = useFetch(
         async () => {
             const res = await read_profile();
@@ -43,12 +46,23 @@ export const ProfilePage = () => {
                             <FixedInput label={"Номер Паспорта"} value={userProfile.passport_number}/>
                         </div>
                         <div className="btn-control-block">
-                            <PickMeButton className={"edit_btn"}>Редактировать</PickMeButton>
+                            <PickMeButton
+                                className={"edit_btn"}
+                                onClick={() => openEditWindow(true)}
+                            >
+                                Редактировать
+                            </PickMeButton>
                             <PickMeButton onClick={logout_func}>Выйти</PickMeButton>
                         </div>
                         <div>Брони ....</div>
                     </div>
                </div>
+               <EditProfileWindow 
+                    isOpen={isOpenEditWindow}
+                    closeFunc={() => openEditWindow(false)}
+                    user={userProfile}
+                    setUser={setUserProfile}
+               />
             </ContentApiBlock>
         </CommonBlock>
     )

@@ -1,7 +1,7 @@
 // вход, регистрация, выход
 import { getBackendUrl, USER_ENDPOINTS } from "../../config/endpoints";
 import axios from "axios";
-import { handleAuthError, handleRegistrationError } from "../../utils/errors/users/AuthHandlers";
+import { handleAuthError, handleCreateUpdateUserError } from "../../utils/errors/users/AuthHandlers";
 import { apiRequest } from "../../utils/apiRequest";
 import { setCookie, deleteCookie } from "../../utils/auth/cookies";
 
@@ -49,7 +49,7 @@ export const registration = async (
         const data = await login(email, password);  
         return data;
         },
-        handleRegistrationError
+        handleCreateUpdateUserError
     )
 }
 

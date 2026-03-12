@@ -4,6 +4,7 @@ import { apiClient } from "../../config/apiClient";
 import { handleApiError } from "../../utils/errors/errorHandlers";
 import { apiRequest } from "../../utils/apiRequest";
 import { check_token } from "./tokens";
+import { handleCreateUpdateUserError } from "../../utils/errors/users/AuthHandlers";
 
 
 export const read_profile = async () => {
@@ -16,3 +17,20 @@ export const read_profile = async () => {
     handleApiError
   );
 };
+
+
+export const edit_profile = async (first_name, last_name, patronymic, phone) => {
+    return await apiRequest(
+      async () => {
+        await check_token() //обновляем токен
+        await apiClient.patch(USER_ENDPOINTS.PROFILE_EDIT, {
+            first_name: first_name,
+            last_name: last_name,
+            patronymic: patronymic,
+            phone: phone,
+        })
+        return {status: "ok"}
+      },
+      handleCreateUpdateUserError
+    )
+}

@@ -14,7 +14,8 @@ export const USER_ENDPOINTS = {
   REGISTRATION: '/auth/registration/guest/',
   VERIFY: '/auth/verify',
   REFRESH: '/auth/refresh/',
-  PROFILE: '/users/guests/profile'
+  PROFILE: '/users/guests/profile',
+  PROFILE_EDIT: '/users/guests/profile/edit'
 };
 
 export const SERVICES_ENDPOINTS = {
