@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import react, { useState } from "react";
 import { ModalWindow } from "../../../components/UI/feedback/ModalWindow";
 import {InputBlock} from "../../../components/UI/inputs/InputBlock";
 import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
@@ -11,9 +11,6 @@ import "../styles/edit_profile_window.css";
 
 
 export const EditProfileWindow = ({isOpen, closeFunc, user, setUser}) => {
-    const [successResponse, setSuccessResponse] = useState(false)
-    useEffect(() => {setSuccessResponse(false)}, [isOpen])
-
     const [editUser, setEditUser] = useState({
             first_name: user.first_name,
             last_name: user.last_name,
@@ -37,7 +34,7 @@ export const EditProfileWindow = ({isOpen, closeFunc, user, setUser}) => {
                     phone: editUser.phone
                 }
             )
-            setSuccessResponse(true)
+            closeFunc();
         }
     )
 
@@ -90,9 +87,6 @@ export const EditProfileWindow = ({isOpen, closeFunc, user, setUser}) => {
 
             {/* Серверные ошибки */}
             {serverError && <p className="errors">{serverError}</p>}
-
-            {/* Успех */}
-            {successResponse && <p className="success">Изменения успешно сохранены</p>}
 
             <PickMeButton onClick={handleEdit} className={'save-btn'}>
                 {loading  ? <Loader/>  : `Сохранить`}
