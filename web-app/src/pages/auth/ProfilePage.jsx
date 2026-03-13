@@ -8,11 +8,17 @@ import "./styles/profile.css"
 import { FixedInput } from "../../components/UI/inputs/FixedInput";
 import { ServicesList } from "../services/components/ServicesList";
 import { EditProfileWindow } from "./components/EditProfileWindow";
+import { useAvatar } from "../../hooks/useAvatar";
+import { AvatarsWindow } from "./components/AvatarsWindow";
+import { useAuth } from "../../contexts/AuthContext";
 
 
 export const ProfilePage = () => {
+    const { deleteUserData } = useAuth()
+    const { getAvatar } = useAvatar();
     const [userProfile, setUserProfile] = useState({})
     const [isOpenEditWindow, openEditWindow] = useState(false)
+    const [isOpenAvatarWindow, openAvatarWindow] = useState(false)
 
     const [get_profile, loading, errorServer] = useFetch(
         async () => {
@@ -22,6 +28,7 @@ export const ProfilePage = () => {
     )
     const logout_func = () => {
         logout();
+        deleteUserData();
         window.location.href = '/'
     }
 
@@ -31,8 +38,13 @@ export const ProfilePage = () => {
             <ContentApiBlock loading={loading} error={errorServer}>
                <div className="profile-block">
                     <div className="column-block">
-                        <img src="https://avatars.mds.yandex.net/i?id=2e19c0cc5788dd99e73e223e37e77b32_l-9151930-images-thumbs&n=13" className="avatar"/>
-                        <PickMeButton className={"change_avatar_btn"}>Сменить аватар</PickMeButton>
+                        <img src={getAvatar()} className="avatar"/>
+                        <PickMeButton
+                            className={"change_avatar_btn"}
+                            onClick={() => openAvatarWindow(true)}>
+                            Сменить аватар
+                        </PickMeButton>
+
                         <ServicesList/>
                     </div>
                     <div className="column-block">
@@ -62,6 +74,10 @@ export const ProfilePage = () => {
                     closeFunc={() => openEditWindow(false)}
                     user={userProfile}
                     setUser={setUserProfile}
+               />
+               <AvatarsWindow
+                    isOpen={isOpenAvatarWindow}
+                    closeFunc={() => openAvatarWindow(false)}
                />
             </ContentApiBlock>
         </CommonBlock>
