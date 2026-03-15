@@ -1,11 +1,6 @@
 from pydantic import BaseModel, EmailStr, Field, field_validator
 from pydantic_extra_types.phone_numbers import PhoneNumber
 from src.utils import validators
-from typing import TYPE_CHECKING
-
-
-if TYPE_CHECKING:
-    from .reservations import ReservationDetailResponse
 
 
 class UserResponse(BaseModel):

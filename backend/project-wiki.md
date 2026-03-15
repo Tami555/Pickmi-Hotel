@@ -251,8 +251,8 @@
     "id": 21,
     "check_in_date": "2026-03-03T19:30:00",
     "check_out_date": "2026-03-10T12:00:00",
-    "total_price": 8900,
-    "status": "active",
+    "total_price": 9400,
+    "status": "completed",
     "created_at": "2026-03-01T14:56:36.368893",
     "room": {
       "room_number": "201",
@@ -263,7 +263,24 @@
         "title": "Бункер",
         "price_per_day": 1100
       }
-    }
+    },
+    "tasks": [
+      {
+        "id": 118,
+        "scheduled_time": "2026-03-06T12:00:00",
+        "comment": "Смена постельного белья",
+        "service": {
+          "id": 3,
+          "slug": "dopolnitelnaya-smena-belya",
+          "title": "Дополнительная смена белья",
+          "price": 500,
+          "description": "Внеплановая смена постельного белья",
+          "image": null
+        },
+        "status": "completed"
+      },
+      ...
+    ]
   },
   ...
 ]
@@ -836,8 +853,8 @@
     "id": 21,
     "check_in_date": "2026-03-03T19:30:00",
     "check_out_date": "2026-03-10T12:00:00",
-    "total_price": 8900,
-    "status": "active",
+    "total_price": 9400,
+    "status": "completed",
     "created_at": "2026-03-01T14:56:36.368893",
     "room": {
       "room_number": "201",
@@ -848,7 +865,24 @@
         "title": "Бункер",
         "price_per_day": 1100
       }
-    }
+    },
+    "tasks": [
+      {
+        "id": 118,
+        "scheduled_time": "2026-03-06T12:00:00",
+        "comment": "Смена постельного белья",
+        "service": {
+          "id": 3,
+          "slug": "dopolnitelnaya-smena-belya",
+          "title": "Дополнительная смена белья",
+          "price": 500,
+          "description": "Внеплановая смена постельного белья",
+          "image": null
+        },
+        "status": "completed"
+      },
+      ...
+    ]
   },
   ...
 ]
