@@ -11,6 +11,7 @@ import { EditProfileWindow } from "./components/EditProfileWindow";
 import { useAvatar } from "../../hooks/useAvatar";
 import { AvatarsWindow } from "./components/AvatarsWindow";
 import { useAuth } from "../../contexts/AuthContext";
+import { ReservationsList } from "../reservation/components/ReservationsList";
 
 
 export const ProfilePage = () => {
@@ -66,7 +67,7 @@ export const ProfilePage = () => {
                             </PickMeButton>
                             <PickMeButton onClick={logout_func}>Выйти</PickMeButton>
                         </div>
-                        <div>Брони ....</div>
+                        <ReservationsList/>
                     </div>
                </div>
                <EditProfileWindow 

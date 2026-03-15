@@ -1,0 +1,25 @@
+.reservation-list-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 500px;
+    margin-bottom: 30px;
+}
+.reservation-list-block .main-title{
+    align-self: start;
+    font-size: 45px;
+    font-family: var(--izvod);
+    font-weight: 500;
+}
+.reservation-list-block .create-service-btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 650px;
+    height: 180px;
+    border: 2px solid var(--pink-peach);
+    color: var(--pink-peach);
+    font-size: 45px;
+    cursor: pointer;
+    margin-bottom: 30px;
+}

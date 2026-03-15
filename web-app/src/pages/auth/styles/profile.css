@@ -46,7 +46,6 @@
     flex-direction: row;
     justify-content: space-around;
     gap: 20px;
-    margin-bottom: 50px;
 }
 .profile-block .btn-control-block .edit_btn{
     background-color: var(--white-creamy);

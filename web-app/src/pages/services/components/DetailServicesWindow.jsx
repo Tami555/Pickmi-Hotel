@@ -4,11 +4,16 @@ import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
 import { DetailServiceBlock } from "./DetailServiceBlock";
 
 
-export const DetailServicesWindow = ({isOpen, closeFunc, services_list}) => {
+export const DetailServicesWindow = ({
+        isOpen,
+        closeFunc,
+        services_list,
+        title_window="Все ваши услуги"
+    }) => {
     return (
         <ModalWindow isOpen={isOpen} closeFunc={closeFunc}>
             <h1>
-                Ваши услуги 
+                {title_window}
                 <span style={{fontSize: "25px"}}> (всего {services_list.length})</span>
             </h1>
             {services_list.map(

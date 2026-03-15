@@ -19,6 +19,10 @@ export const DetailServiceBlock = ({service}) => {
         { 
             label: "Комментарий: ", 
             value: service.comment
+        },
+        { 
+            label: "Номер комнаты: ", 
+            value: service?.reservation?.room?.room_number
         }
     ]
     return (
@@ -30,6 +34,7 @@ export const DetailServiceBlock = ({service}) => {
             <div className="service-infa-block">
                 <h1 className="title">{service.service.title}</h1>
                 {serviceDetails.map((detail, index) => (
+                    detail.value &&
                     <h2 key={index} className="point">
                         <span style={{color: "var(--purple-deep)"}}>
                             {detail.label}

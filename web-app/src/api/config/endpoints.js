@@ -20,5 +20,9 @@ export const USER_ENDPOINTS = {
 
 export const SERVICES_ENDPOINTS = {
   CURRENT_USER_SERVICES: '/users/guests/profile/tasks',
-
 }
+
+export const RESERVATIONS_ENDPOINTS = {
+  CURRENT_USER_RESERVATION: '/users/guests/profile/reservations',
+}
+
