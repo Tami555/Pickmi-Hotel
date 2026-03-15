@@ -1,0 +1,52 @@
+.form-conteiner-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--pink-peach);
+    gap: 30px;
+    padding: 50px;
+}
+
+.form-conteiner-block .main-title{
+    font-size: 90px;
+    font-weight: 500;
+    font-family: var(--unquiet);
+    color: var(--purple-deep);
+}
+
+.form-conteiner-block .form-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 20px;
+    gap: 20px;
+    padding: 10px;
+    width: 450px;
+    min-height: 470px;
+    background-color: var(--white-creamy);
+}
+
+.form-conteiner-block .form-block .main-title{
+    text-align: center;
+    font-size: 60px;
+    font-family: var(--izvod);
+    color: var(--purple-deep);
+}
+
+.reverse-block {
+  align-self: center;
+  font-size: 25px;
+  color: var(--purple-deep);
+}
+
+.link {
+  align-self: center;
+  color: var(--pink-rose);
+  font-weight: 400;
+  font-size: 25px;
+  text-decoration: none;
+  cursor: pointer;
+}

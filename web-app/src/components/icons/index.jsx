@@ -9,3 +9,4 @@ export { Flower as FlowerIcon } from 'lucide-react';
 export { Clapperboard as CinemaIcon } from 'lucide-react';
 export { Tv as TvIcon } from 'lucide-react';
 export { ArrowBigLeft as LeftArrowIcon } from 'lucide-react';
+export { X as CrossIcon } from 'lucide-react';

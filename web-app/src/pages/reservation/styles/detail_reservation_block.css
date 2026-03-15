@@ -1,0 +1,78 @@
+.deatil-reservation-block{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 750px;
+    height: 250px;
+    border-radius: 10px;
+    background-color: var(--pink-peach);
+    box-shadow: 0px 0px 5px 1px var(--purple-deep);
+    position: relative;
+}
+.deatil-reservation-block .reservation-status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -10px;
+    right: -20px;
+    width: 100px;
+    height: 30px;
+    border-radius: 30px;
+    color: var(--white-creamy);
+    background-color: var(--pink-soft);
+    font-family: var(--unquiet);
+}
+.deatil-reservation-block .image{
+    width: 180px;
+    height: 160px;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+.deatil-reservation-block .image:hover{
+    transform: scale(0.5);
+}
+.deatil-reservation-block .detail-infa{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.deatil-reservation-block .detail-infa .title{
+    color: var(--purple-deep);
+    font-size: 40px;
+    font-family: var(--izvod);
+    font-weight: 500;
+}
+.deatil-reservation-block .detail-infa .infa-block{
+    display: grid;
+    grid-template-columns: 70% 35%;
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px 5px; 
+    text-align: start;
+    font-size: 25px;
+    font-family: var(--izvod);
+}
+.deatil-reservation-block .detail-infa .infa-block h3{
+    font-weight: 500;
+    color: var(--pink-rose);
+}
+.deatil-reservation-block .detail-infa .infa-block span{
+    color: var(--purple-deep);
+}
+
+.deatil-reservation-block .btns{
+    width: 150px;
+    height: 40px;
+    margin-bottom: 10px;
+    align-self: flex-end;
+
+}
+.deatil-reservation-block .canceled{
+    background-color: var(--error);
+}
+.deatil-reservation-block .services{
+    font-size: 20px;
+    width: 230px;
+    background-color: var(--pink-rose);
+}

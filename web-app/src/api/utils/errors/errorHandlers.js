@@ -25,6 +25,10 @@ export const handleApiError = (error, defaultMessage = "Произошла не�
     if (error.response.status === 404) {
       throw new Error("Ресурс не найден.");
     }
+
+    if (error.response.status === 422) {
+      throw new Error(`Не корректные данные ${error.response?.data?.detail[0].msg}`)
+    }
     
     if (error.response.status >= 500) {
       throw new Error("Внутренняя ошибка сервера. Попробуйте позже.");

@@ -1,13 +1,14 @@
 import React from "react";
 import '../styles/room_type_block.css';
 import { useNavigate } from "react-router-dom";
+import { formatImageUrl } from '../../../utils/formats/image';
 
 
 export const RoomTypeBlock = ({room, index}) => {
     const nav = useNavigate()
     return (
         <div className={`room-block ${index % 2 === 1 ? 'reverse' : ''}`}>
-            <img src={`https://drive.google.com/thumbnail?id=${room.image}&sz=w300`} />
+            <img src={formatImageUrl(room.image)} />
             <div
                 className={`infa-block ${index % 2 === 1 ? 'triangle-right' : 'triangle-left'}`}>
                 <h2 className="title">{room.title}</h2>

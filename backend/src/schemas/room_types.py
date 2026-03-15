@@ -10,12 +10,12 @@ if TYPE_CHECKING:
 class RoomTypeResponse(BaseModel):
     slug: str
     title: str
-    price_per_day: int
+    image: str | None
 
 
 class RoomTypeDetailResponse(RoomTypeResponse):
+    price_per_day: int
     description: str
-    image: str | None
 
 
 class RoomTypeAmenitiesResponse(RoomTypeDetailResponse):

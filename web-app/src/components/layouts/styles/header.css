@@ -40,3 +40,17 @@
     transform: scale(1.1);
     box-shadow: 0 0 20px var(--pink-soft);
 }
+
+.avatars-img{
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    border: 3px solid var(--pink-soft);
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.avatars-img:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 20px var(--white-creamy);
+}

@@ -1,0 +1,22 @@
+.block-input{
+    display: flex;
+    flex-direction: column;
+    gap: -15px;
+}
+.block-input label{
+    color: var(--pink-rose);
+    font-family: var(--izvod);
+    font-size: 35px;
+}
+.block-input input{
+    border: none;
+    width: 350px;
+    height: 47px;
+    outline: none;
+    border-radius: 5px;
+    background: #E0E0E0;
+    color: var(--purple-deep);
+}
+.block-input input:focus-within{
+    box-shadow: 0px 0px 5px 2px var(--purple-deep)
+}

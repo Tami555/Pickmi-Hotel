@@ -1,0 +1,42 @@
+.service-block{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+    min-height: 100px;
+    border: 2px solid var(--pink-rose);
+    margin-bottom: 10px;
+    gap: 5px;
+}
+.service-block .title{
+    align-self: center;
+    color: var(--pink-soft);
+    font-family: var(--izvod);
+    font-size: 35px;
+    font-weight: 300;
+}
+.service-block .row-block{
+    width: 100%;
+    justify-content: space-around;
+    position: relative;
+}
+.service-block .row-block .price{
+    color: var(--pink-rose);
+    font-family: var(--izvod);
+    font-weight: 400;
+    font-size: 40px;
+    margin-top: 20px;
+}
+.service-block .cancel-service-btn{
+    width: 100px;
+    height: 35px;
+    font-size: 20px;
+}
+.service-block .scheduled-time{
+    color: var(--purple-deep);
+    font-size: 28px;
+    font-family: var(--izvod);
+    font-weight: 400;
+    align-self: center;
+    margin-top: -30px;
+}

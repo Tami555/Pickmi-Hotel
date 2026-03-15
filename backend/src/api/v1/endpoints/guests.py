@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Path
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.schemas import UserResponse, UserUpdateProfile, UserUpdate, ReservationDetailResponse, GuestWithStatusResponse, TaskResponse, UserDetailResponse
+from src.schemas import UserResponse, UserUpdateProfile, UserUpdate, ReservationDetailResponse, GuestWithStatusResponse, TaskDetailResponse, UserDetailResponse
 from typing import Annotated
 from src.core import db_helper
 from ..dependencies.auth import guest_by_token, admin_by_token
@@ -82,7 +82,7 @@ async def get_guest_ordered_services_by_id(
         raise HTTPException(status_code=err.status_code, detail=err.message)
     
 
-@router.get("/profile/tasks", response_model=list[TaskResponse])
+@router.get("/profile/tasks", response_model=list[TaskDetailResponse])
 async def get_guest_ordered_services(
     user: User = Depends(guest_by_token),
     session: AsyncSession = Depends(db_helper.create_scoped_session)
@@ -93,7 +93,7 @@ async def get_guest_ordered_services(
         raise HTTPException(status_code=err.status_code, detail=err.message)
 
 
-@router.get("/{guest_id}/tasks", response_model=list[TaskResponse])
+@router.get("/{guest_id}/tasks", response_model=list[TaskDetailResponse])
 async def get_guest_ordered_services_by_id(
     guest_id: Annotated[int, Path(example=1)],
     session: AsyncSession = Depends(db_helper.create_scoped_session)

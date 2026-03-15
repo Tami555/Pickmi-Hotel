@@ -2,8 +2,9 @@ import datetime
 from pydantic import BaseModel, field_validator, Field
 from typing import TYPE_CHECKING
 
+
 if TYPE_CHECKING:
-    from . import ServiceResponse, ReservationResponse, EmployeeResponse
+    from . import ServiceResponse, ReservationResponse
 
 
 class TaskCreate(BaseModel):
@@ -30,7 +31,6 @@ class TaskResponse(BaseModel):
 
 class TaskDetailResponse(TaskResponse):
     reservation: 'ReservationResponse'
-    employee: 'EmployeeResponse'
     started_at: datetime.datetime | None
     completed_at: datetime.datetime | None
     created_at: datetime.datetime 

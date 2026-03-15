@@ -1,0 +1,71 @@
+.detail-service-block{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    height: 380px;
+    border-radius: 20px;
+    border: 2px solid var(--pink-soft);
+    position: relative;
+    padding: 10px;
+    margin: 10px;
+    gap: 20px;
+    transition: all 0.7s;
+}
+.detail-service-block:hover{
+    box-shadow: 0px 0px 20px 2px var(--pink-soft);
+}
+
+.detail-service-block .service-status{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    width: 100px;
+    height: 40px;
+    border-radius: 30px;
+    color: var(--white-creamy);
+    background-color: var(--pink-soft);
+    font-family: var(--unquiet);
+}
+
+.detail-service-block .service-img{
+    width: 130px;
+    height: 130px;
+    border-radius: 5px;
+}
+
+.detail-service-block .service-infa-block{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    font-family: var(--izvod);
+    font-size: 15px;
+    font-weight: 400;
+    gap: 10px;
+}
+.detail-service-block .service-infa-block .title{
+    align-self: center;
+    color: var(--pink-rose);
+}
+.detail-service-block .service-infa-block .point{
+    color: var(--pink-soft);
+    text-align: start;
+}
+
+.detail-service-block .cancel-btn{
+    width: 100px;
+    height: 40px;
+    font-size: 20px;
+    align-self: flex-end;
+    background-color: var(--error);
+    margin-bottom: 10px;
+    border-radius: 7px;
+}
+.detail-service-block .cancel-btn:hover{
+    box-shadow: 0px 0px 10px 1px var(--error);
+}

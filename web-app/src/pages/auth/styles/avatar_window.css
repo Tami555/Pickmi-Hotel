@@ -1,0 +1,36 @@
+.avatar-window .modal-block{
+    min-height: 700px;
+}
+
+.main-avatar{
+    max-width: 180px;
+    min-width: 180px;
+    max-height: 180px;
+    min-height: 180px;
+    border-radius: 100%;
+    border: 3px solid var(--pink-rose);
+}
+.avatars-block{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    max-height: 400px;
+    max-width: auto;
+    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.avatars-block .ponit-img{
+    width: 110px;
+    height: 110px;
+    border-radius: 100%;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.avatars-block .ponit-img:hover{
+    border: 3px solid var(--purple-deep);
+    transform: scale(1.1);
+}

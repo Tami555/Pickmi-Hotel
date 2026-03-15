@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Path, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.core import db_helper
 from src.crud import employees as employees_crud
-from src.schemas import EmployeeDetailResponse, EmployeeResponse, UserUpdate, EmployeeUpdate, TaskResponse
+from src.schemas import EmployeeDetailResponse, EmployeeResponse, UserUpdate, EmployeeUpdate, TaskDetailResponse
 from typing import Annotated
 from ..dependencies.auth import admin_by_token, employee_by_token
 from src.models import User
@@ -53,7 +53,7 @@ async def update_employee(
         raise HTTPException(status_code=err.status_code, detail=err.message)
 
 
-@router.get("/profile/tasks", response_model=list[TaskResponse])
+@router.get("/profile/tasks", response_model=list[TaskDetailResponse])
 async def get_employee_tasks(
     user: User = Depends(employee_by_token),
     session: AsyncSession = Depends(db_helper.create_scoped_session)
@@ -64,7 +64,7 @@ async def get_employee_tasks(
         raise HTTPException(status_code=err.status_code, detail=err.message)
 
 
-@router.get("/{employee_id}/tasks", response_model=list[TaskResponse])
+@router.get("/{employee_id}/tasks", response_model=list[TaskDetailResponse])
 async def get_employee_tasks_by_id(
     employee_id: int,
     session: AsyncSession = Depends(db_helper.create_scoped_session)

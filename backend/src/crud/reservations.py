@@ -1,15 +1,17 @@
 import datetime
 from sqlalchemy import select, update, func, extract
-from sqlalchemy.orm import joinedload
+from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models import Reservation, User, Rooms, RoomTypes
+from src.models import Reservation, User, Rooms, RoomTypes, Task
 from src.models.enums import ReservationStatus
 
 
 async def get_reservation_by_id(id_reservation: int, session: AsyncSession) -> Reservation | None:
     """Получение записи о бронировании по id"""
     stmt = select(Reservation).options(joinedload(Reservation.room),
-                                       joinedload(Reservation.user)).where(Reservation.id == id_reservation)
+                                       joinedload(Reservation.user),
+                                       selectinload(Reservation.tasks).joinedload(Task.service)
+                                       ).where(Reservation.id == id_reservation)
     reservation = await session.scalar(stmt)
     return reservation
 
@@ -17,7 +19,8 @@ async def get_reservation_by_id(id_reservation: int, session: AsyncSession) -> R
 async def get_reservations_by_user_id(id_user: int, session: AsyncSession) -> list[Reservation]:
     """Получение всех записей о бронировании пользователя по id"""
     stmt = select(Reservation).options(
-        joinedload(Reservation.room).joinedload(Rooms.room_type)
+            joinedload(Reservation.room).joinedload(Rooms.room_type),
+            selectinload(Reservation.tasks).joinedload(Task.service)
         ).join(Reservation.user).where(User.id == id_user)
     reservations = await session.scalars(stmt)
     return reservations

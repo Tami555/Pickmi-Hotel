@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .rooms import RoomDetailResult, RoomResult
+    from .tasks import TaskResponse
 
 
 class ReservationCreate(BaseModel):
@@ -40,3 +41,4 @@ class ReservationDetailResponse(BaseModel):
     status: str
     created_at: datetime.datetime
     room: 'RoomDetailResult'
+    tasks: list['TaskResponse']

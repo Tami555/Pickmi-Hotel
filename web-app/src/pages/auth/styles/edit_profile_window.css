@@ -1,0 +1,12 @@
+.edit-window-block .modal-block{
+    min-height: 730px;
+}
+.edit-window-block .modal-block .save-btn{
+    margin-top: 10px;
+}
+.edit-window-block .modal-block .success{
+    font-size: 25px;
+    color: var(--purple-deep);
+    font-weight: 500;
+    font-family: var(--unquiet);
+}

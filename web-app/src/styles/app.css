@@ -22,6 +22,11 @@ html, body {
     src: url('./fonts/Izvod.otf') format('opentype');  
 }
 
+@font-face {  
+    font-family: 'Actor';  
+    src: url('./fonts/Actor.ttf') format('opentype');  
+}
+
 :root {
     --purple-deep: #6A4163;
     --pink-rose: #D46A92; 
@@ -31,6 +36,7 @@ html, body {
     --error: rgb(235, 120, 120);
     --izvod: 'Izvod';
     --unquiet: 'Unquiet';
+    --actor: 'Actor';
 }
 
 .App {
@@ -42,4 +48,9 @@ html, body {
     min-height: 100vh;
     font-family: var(--izvod);
     background-color: var(--white-creamy);
+}
+.errors{
+    color: var(--error);
+    font-size: 20px;
+    font-family: var(--izvod);
 }
