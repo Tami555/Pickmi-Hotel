@@ -209,7 +209,7 @@
     "room_type": {
       "slug": "ekonom",
       "title": "Эконом",
-      "price_per_day": 1500
+      "image": null
     }
   }
 }
@@ -261,7 +261,7 @@
       "room_type": {
         "slug": "bunker",
         "title": "Бункер",
-        "price_per_day": 1100
+        "image": null
       }
     },
     "tasks": [
@@ -911,7 +911,7 @@
       "room_type": {
         "slug": "bunker",
         "title": "Бункер",
-        "price_per_day": 1100
+        "image": null
       }
     },
     "tasks": [
