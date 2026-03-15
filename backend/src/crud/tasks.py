@@ -22,7 +22,7 @@ async def get_tasks_by_employee(id_employee: int, session: AsyncSession) -> list
     """Получение задачь сотрудника по его id"""
     stmt = select(Task).options(
         joinedload(Task.service),
-        joinedload(Task.reservation),
+        joinedload(Task.reservation).joinedload(Reservation.room),
     ).join(Task.employee).where(Employee.id == id_employee)
 
     task = await session.scalars(stmt)
@@ -31,10 +31,9 @@ async def get_tasks_by_employee(id_employee: int, session: AsyncSession) -> list
 
 async def get_tasks_by_guest(id_guest: int, session: AsyncSession) -> list[Task] | None:
     """Получение заказанных услуг (задач) гостя по его id"""
-    stmt = select(Task).\
-        options(joinedload(Task.service)).\
-            join(Task.reservation).\
-                join(Reservation.user).\
+    stmt = select(Task).options(
+            joinedload(Task.service), joinedload(Task.reservation).joinedload(Reservation.room)
+        ).join(Task.reservation).join(Reservation.user).\
         where(User.id == id_guest)
 
     task = await session.scalars(stmt)

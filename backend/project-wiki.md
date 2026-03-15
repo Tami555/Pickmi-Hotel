@@ -409,16 +409,32 @@
 ```json
 [
   {
-    "id": 13,
-    "scheduled_time": "2026-03-09T23:00:00",
-    "comment": "я буду бухать и шуметь. Извините заранее",
+    "id": 8,
+    "scheduled_time": "2026-03-06T09:00:00",
+    "comment": "есть принесите пжпжпж",
     "service": {
-      "id": 12,
-      "slug": "mini-bar-obsluzhivanie",
-      "title": "Мини-бар обслуживание",
-      "price": 500
+      "id": 10,
+      "slug": "zavtrak-v-nomer",
+      "title": "Завтрак в номер",
+      "price": 1200,
+      "description": "Сервировка завтрака в номере",
+      "image": null
     },
-    "status": "pending"
+    "status": "completed",
+    "reservation": {
+      "id": 21,
+      "check_in_date": "2026-03-03T19:30:00",
+      "check_out_date": "2026-03-10T12:00:00",
+      "status": "completed",
+      "room": {
+        "room_number": "201",
+        "floor": 2,
+        "quantity_places": 1
+      }
+    },
+    "started_at": "2026-03-06T00:45:37.130816",
+    "completed_at": "2026-03-06T00:50:24.018530",
+    "created_at": "2026-03-05T23:09:29.608158"
   },
   ...
 ]
@@ -477,16 +493,32 @@
 ```json
 [
   {
-    "id": 8,
-    "scheduled_time": "2026-03-06T09:00:00",
-    "comment": "есть принесите пжпжпж",
+    "id": 105,
+    "scheduled_time": "2026-03-08T09:00:00",
+    "comment": "Забрать сейф из номера",
     "service": {
-      "id": 10,
-      "slug": "zavtrak-v-nomer",
-      "title": "Завтрак в номер",
-      "price": 1200
+      "id": 7,
+      "slug": "dopolnitelnyy-seyf",
+      "title": "Дополнительный сейф",
+      "price": 3000,
+      "description": "Аренда персонального сейфа на время проживания",
+      "image": null
     },
-    "status": "completed"
+    "status": "completed",
+    "reservation": {
+      "id": 26,
+      "check_in_date": "2026-03-04T18:00:00",
+      "check_out_date": "2026-03-10T18:00:00",
+      "status": "completed",
+      "room": {
+        "room_number": "301",
+        "floor": 3,
+        "quantity_places": 2
+      }
+    },
+    "started_at": "2026-03-08T09:05:00",
+    "completed_at": "2026-03-08T09:20:00",
+    "created_at": "2026-03-07T22:00:00"
   },
   ...
 ]
@@ -759,16 +791,32 @@
 ```json
 [
   {
-    "id": 8,
-    "scheduled_time": "2026-03-06T09:00:00",
-    "comment": "есть принесите пжпжпж",
+    "id": 105,
+    "scheduled_time": "2026-03-08T09:00:00",
+    "comment": "Забрать сейф из номера",
     "service": {
-      "id": 10,
-      "slug": "zavtrak-v-nomer",
-      "title": "Завтрак в номер",
-      "price": 1200
+      "id": 7,
+      "slug": "dopolnitelnyy-seyf",
+      "title": "Дополнительный сейф",
+      "price": 3000,
+      "description": "Аренда персонального сейфа на время проживания",
+      "image": null
     },
-    "status": "completed"
+    "status": "completed",
+    "reservation": {
+      "id": 26,
+      "check_in_date": "2026-03-04T18:00:00",
+      "check_out_date": "2026-03-10T18:00:00",
+      "status": "completed",
+      "room": {
+        "room_number": "301",
+        "floor": 3,
+        "quantity_places": 2
+      }
+    },
+    "started_at": "2026-03-08T09:05:00",
+    "completed_at": "2026-03-08T09:20:00",
+    "created_at": "2026-03-07T22:00:00"
   },
   ...
 ]
@@ -897,16 +945,32 @@
 ```json
 [
   {
-    "id": 13,
-    "scheduled_time": "2026-03-09T23:00:00",
-    "comment": "я буду бухать и шуметь. Извините заранее",
+    "id": 8,
+    "scheduled_time": "2026-03-06T09:00:00",
+    "comment": "есть принесите пжпжпж",
     "service": {
-      "id": 12,
-      "slug": "mini-bar-obsluzhivanie",
-      "title": "Мини-бар обслуживание",
-      "price": 500
+      "id": 10,
+      "slug": "zavtrak-v-nomer",
+      "title": "Завтрак в номер",
+      "price": 1200,
+      "description": "Сервировка завтрака в номере",
+      "image": null
     },
-    "status": "pending"
+    "status": "completed",
+    "reservation": {
+      "id": 21,
+      "check_in_date": "2026-03-03T19:30:00",
+      "check_out_date": "2026-03-10T12:00:00",
+      "status": "completed",
+      "room": {
+        "room_number": "201",
+        "floor": 2,
+        "quantity_places": 1
+      }
+    },
+    "started_at": "2026-03-06T00:45:37.130816",
+    "completed_at": "2026-03-06T00:50:24.018530",
+    "created_at": "2026-03-05T23:09:29.608158"
   },
   ...
 ]
