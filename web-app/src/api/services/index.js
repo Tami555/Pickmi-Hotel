@@ -2,6 +2,7 @@
 
 // Rooms
 export { room_types_list } from "./RoomService/room_types";
+export { available_rooms_count } from "./RoomService/available_rooms";
 
 // Users
 export { login, registration, logout } from "./UserService/auth";

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { formatImageUrl } from '../../../utils/formats/image';
 
 
-export const RoomTypeBlock = ({room, index}) => {
+export const RoomTypeBlock = ({room, index, available_count}) => {
     const nav = useNavigate()
     return (
         <div className={`room-block ${index % 2 === 1 ? 'reverse' : ''}`}>
@@ -28,6 +28,12 @@ export const RoomTypeBlock = ({room, index}) => {
                     <p className="price">{room.price_per_day} руб</p>
                 </div>
             </div>
+            {
+                available_count != null &&
+                <div className={`available-room-block ${index % 2 === 1 ? 'left-available' : 'right-available'}`}>
+                    Свобных номеров: {available_count}
+                </div>
+            }
         </div>
     )
 }
