@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
     min-width: 750px;
-    height: 180px;
+    min-height: 180px;
     border-radius: 50px;
     background-color: var(--pink-peach);
     margin: 10px;

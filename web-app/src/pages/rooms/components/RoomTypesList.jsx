@@ -3,7 +3,7 @@ import { RoomTypeBlock } from "./RoomTypeBlock";
 import '../styles/room_types_list.css';
 
 
-export const RoomTypesList = ({room_types_list, available_count}) => {
+export const RoomTypesList = ({room_types_list, available_count, rooms_filters}) => {
     return (
         <>
             <div className="room-types-blocks">
@@ -16,6 +16,7 @@ export const RoomTypesList = ({room_types_list, available_count}) => {
                             available_count.length > 0 ?
                              available_count[index].available_rooms : null
                         }
+                        rooms_filters={rooms_filters}
                     />
                 ))}
             </div>

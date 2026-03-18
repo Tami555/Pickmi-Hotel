@@ -2,9 +2,44 @@ import React, { useState } from "react";
 import "../styles/filter_available_room_block.css"
 import { InputBlock } from "../../../components/UI/inputs/InputBlock";
 import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
+import { useFetch } from "../../../hooks/useFetch";
+import { roomAvailableFiltersSchema } from "../../../utils/validators/schemas";
+import { useValidation } from "../../../hooks/useValidation";
+import { Loader } from "../../../components/UI/feedback/Loader";
 
 
-export const FilterAvailableRoomBlock = ({filterData, setFilterData, resetFilters, applyFilters}) => {
+export const FilterAvailableRoomBlock = ({
+    filterData,
+    setFilterData,
+    setFilterResponse,
+    applyFiltersFunc,
+    optionalApplyParams=[]
+}) => {
+
+    const [apply_filters, loadingFilter, serverFilterError] = useFetch(
+        async () => {
+          const res = await applyFiltersFunc(
+            filterData.number_people,
+            filterData.check_in,
+            filterData.check_out,
+            ...optionalApplyParams
+          )
+          setFilterResponse(res);
+        }
+      );
+    // Локальные ошибки валидации   
+    const { error: localFilterError, validate } = useValidation();
+    const handleRoomFilters = () => {
+        if (!validate(filterData, roomAvailableFiltersSchema)) return;
+        apply_filters();
+    };
+    
+    const resetFilters = () => {
+        // сброс фильтров
+        setFilterData({check_in: '', check_out: '', number_people: 1});
+        setFilterResponse([]);
+    }
+
     return  (
         <div className="filter-room-block">
             <div className="input-blocks">
@@ -35,8 +70,13 @@ export const FilterAvailableRoomBlock = ({filterData, setFilterData, resetFilter
                 />
             </div>
 
+            {/* загрузка/ошибки фильтрации */}
+            {localFilterError && <p className="errors">{localFilterError}</p>}
+            {serverFilterError && <p className="errors">{serverFilterError}</p>}
+            {loadingFilter && <Loader/>}
+
             <div className="btns-block">
-                <PickMeButton className={'reset-btn'} onClick={applyFilters}>
+                <PickMeButton className={'reset-btn'} onClick={handleRoomFilters}>
                     Применить
                 </PickMeButton>
                 <PickMeButton className={'reset-btn'} onClick={resetFilters}>

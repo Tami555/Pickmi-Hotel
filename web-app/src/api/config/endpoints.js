@@ -7,7 +7,8 @@ export const getBackendUrl = (endpoint) => getApiBase + endpoint;
 
 export const ROOMS_ENDPOINTS = {
   ROOMS_TYPES: '/room-types',
-  ROOMS_AVAILABLE_COUNT: '/room-types/rooms/available/count'
+  ROOMS_AVAILABLE_COUNT: '/room-types/rooms/available/count',
+  ROOMS_AVAILABLE_BY_TYPE: '/rooms/available/by-type/'
 };
 
 export const USER_ENDPOINTS = {

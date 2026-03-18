@@ -1,8 +1,8 @@
 // Единая точка входа для всех сервисов
 
 // Rooms
-export { room_types_list } from "./RoomService/room_types";
-export { available_rooms_count } from "./RoomService/available_rooms";
+export { room_types_list, room_type_by_slug } from "./RoomService/room_types";
+export { available_rooms_count, available_rooms_by_type } from "./RoomService/available_rooms";
 
 // Users
 export { login, registration, logout } from "./UserService/auth";

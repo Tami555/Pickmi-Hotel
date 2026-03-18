@@ -4,8 +4,13 @@ import { useNavigate } from "react-router-dom";
 import { formatImageUrl } from '../../../utils/formats/image';
 
 
-export const RoomTypeBlock = ({room, index, available_count}) => {
+export const RoomTypeBlock = ({room, index, available_count, rooms_filters}) => {
     const nav = useNavigate()
+    const selectRoomType = () => {
+        const url = `/rooms/${room.slug}/reservation`
+        const queries = `?check_in=${rooms_filters.check_in}&check_out=${rooms_filters.check_out}&number_people=${rooms_filters.number_people}`
+        nav(url + queries)
+    }
     return (
         <div className={`room-block ${index % 2 === 1 ? 'reverse' : ''}`}>
             <img src={formatImageUrl(room.image)} />
@@ -16,6 +21,7 @@ export const RoomTypeBlock = ({room, index, available_count}) => {
                 <div className={`last-block ${index % 2 === 1 ? 'reverse' : ''}`}>
                     <div
                         className={`btn btn-choose ${index % 2 === 1 ? 'btn-right' : 'btn-left'}`}
+                        onClick={selectRoomType}
                     >
                         Выбрать
                     </div>

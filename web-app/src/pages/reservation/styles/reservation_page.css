@@ -1,0 +1,13 @@
+.reservation-title{
+    color: var(--pink-rose);
+    font-family: var(--unquiet);
+    font-size: 70px;
+    font-weight: 400;
+    margin: 30px;
+}
+.reservation-rooms-search-title{
+    color: var(--purple-deep);
+    font-weight: 500;
+    font-size: 40px;
+    margin: 30px 0px -10px 400px;
+}
