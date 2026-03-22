@@ -31,13 +31,20 @@ async def get_tasks_by_employee(id_employee: int, session: AsyncSession) -> list
 
 async def get_tasks_by_guest(id_guest: int, session: AsyncSession) -> list[Task] | None:
     """Получение заказанных услуг (задач) гостя по его id"""
+    status_order = case(
+        (Task.status == TaskStatus.IN_PROGRESS, 1),
+        (Task.status == TaskStatus.PENDING, 2),
+        (Task.status == TaskStatus.CANCELED, 3),
+        (Task.status == TaskStatus.COMPLETED, 4)
+    )
+
     stmt = select(Task).options(
             joinedload(Task.service), joinedload(Task.reservation).joinedload(Reservation.room)
         ).join(Task.reservation).join(Reservation.user).\
-        where(User.id == id_guest)
+        where(User.id == id_guest).order_by(status_order)
 
-    task = await session.scalars(stmt)
-    return task
+    tasks = await session.scalars(stmt)
+    return tasks
 
 
 async def create_task(

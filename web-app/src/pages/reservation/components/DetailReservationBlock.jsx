@@ -30,7 +30,7 @@ export const DetailReservationBlock = ({reservation}) => {
                     <h3>Итог: <span>{reservation.total_price} руб</span></h3>
                 </div>
                 {
-                    status?.value == "pending" ?
+                    reservation.status == "pending" ?
                     <PickMeButton className={'btns canceled'}>Отменить</PickMeButton>
                     :
                     reservation.tasks.length > 0 &&
