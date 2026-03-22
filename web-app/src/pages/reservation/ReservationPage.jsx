@@ -8,7 +8,7 @@ import { ReservationRoomTypeBlock } from "./components/ReservationRoomTypeBlock"
 import { BackStepButton } from "../../components/UI/buttons/BackStepButton";
 import { FilterAvailableRoomBlock } from "../rooms/components/FilterAvailableRoomBlock";
 import "./styles/reservation_page.css";
-import { RoomBlock } from "./components/RoomBlock";
+import { RoomBlock } from "../rooms/components/RoomBlock";
 import { ModalWindow } from "../../components/UI/feedback/ModalWindow";
 import { formatToRussianDateTime } from "../../utils/formats/dates";
 import { PickMeButton } from "../../components/UI/buttons/PickMeButton";
