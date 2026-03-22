@@ -1,0 +1,62 @@
+.reservation-room-type-block{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 800px;
+    height: 280px;
+    border-radius: 60px;
+    background-color: var(--pink-peach);
+    padding: 10px;
+}
+.reservation-room-type-block img{
+    width: 280px;
+    height: 200px;
+    border-radius: 5px;
+}
+.reservation-room-type-block .room-type-infa{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 10px;
+}
+
+.reservation-room-type-block .room-type-infa h2{
+    font-size: 30px;
+    color: var(--pink-rose);
+    font-weight: 500;
+}
+.reservation-room-type-block .room-type-infa span{
+    font-size: 35px;
+    color: var(--purple-deep);
+}
+
+.reservation-room-type-block .room-type-infa .title{
+    align-self: center;
+    color: black;
+    font-size: 45px;
+    font-family: var(--izvod);
+    font-weight: 500;
+}
+
+.reservation-room-type-block .room-type-infa .amenities-list{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 5px;
+    color: var(--pink-rose);
+    font-size: 30px;
+}
+.reservation-room-type-block .room-type-infa .amenities-list .amenity-block{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    height: 30px;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 30px;
+    background-color: var(--pink-soft);
+    color: var(--purple-deep);
+    text-align: center;
+    padding: 5px;
+}

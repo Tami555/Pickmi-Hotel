@@ -1,9 +1,9 @@
 import datetime
-from sqlalchemy import select, update, func, extract
+from sqlalchemy import select, update, func, extract, case
 from sqlalchemy.orm import joinedload, selectinload
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.models import Reservation, User, Rooms, RoomTypes, Task
-from src.models.enums import ReservationStatus
+from src.models.enums import ReservationStatus, TaskStatus
 
 
 async def get_reservation_by_id(id_reservation: int, session: AsyncSession) -> Reservation | None:
@@ -18,11 +18,39 @@ async def get_reservation_by_id(id_reservation: int, session: AsyncSession) -> R
 
 async def get_reservations_by_user_id(id_user: int, session: AsyncSession) -> list[Reservation]:
     """Получение всех записей о бронировании пользователя по id"""
+    reservation_status_order = case(
+        (Reservation.status == ReservationStatus.ACTIVE, 1),
+        (Reservation.status == ReservationStatus.PENDING, 2),
+        (Reservation.status == ReservationStatus.CANCELED, 3),
+        (Reservation.status == ReservationStatus.COMPLETED, 4)
+    )
+
+    task_status_order = case(
+        (Task.status == TaskStatus.IN_PROGRESS, 1),
+        (Task.status == TaskStatus.PENDING, 2),
+        (Task.status == TaskStatus.CANCELED, 3),
+        (Task.status == TaskStatus.COMPLETED, 4)
+    )
+
     stmt = select(Reservation).options(
-            joinedload(Reservation.room).joinedload(Rooms.room_type),
-            selectinload(Reservation.tasks).joinedload(Task.service)
-        ).join(Reservation.user).where(User.id == id_user)
-    reservations = await session.scalars(stmt)
+        joinedload(Reservation.room).joinedload(Rooms.room_type),
+        selectinload(Reservation.tasks).joinedload(Task.service)
+    ).join(Reservation.user).where(User.id == id_user).order_by(reservation_status_order)
+
+    result = await session.execute(stmt)
+    reservations = result.unique().scalars().all()
+
+    # Сортируем задачи внутри каждой брони
+    for reservation in reservations:
+        reservation.tasks.sort(key=lambda task: (
+            task_status_order._keyfunc(task.status) if hasattr(task_status_order, '_keyfunc')
+            else {
+                TaskStatus.IN_PROGRESS: 1,
+                TaskStatus.PENDING: 2,
+                TaskStatus.CANCELED: 3,
+                TaskStatus.COMPLETED: 4
+            }.get(task.status, 5)
+        ))
     return reservations
 
 

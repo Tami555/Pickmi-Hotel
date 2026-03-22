@@ -1,0 +1,40 @@
+.filter-room-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 750px;
+    min-height: 180px;
+    border-radius: 50px;
+    background-color: var(--pink-peach);
+    margin: 10px;
+    padding: 20px;
+    gap: 20px;
+}
+.filter-room-block .input-blocks{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-input label{
+    color: black;
+    font-size: 25px;
+}
+.filter-input input{
+    background: var(--pink-soft);
+    color: var(--white-creamy);
+    height: 40px;
+    width: 250px;
+}
+.filter-room-block .btns-block{
+    display: flex;
+    flex-direction: row;
+}
+.reset-btn{
+    height: 50px;
+    background-color: var(--pink-rose);
+}
+.reset-btn:hover{
+    box-shadow: 0px 0px 30px 3px var(--white-creamy);
+}

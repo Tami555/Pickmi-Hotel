@@ -1,9 +1,10 @@
-import { LoginPage } from '../pages/auth/LoginPage';
-import { ProfilePage } from '../pages/auth/ProfilePage';
-import { RegistrationPage } from '../pages/auth/RegistrationPage';
-import { MainPage } from '../pages/main/MainPage';
-import { OneRoomTypePage } from '../pages/rooms/OneRoomTypePage';
-import { RoomTypesPage } from '../pages/rooms/RoomTypesPage';
+import { LoginPage } from '../pages/auth/LoginPage'
+import { ProfilePage } from '../pages/auth/ProfilePage'
+import { RegistrationPage } from '../pages/auth/RegistrationPage'
+import { MainPage } from '../pages/main/MainPage'
+import { OneRoomTypePage } from '../pages/rooms/OneRoomTypePage'
+import { RoomTypesPage } from '../pages/rooms/RoomTypesPage'
+import { ReservationPage } from '../pages/reservation/ReservationPage'
 
 
 // Общие пути
@@ -12,7 +13,9 @@ export const  common_routes = [
     {path: '/main', element: MainPage},
     {path: '/rooms', element: RoomTypesPage},
     {path: '/rooms/:slug', element: OneRoomTypePage},
+    {path: '/rooms/:slug/reservation', element: ReservationPage},
 ]
+
 // для не авторизованных
 export const no_authorized_routes = [
     {path: '*', element: LoginPage},

@@ -1,0 +1,40 @@
+.reservation-room-block{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 550px;
+    height: 100px;
+    background-color: var(--purple-deep);
+    border-radius: 5px;
+    border: 1px solid var(--white-creamy);
+    margin: 20px;
+}
+
+.reservation-room-block .infa-block{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    color: var(--white-creamy);
+}
+
+.reservation-room-block .infa-block h2{
+    font-size: 40px;
+    font-family: var(--unquiet);
+    text-align: center;
+    font-weight: 500;
+    margin: 5px;
+}
+
+.reservation-room-block .infa-block div{
+    display: flex;
+    flex-direction: row;
+    font-size: 30px;
+    font-family: var(--izvod);
+    gap: 40px;
+}
+
+.reservation-room-block .reservation-btn{
+    width: 150px;
+    height: 60px;
+    margin-left: 25px;
+}
