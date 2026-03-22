@@ -13,3 +13,4 @@ export { current_user_services } from "./ServicesService/to_user";
 
 // Reservations
 export { current_user_reservations } from "./ReservationsService/to_user";
+export { create_reservations } from "./ReservationsService/reservation";

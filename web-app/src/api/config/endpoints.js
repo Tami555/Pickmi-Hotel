@@ -26,5 +26,6 @@ export const SERVICES_ENDPOINTS = {
 
 export const RESERVATIONS_ENDPOINTS = {
   CURRENT_USER_RESERVATION: '/users/guests/profile/reservations',
+  CREATE_RESERVATION : '/reservations/',
 }
 
