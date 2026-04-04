@@ -109,19 +109,44 @@ async def update_reservation_statuses_by_dates(session: AsyncSession):
             Reservation.check_in_date <= now,
             Reservation.check_out_date >= now
         )
-        .values(status=ReservationStatus.ACTIVE, updated_at = datetime.datetime.now())
+        .values(status=ReservationStatus.ACTIVE, updated_at=datetime.datetime.now())
     )
     await session.execute(pending_stmt)
-    
+
     # прошла дата выезда
-    active_stmt = (
-        update(Reservation)
+    completed_reservations_stmt = (
+        select(Reservation.id)
         .where(
-            Reservation.check_out_date < now
+            Reservation.check_out_date < now,
+            Reservation.status != ReservationStatus.COMPLETED  # чтобы не обновлять повторно
         )
-        .values(status=ReservationStatus.COMPLETED, updated_at = datetime.datetime.now())
     )
-    await session.execute(active_stmt)
+    result = await session.execute(completed_reservations_stmt)
+    completed_reservation_ids = [row[0] for row in result.fetchall()]
+
+    if completed_reservation_ids:
+        active_stmt = (
+            update(Reservation)
+            .where(Reservation.id.in_(completed_reservation_ids))
+            .values(status=ReservationStatus.COMPLETED, updated_at=datetime.datetime.now())
+        )
+        await session.execute(active_stmt)
+
+        # обновляем статусы задач
+        tasks_stmt = (
+            update(Task)
+            .where(
+                Task.reservation_id.in_(completed_reservation_ids),
+                Task.status.in_([TaskStatus.PENDING, TaskStatus.IN_PROGRESS])
+            )
+            .values(
+                status=TaskStatus.COMPLETED,
+                completed_at=datetime.datetime.now(),
+                updated_at=datetime.datetime.now()
+            )
+        )
+        await session.execute(tasks_stmt)
+
     await session.commit()
 
 
