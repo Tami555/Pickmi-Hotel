@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CommonBlock } from "../../components/layouts/CommonBlock";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useFetch } from "../../hooks/useFetch";
 import { room_type_by_slug } from "../../api/services/RoomService/room_types";
 import { ContentApiBlock } from "../../components/layouts/ContentApiBlock";
@@ -11,6 +11,7 @@ import { AmenitiesOtherList } from "./components/AmenitiesOtherList";
 
 
 export const OneRoomTypePage = () => {
+    const nav = useNavigate()
     const params = useParams()
     const [roomType, setRoomType] = useState({})
     const [get_one_room_type, loading, errorServer] = useFetch(
@@ -43,7 +44,12 @@ export const OneRoomTypePage = () => {
 
                         <div className="price-block">
                             <h2>{roomType.price_per_day} руб</h2>
-                            <PickMeButton className={'change-btn'}>Выбрать</PickMeButton>
+                            <PickMeButton
+                                className={'change-btn'}
+                                onClick={() => nav(`/rooms/${roomType.slug}/reservation`)}
+                            >
+                                Выбрать
+                            </PickMeButton>
                         </div>
 
                         <div className="description-block">

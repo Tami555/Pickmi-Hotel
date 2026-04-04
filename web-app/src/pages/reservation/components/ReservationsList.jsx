@@ -35,7 +35,7 @@ export const ReservationsList = () => {
                 }
                 <DetailReservationsWindow
                     isOpen={isOpenDetailWindow}
-                    closeFunc={() => {openDetailWindow(false)}}
+                    closeFunc={() => {openDetailWindow(false); get_user_reservation()}}
                     reservations_list={userReservations}
                 />
             </ContentApiBlock>
