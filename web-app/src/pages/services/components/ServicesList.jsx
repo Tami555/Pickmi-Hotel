@@ -16,9 +16,10 @@ export const ServicesList = () => {
             setUserServices(res);
         }
     )
+    useEffect(() => {get_user_services()}, [])
+
     const [isOpenDetailWindow, openDetailWindow] = useState(false)
 
-    useEffect(() => {get_user_services()}, [])
     return (
         <div className="services-list-block">
             <h1 className="main-title">Ваши услуги</h1>
@@ -35,7 +36,7 @@ export const ServicesList = () => {
                 }
                 <DetailServicesWindow
                     isOpen={isOpenDetailWindow}
-                    closeFunc={() => openDetailWindow(false)}
+                    closeFunc={() => {openDetailWindow(false); get_user_services()}}
                     services_list={userServices}
                 />
             </ContentApiBlock>

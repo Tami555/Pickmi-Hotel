@@ -10,7 +10,8 @@ export { read_profile, edit_profile } from "./UserService/profile";
 
 // Services
 export { current_user_services } from "./ServicesService/to_user";
+export {cancel_service} from "./ServicesService/services";
 
 // Reservations
 export { current_user_reservations } from "./ReservationsService/to_user";
-export { create_reservations } from "./ReservationsService/reservation";
+export { create_reservations, cancel_reservations } from "./ReservationsService/reservation";

@@ -8,7 +8,7 @@ import { DetailServicesWindow } from "../../services/components/DetailServicesWi
 import { useFetch } from "../../../hooks/useFetch";
 import { ModalWindow } from "../../../components/UI/feedback/ModalWindow";
 import { Loader } from "../../../components/UI/feedback/Loader";
-import { cancel_reservations } from "../../../api/services/ReservationsService/reservation";
+import { cancel_reservations } from "../../../api/services";
 
 
 export const DetailReservationBlock = ({reservation}) => {
@@ -43,7 +43,7 @@ export const DetailReservationBlock = ({reservation}) => {
                     <h3>Выезд: <span>{formatToRussianDateTime(reservation.check_out_date)}</span></h3>                    
                     <h3>Итог: <span>{reservation.total_price} руб</span></h3>
                 </div>
-                {/* {serverError && <p className="errors">{serverError}</p>} */}
+                {serverError && <p className="errors">{serverError}</p>}
                 {
                     status == RESERVATIONS_STATUSES.pending ?
                     <PickMeButton

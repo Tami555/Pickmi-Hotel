@@ -22,6 +22,7 @@ export const USER_ENDPOINTS = {
 
 export const SERVICES_ENDPOINTS = {
   CURRENT_USER_SERVICES: '/users/guests/profile/tasks',
+  CANCEL_SERVICE: '/tasks/:id/canceled'
 }
 
 export const RESERVATIONS_ENDPOINTS = {
