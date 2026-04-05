@@ -25,35 +25,35 @@ async def create_task(
 
 @router.patch('/{task_id}/started', response_model=TaskResponse)
 async def started_task(
-        tasks_id: int,
+        task_id: int,
         user: User = Depends(employee_by_token),
         session: AsyncSession = Depends(db_helper.create_scoped_session)
 ):
     try:
-        return await task_service.started_task_by_id(user, tasks_id, session)
+        return await task_service.started_task_by_id(user, task_id, session)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)
     
 
 @router.patch('/{task_id}/completed', response_model=TaskResponse)
 async def completed_task(
-        tasks_id: int,
+        task_id: int,
         user: User = Depends(employee_by_token),
         session: AsyncSession = Depends(db_helper.create_scoped_session)
 ):
     try:
-        return await task_service.completed_task_by_id(user, tasks_id, session)
+        return await task_service.completed_task_by_id(user, task_id, session)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)
     
 
 @router.patch('/{task_id}/canceled', response_model=TaskResponse)
 async def canceled_task(
-        tasks_id: int,
+        task_id: int,
         user: User = Depends(get_current_user),
         session: AsyncSession = Depends(db_helper.create_scoped_session)
 ):
     try:
-        return await task_service.canceled_task_by_id(user, tasks_id, session)
+        return await task_service.canceled_task_by_id(user, task_id, session)
     except AppException as err:
         raise HTTPException(status_code=err.status_code, detail=err.message)
