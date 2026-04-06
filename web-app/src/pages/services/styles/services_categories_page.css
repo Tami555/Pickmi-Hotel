@@ -1,0 +1,25 @@
+.service-category-title{
+    margin: 20px 0px;
+    color: var(--purple-deep);
+    font-family: var(--unquiet);
+    font-size: 75px;
+    font-weight: 300;
+}
+.service-category-block{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 450px;
+    height: 110px;
+    border-radius: 25px;
+    margin: 12px;
+    color: var(--white-creamy);
+    font-family: var(--izvod);
+    font-size: 45px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.5s;
+}
+.service-category-block:hover{
+    transform: scale(1.1);
+}

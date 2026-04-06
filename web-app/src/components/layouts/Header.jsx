@@ -12,7 +12,7 @@ export const Header = () => {
     const links = [
         { title: 'О нас', path: '/' },
         { title: 'Номера', path: '/rooms' },
-        { title: 'Услуги', path: '/services' },
+        { title: 'Услуги', path: '/services/categories' },
     ];
     const location = useLocation();
     const nav = useNavigate();
