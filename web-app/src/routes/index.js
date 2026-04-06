@@ -6,6 +6,7 @@ import { OneRoomTypePage } from '../pages/rooms/OneRoomTypePage'
 import { RoomTypesPage } from '../pages/rooms/RoomTypesPage'
 import { ReservationPage } from '../pages/reservation/ReservationPage'
 import { ServicesCategoriesPage } from '../pages/services/ServicesCategoriesPage'
+import { ServicesByCategoryPage } from '../pages/services/ServicesByCategoryPage'
 
 
 // Общие пути
@@ -16,7 +17,8 @@ export const  common_routes = [
     {path: '/rooms/:slug', element: OneRoomTypePage},
     {path: '/rooms/:slug/reservation', element: ReservationPage},
     {path: '/services/categories', element: ServicesCategoriesPage},
-]
+    {path: '/services/categories/:slug', element: ServicesByCategoryPage},
+]   
 
 // для не авторизованных
 export const no_authorized_routes = [

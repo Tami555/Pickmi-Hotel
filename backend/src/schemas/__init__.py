@@ -7,7 +7,7 @@ from .employees import EmployeeResponse, EmployeeCreate, EmployeeDetailResponse,
 from .auth import LoginUser, TokenResponse, RefreshTokenContent, AccessTokenContent, TokenVerifyResponse, TokenRequest
 from .rooms import RoomResult, RoomDetailResult, RoomOccupancyInfo
 from .reservations import ReservationResponse, ReservationCreate, ReservationDetailResponse
-from .service_categories import ServiceCategoryResponse
+from .service_categories import ServiceCategoryResponse, ServiceCategoryDetailResponse
 from .services import ServiceResponse, ServiceDetailResponse
 from .tasks import TaskCreate, TaskResponse, TaskDetailResponse
 
@@ -20,6 +20,7 @@ ReservationResponse.model_rebuild()
 PositionDetailResponse.model_rebuild()
 TaskResponse.model_rebuild()
 TaskDetailResponse.model_rebuild()
+ServiceCategoryDetailResponse.model_rebuild()
 
 
 __all__ = [
@@ -55,6 +56,7 @@ __all__ = [
     "ReservationDetailResponse",
     "ReservationCreate",
     "ServiceCategoryResponse",
+    "ServiceCategoryDetailResponse",
     "ServiceResponse",
     "ServiceDetailResponse",
     "TaskCreate",

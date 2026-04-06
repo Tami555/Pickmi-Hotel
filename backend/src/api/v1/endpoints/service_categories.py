@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 from src.core import db_helper
 import src.crud.service_categories as crud
-from src.schemas import ServiceCategoryResponse, ServiceResponse
+from src.schemas import ServiceCategoryResponse, ServiceCategoryDetailResponse
 from src.services import service_service
 from src.exceptions import AppException
 
@@ -17,7 +17,7 @@ async def get_service_categories(session: AsyncSession = Depends(db_helper.creat
     return await crud.get_service_categories(session)
 
 
-@router.get('/{category_slug}/services', response_model=list[ServiceResponse])
+@router.get('/{category_slug}/services', response_model=ServiceCategoryDetailResponse)
 async def get_services_by_category(
     category_slug: Annotated[str, Path(example="uborka-i-klining")],
     session: AsyncSession = Depends(db_helper.create_scoped_session)

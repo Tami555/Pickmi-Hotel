@@ -1,0 +1,10 @@
+.category-title{
+    color: var(--pink-soft);
+    -webkit-text-stroke: 2px var(--purple-deep);
+    position: relative;
+    left: -250px;
+    font-size: 70px;
+    font-family: var(--unquiet);
+    font-weight: 300;
+    margin: 30px;
+}

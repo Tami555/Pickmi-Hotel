@@ -17,6 +17,17 @@ export const services_categories = async () => {
 };
 
 
+export const services_by_category = async (category_slug ) => {
+  return await apiRequest(
+    async () => {
+      const res = await axios.get(getBackendUrl(SERVICES_ENDPOINTS.SERVICES_BY_CATEGORY.replace(':id', category_slug)));
+      return res.data;
+    },
+    handleApiError
+  );
+};
+ 
+
 export const cancel_service = async (service_id) => {
   return await apiRequest(
     async () => {
