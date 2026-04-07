@@ -65,7 +65,7 @@ async def get_employee_tasks(
 
 
 @router.get("/{employee_id}/tasks", response_model=list[TaskDetailResponse])
-async def get_employee_tasks_by_id(
+async def get_employee_by_id_tasks(
     employee_id: int,
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ):

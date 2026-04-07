@@ -75,7 +75,7 @@ async def get_new_tokens(
 
 
 @router.post("/verify/", response_model=TokenVerifyResponse)
-async def get_new_tokens(
+async def verify_tokens(
     credentials: TokenRequest
 ) -> TokenVerifyResponse:
     try:

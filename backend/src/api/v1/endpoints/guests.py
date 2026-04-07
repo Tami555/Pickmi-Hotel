@@ -61,7 +61,7 @@ async def update_guest_profile(
 
 
 @router.get("/profile/reservations", response_model=list[ReservationDetailResponse])
-async def get_guest_ordered_services(
+async def get_guest_reservations(
     user: User = Depends(guest_by_token),
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ):
@@ -83,7 +83,7 @@ async def get_guest_active_reservations(
 
 
 @router.get("/{guest_id}/reservations", response_model=list[ReservationDetailResponse])
-async def get_guest_ordered_services_by_id(
+async def get_guest_by_id_reservations(
     guest_id: Annotated[int, Path(example=1)],
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ):
@@ -105,7 +105,7 @@ async def get_guest_ordered_services(
 
 
 @router.get("/{guest_id}/tasks", response_model=list[TaskDetailResponse])
-async def get_guest_ordered_services_by_id(
+async def get_guest_by_id_ordered_services(
     guest_id: Annotated[int, Path(example=1)],
     session: AsyncSession = Depends(db_helper.create_scoped_session)
 ):
