@@ -82,10 +82,17 @@ async def update_user_partial(user_data: UserUpdateProfile | UserUpdate, user: U
 
 
 async def get_guest_reservations(guest_id: int, session: AsyncSession):
-    """ Получение гостей со списком их броней """
+    """ Получение списка броней гостя"""
     await get_user_by_role_by_id(guest_id, Role.GUEST, session)
     await reservations_crud.update_reservation_statuses_by_dates(session) # обновление статусов бронирования
     return await reservations_crud.get_reservations_by_user_id(guest_id, session)
+
+
+async def get_guest_active_reservations(guest_id: int, session: AsyncSession):
+    """ Получение активных броней гостя"""
+    await get_user_by_role_by_id(guest_id, Role.GUEST, session)
+    await reservations_crud.update_reservation_statuses_by_dates(session) # обновление статусов бронирования
+    return await reservations_crud.get_all_active_reservations_by_user(guest_id, session)
 
 
 async def get_guests_with_staying_status(

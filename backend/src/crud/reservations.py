@@ -69,6 +69,20 @@ async def get_active_reservation_by_user(user_id: int, session: AsyncSession) ->
     return result.scalar_one_or_none()
 
 
+async def get_all_active_reservations_by_user(user_id: int, session: AsyncSession) -> list[Reservation]:
+    """Получение всех активных броней пользователя"""
+    stmt = (
+        select(Reservation)
+        .where(
+            Reservation.user_id == user_id,
+            Reservation.status == ReservationStatus.ACTIVE
+        )
+        .options(joinedload(Reservation.room))
+    )
+    result = await session.scalars(stmt)
+    return result
+
+
 async def get_active_reservation_by_room(
     room_id: int,
     session: AsyncSession

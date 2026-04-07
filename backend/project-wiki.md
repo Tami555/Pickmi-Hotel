@@ -287,6 +287,31 @@
 ```
 <br>
 
+- ####  Получить список только активных броней:
+> **GET: /users/guests/profile/active/reservations**
+
+**Заголовок запроса:**
+``` Authorization: Bearer <access token> ```
+
+**Ответ (200 OK):**
+```json
+[
+  {
+    "id": 6,
+    "check_in_date": "2026-04-06T22:06:00",
+    "check_out_date": "2026-04-09T22:06:00",
+    "status": "active",
+    "room": {
+      "room_number": "400",
+      "floor": 4,
+      "quantity_places": 2
+    }
+  },
+  ...
+]
+```
+<br>
+
 
 ### Услуги
 - ####  Получить список категорий услуг:
