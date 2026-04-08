@@ -7,6 +7,7 @@ import { ModalWindow } from "../../../components/UI/feedback/ModalWindow";
 import { Loader } from "../../../components/UI/feedback/Loader";
 import { useFetch } from "../../../hooks/useFetch";
 import { cancel_service } from "../../../api/services";
+import { formatImageUrl } from "../../../utils/formats/image";
 
 
 export const DetailServiceBlock = ({service}) => {
@@ -44,7 +45,7 @@ export const DetailServiceBlock = ({service}) => {
             <div className="service-status" style={{background: status?.color}}>
                 {status?.value}
             </div>
-            <img src="https://thumbs.dreamstime.com/b/женщина-в-перчатках-с-моющей-тряпкой-и-моющим-распылителем-266689672.jpg" className="service-img"/>
+            <img src={formatImageUrl(service.service.image)} alt={service.service.title} className="service-img"/>
             <div className="service-infa-block">
                 <h1 className="title">{service.service.title}</h1>
                 {serviceDetails.map((detail, index) => (

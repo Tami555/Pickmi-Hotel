@@ -6,6 +6,7 @@ import { ContentApiBlock } from "../../components/layouts/ContentApiBlock"
 import { useFetch } from "../../hooks/useFetch"
 import { PickMeButton } from "../../components/UI/buttons/PickMeButton"
 import { formatDateToRussian } from "../../utils/formats/dates"
+import { formatImageUrl } from "../../utils/formats/image"
 import "./styles/service_ordered_page.css";
 import { PickMeSelectedList } from "../../components/UI/feedback/PickMeSelectedList"
 
@@ -169,7 +170,7 @@ export const ServiceOrderedPage = () => {
             >
                 <div className="ordered-main-block">
                     <h1>{service.title}</h1>
-                    <img src="https://avatars.mds.yandex.net/i?id=a35988dd222259578eac687ff4af6197_l-3754358-images-thumbs&n=13"/>
+                    <img src={formatImageUrl(service.image)} alt={service.title}/>
                 </div>
                 
                 <div className="order-block">

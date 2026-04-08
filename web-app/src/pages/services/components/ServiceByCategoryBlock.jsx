@@ -2,6 +2,7 @@ import React from "react";
 import "../styles/service_by_category_block.css";
 import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
 import { useNavigate } from "react-router-dom";
+import { formatImageUrl } from "../../../utils/formats/image";
 
 
 export const ServiceByCategoryBlock = ({service}) => {
@@ -16,7 +17,7 @@ export const ServiceByCategoryBlock = ({service}) => {
                     <PickMeButton onClick={() => nav(`/services/order/${service.slug}`)}>Заказать</PickMeButton>
                 </div>
             </div>
-            <img className="image" src="https://www.good-cook.ru/articles/2025/10/30-1-organizatsija-generalnoj-uborki-kvartiry.jpg"/>
+            <img className="image" src={formatImageUrl(service.image)} alt={service.title}/>
         </div>
     )
 }

@@ -14,6 +14,11 @@ export const handleApiError = (error, defaultMessage = "Произошла не�
   // HTTP errors
   if (error.response?.data) {    
     //  Статус-специфичные ошибки
+
+     if (error.response.status === 400) {
+      const msg = error.response?.data?.detail || "Некорректный запрос"
+      throw new Error(msg);
+    }
     if (error.response.status === 401) {
       throw new Error("Неавторизованный доступ. Пожалуйста, войдите снова.");
     }
