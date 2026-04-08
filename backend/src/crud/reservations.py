@@ -114,39 +114,41 @@ async def create_reservation(
 
 async def update_reservation_statuses_by_dates(session: AsyncSession):
     """Обновление статусов броней по датам"""
-    now = datetime.datetime.now()
+    now = datetime.datetime.now() + datetime.timedelta(hours=3)
     
-    # наступила дата заезда
+    # активные брони (заезд уже был, выезд еще не наступил)
     pending_stmt = (
         update(Reservation)
         .where(
             Reservation.check_in_date <= now,
-            Reservation.check_out_date >= now
+            Reservation.check_out_date >= now,
+            Reservation.status != ReservationStatus.ACTIVE
         )
-        .values(status=ReservationStatus.ACTIVE, updated_at=datetime.datetime.now())
+        .values(status=ReservationStatus.ACTIVE, updated_at=now)
     )
     await session.execute(pending_stmt)
 
-    # прошла дата выезда
+    # завершенные брони
     completed_reservations_stmt = (
         select(Reservation.id)
         .where(
             Reservation.check_out_date < now,
-            Reservation.status != ReservationStatus.COMPLETED  # чтобы не обновлять повторно
+            Reservation.status != ReservationStatus.COMPLETED
         )
     )
     result = await session.execute(completed_reservations_stmt)
     completed_reservation_ids = [row[0] for row in result.fetchall()]
-
+    
     if completed_reservation_ids:
+        # Обновляем статус броней
         active_stmt = (
             update(Reservation)
             .where(Reservation.id.in_(completed_reservation_ids))
-            .values(status=ReservationStatus.COMPLETED, updated_at=datetime.datetime.now())
+            .values(status=ReservationStatus.COMPLETED, updated_at=now)
         )
         await session.execute(active_stmt)
-
-        # обновляем статусы задач
+        
+        # Обновляем статусы задач
         tasks_stmt = (
             update(Task)
             .where(
@@ -155,12 +157,11 @@ async def update_reservation_statuses_by_dates(session: AsyncSession):
             )
             .values(
                 status=TaskStatus.COMPLETED,
-                completed_at=datetime.datetime.now(),
-                updated_at=datetime.datetime.now()
+                completed_at=now,
+                updated_at=now
             )
         )
         await session.execute(tasks_stmt)
-
     await session.commit()
 
 

@@ -14,6 +14,7 @@ async def create_task(
         session: AsyncSession
 ) -> Task:
     """Создание заказа услуги (задачи для сотрудника)"""
+    print('СОЗДАНИЕ УСЛУГИ')
 
     # Проверяем услугу на существование
     service = await service_crud.get_service_by_id(task_data.service_id, session)
@@ -28,6 +29,11 @@ async def create_task(
         raise ForbiddenError(message="Вы можете заказывать услуги только на свои брони")
     if reservation.status != ReservationStatus.ACTIVE:
         raise CannotCreateTaskError(reason="Услугу можно заказать только на активную бронь")
+
+    # Проверяем, что время планирования не в прошлом
+    now = datetime.datetime.now() + datetime.timedelta(hours=3)
+    if task_data.scheduled_time < now:
+        raise CannotCreateTaskError(reason="Нельзя запланировать услугу на прошедшее время")
 
     # Проверяем время планирования (входит в промежуток брони)
     if not(reservation.check_in_date <= task_data.scheduled_time <= reservation.check_out_date):
