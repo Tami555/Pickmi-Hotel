@@ -46,7 +46,7 @@
 }
 .deatil-reservation-block .detail-infa .infa-block{
     display: grid;
-    grid-template-columns: 70% 35%;
+    grid-template-columns: 70% 36%;
     grid-template-rows: repeat(3, 1fr);
     gap: 2px 5px; 
     text-align: start;

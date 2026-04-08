@@ -6,9 +6,11 @@ import "../styles/reservations_list.css";
 import { ReservationBlock } from "./ReservationBlock";
 import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
 import { DetailReservationsWindow } from "./DetailReservationsWindow";
+import { useNavigate } from "react-router-dom";
 
 
 export const ReservationsList = () => {
+    const nav = useNavigate();
     const [userReservations, setUserReservations] = useState([])
     const [isOpenDetailWindow, openDetailWindow] = useState(false)
 
@@ -31,7 +33,7 @@ export const ReservationsList = () => {
                         <PickMeButton onClick={() => openDetailWindow(true)}>Подробнее</PickMeButton>
                     </>
                     :
-                    <div className={"create-service-btn"}>+</div>
+                    <div className={"create-service-btn"} onClick={() => nav('/rooms')}>+</div>
                 }
                 <DetailReservationsWindow
                     isOpen={isOpenDetailWindow}

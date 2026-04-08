@@ -10,10 +10,15 @@ export const OtherDetailPage = () => {
     return (
         <div className="other-detail-page-block">
             <div className="btns-block">
-               <PickMeButton className={'btn'}>забронировать</PickMeButton>
+               <PickMeButton
+                    className={'btn'}
+                    onClick={() => nav('/rooms')}
+                >
+                    забронировать
+                </PickMeButton>
                <PickMeButton
                     className={'btn detail-btn'}
-                    onClick={() => nav('/rooms')}
+                    onClick={() => nav('/users/profile')}
                 >
                     подробнее
                 </PickMeButton>

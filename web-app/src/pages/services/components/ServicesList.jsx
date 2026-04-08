@@ -6,9 +6,11 @@ import { ServiceBlock } from "./ServiceBlock";
 import "../styles/services_list.css"
 import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
 import { DetailServicesWindow } from "./DetailServicesWindow";
+import { useNavigate } from "react-router-dom";
 
 
 export const ServicesList = () => {
+    const nav = useNavigate();
     const [userServices, setUserServices] = useState([])
     const [get_user_services, loading, errorServer] = useFetch(
         async () => {
@@ -32,7 +34,7 @@ export const ServicesList = () => {
                         <PickMeButton onClick={() => openDetailWindow(true)}>Подробнее</PickMeButton>
                     </>
                     :
-                    <div className={"create-service-btn"}>+</div>
+                    <div className={"create-service-btn"} onClick={() => nav('/services/categories')}>+</div>
                 }
                 <DetailServicesWindow
                     isOpen={isOpenDetailWindow}
