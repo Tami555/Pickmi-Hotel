@@ -23,12 +23,15 @@ export const USER_ENDPOINTS = {
 export const SERVICES_ENDPOINTS = {
   CURRENT_USER_SERVICES: '/users/guests/profile/tasks',
   CANCEL_SERVICE: '/tasks/:id/canceled',
+  CREATE_SERVICE: '/tasks',
   CATEGORIES_SERVICES: '/services-categories/',
-  SERVICES_BY_CATEGORY: '/services-categories/:id/services'
+  SERVICES_BY_CATEGORY: '/services-categories/:id/services',
+  SERVICE_BY_SLUG: '/services/:id',
 }
 
 export const RESERVATIONS_ENDPOINTS = {
   CURRENT_USER_RESERVATION: '/users/guests/profile/reservations',
+  CURRENT_USER_ACTIVE_RESERVATION: '/users/guests/profile/active/reservations',
   CREATE_RESERVATION : '/reservations/',
   CANCEL_RESERVATION: '/reservations/:id/cancel'
 }

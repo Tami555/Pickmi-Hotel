@@ -7,6 +7,7 @@ import { RoomTypesPage } from '../pages/rooms/RoomTypesPage'
 import { ReservationPage } from '../pages/reservation/ReservationPage'
 import { ServicesCategoriesPage } from '../pages/services/ServicesCategoriesPage'
 import { ServicesByCategoryPage } from '../pages/services/ServicesByCategoryPage'
+import { ServiceOrderedPage } from '../pages/services/ServiceOrderedPage'
 
 
 // Общие пути
@@ -29,5 +30,6 @@ export const no_authorized_routes = [
 
 // для авторизованных
 export const authorized_routes = [
-    {path: '/users/profile', element: ProfilePage}
+    {path: '/users/profile', element: ProfilePage},
+    {path: '/services/order/:slug', element: ServiceOrderedPage}
 ]

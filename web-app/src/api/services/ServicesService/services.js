@@ -1,8 +1,6 @@
 import { getBackendUrl, SERVICES_ENDPOINTS } from "../../config/endpoints";
-import { apiClient } from "../../config/apiClient";
 import { handleApiError } from "../../utils/errors/errorHandlers";
 import { apiRequest } from "../../utils/apiRequest";
-import { check_token } from "../UserService/tokens";
 import axios from "axios";
 
 
@@ -26,13 +24,12 @@ export const services_by_category = async (category_slug ) => {
     handleApiError
   );
 };
- 
 
-export const cancel_service = async (service_id) => {
+
+export const service_by_slug = async (service_slug ) => {
   return await apiRequest(
     async () => {
-      await check_token() //обновляем токен
-      const res = await apiClient.patch(SERVICES_ENDPOINTS.CANCEL_SERVICE.replace(':id', service_id));
+      const res = await axios.get(getBackendUrl(SERVICES_ENDPOINTS.SERVICE_BY_SLUG.replace(':id', service_slug)));
       return res.data;
     },
     handleApiError
