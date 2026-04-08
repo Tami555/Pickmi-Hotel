@@ -19,3 +19,14 @@ export const create_reservations = async (room_number, check_in, check_out) => {
     handleApiError
   );
 };
+
+export const cancel_reservations = async (reservation_id) => {
+  return await apiRequest(
+    async () => {
+      await check_token() //обновляем токен
+      const res = await apiClient.patch(RESERVATIONS_ENDPOINTS.CANCEL_RESERVATION.replace(':id', reservation_id));
+      return res.data;
+    },
+    handleApiError
+  );
+};

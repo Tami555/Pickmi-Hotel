@@ -5,11 +5,25 @@ import { formatImageUrl } from "../../../utils/formats/image";
 import { RESERVATIONS_STATUSES } from "../utils/data";
 import { PickMeButton } from "../../../components/UI/buttons/PickMeButton";
 import { DetailServicesWindow } from "../../services/components/DetailServicesWindow";
+import { useFetch } from "../../../hooks/useFetch";
+import { ModalWindow } from "../../../components/UI/feedback/ModalWindow";
+import { Loader } from "../../../components/UI/feedback/Loader";
+import { cancel_reservations } from "../../../api/services";
 
 
 export const DetailReservationBlock = ({reservation}) => {
-    const status = RESERVATIONS_STATUSES[reservation.status]
+    const [status, setStatus] = useState(RESERVATIONS_STATUSES[reservation.status])
     const [isOpenTasksWindow, openTasksWindow] = useState(false)
+
+    const [confirmCancelWindow, openConfirmCancelWindow] = useState(false)
+    const [reservationCancel, loadingCancel, serverError] = useFetch(
+        async () => {
+            await cancel_reservations(reservation.id);
+            openConfirmCancelWindow(false);
+            setStatus(RESERVATIONS_STATUSES.canceled)
+        }
+    )
+
     
     return (
         <div className="deatil-reservation-block">
@@ -29,9 +43,15 @@ export const DetailReservationBlock = ({reservation}) => {
                     <h3>Выезд: <span>{formatToRussianDateTime(reservation.check_out_date)}</span></h3>                    
                     <h3>Итог: <span>{reservation.total_price} руб</span></h3>
                 </div>
+                {serverError && <p className="errors">{serverError}</p>}
                 {
-                    reservation.status == "pending" ?
-                    <PickMeButton className={'btns canceled'}>Отменить</PickMeButton>
+                    status == RESERVATIONS_STATUSES.pending ?
+                    <PickMeButton
+                        className={'btns canceled'}
+                        onClick={() => openConfirmCancelWindow(true)}
+                    >
+                        Отменить
+                    </PickMeButton>
                     :
                     reservation.tasks.length > 0 &&
                     <PickMeButton
@@ -48,6 +68,17 @@ export const DetailReservationBlock = ({reservation}) => {
                     title_window={`Услуги номера ${reservation.room.room_number}`}
                 />
             </div>
+            <ModalWindow
+                isOpen={confirmCancelWindow}
+                closeFunc={() => {openConfirmCancelWindow(false)}}
+            >
+                <h1>Вы уверены, что хотите отменить бронь на номер {reservation.room.room_number} ?</h1>
+                <PickMeButton
+                    onClick={() => reservationCancel()}
+                >
+                    {loadingCancel ? <Loader/> : 'Отменить бронь'}
+                </PickMeButton>
+            </ModalWindow>
         </div>
     )
 }

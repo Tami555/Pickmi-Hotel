@@ -69,6 +69,20 @@ async def get_active_reservation_by_user(user_id: int, session: AsyncSession) ->
     return result.scalar_one_or_none()
 
 
+async def get_all_active_reservations_by_user(user_id: int, session: AsyncSession) -> list[Reservation]:
+    """Получение всех активных броней пользователя"""
+    stmt = (
+        select(Reservation)
+        .where(
+            Reservation.user_id == user_id,
+            Reservation.status == ReservationStatus.ACTIVE
+        )
+        .options(joinedload(Reservation.room))
+    )
+    result = await session.scalars(stmt)
+    return result
+
+
 async def get_active_reservation_by_room(
     room_id: int,
     session: AsyncSession
@@ -100,28 +114,54 @@ async def create_reservation(
 
 async def update_reservation_statuses_by_dates(session: AsyncSession):
     """Обновление статусов броней по датам"""
-    now = datetime.datetime.now()
+    now = datetime.datetime.now() + datetime.timedelta(hours=3)
     
-    # наступила дата заезда
+    # активные брони (заезд уже был, выезд еще не наступил)
     pending_stmt = (
         update(Reservation)
         .where(
             Reservation.check_in_date <= now,
-            Reservation.check_out_date >= now
+            Reservation.check_out_date >= now,
+            Reservation.status != ReservationStatus.ACTIVE
         )
-        .values(status=ReservationStatus.ACTIVE, updated_at = datetime.datetime.now())
+        .values(status=ReservationStatus.ACTIVE, updated_at=now)
     )
     await session.execute(pending_stmt)
-    
-    # прошла дата выезда
-    active_stmt = (
-        update(Reservation)
+
+    # завершенные брони
+    completed_reservations_stmt = (
+        select(Reservation.id)
         .where(
-            Reservation.check_out_date < now
+            Reservation.check_out_date < now,
+            Reservation.status != ReservationStatus.COMPLETED
         )
-        .values(status=ReservationStatus.COMPLETED, updated_at = datetime.datetime.now())
     )
-    await session.execute(active_stmt)
+    result = await session.execute(completed_reservations_stmt)
+    completed_reservation_ids = [row[0] for row in result.fetchall()]
+    
+    if completed_reservation_ids:
+        # Обновляем статус броней
+        active_stmt = (
+            update(Reservation)
+            .where(Reservation.id.in_(completed_reservation_ids))
+            .values(status=ReservationStatus.COMPLETED, updated_at=now)
+        )
+        await session.execute(active_stmt)
+        
+        # Обновляем статусы задач
+        tasks_stmt = (
+            update(Task)
+            .where(
+                Task.reservation_id.in_(completed_reservation_ids),
+                Task.status.in_([TaskStatus.PENDING, TaskStatus.IN_PROGRESS])
+            )
+            .values(
+                status=TaskStatus.COMPLETED,
+                completed_at=now,
+                updated_at=now
+            )
+        )
+        await session.execute(tasks_stmt)
     await session.commit()
 
 

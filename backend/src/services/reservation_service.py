@@ -42,10 +42,10 @@ async def create_reservation(
     total_price = room.room_type.price_per_day * nights
 
     # Определяем статус
-    today = datetime.date.today()
-    if reservation_data.check_in_date.date() == today:
+    now = datetime.datetime.now()
+    if reservation_data.check_in_date <= now:
         status = ReservationStatus.ACTIVE
-    elif reservation_data.check_in_date.date() > today:
+    elif reservation_data.check_in_date > now:
         status = ReservationStatus.PENDING
     else:
         raise AppException("Дата заезда не может быть в прошлом", 400)

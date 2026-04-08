@@ -287,6 +287,31 @@
 ```
 <br>
 
+- ####  Получить список только активных броней:
+> **GET: /users/guests/profile/active/reservations**
+
+**Заголовок запроса:**
+``` Authorization: Bearer <access token> ```
+
+**Ответ (200 OK):**
+```json
+[
+  {
+    "id": 6,
+    "check_in_date": "2026-04-06T22:06:00",
+    "check_out_date": "2026-04-09T22:06:00",
+    "status": "active",
+    "room": {
+      "room_number": "400",
+      "floor": 4,
+      "quantity_places": 2
+    }
+  },
+  ...
+]
+```
+<br>
+
 
 ### Услуги
 - ####  Получить список категорий услуг:
@@ -312,17 +337,28 @@
 
 **Ответ (200 OK):**
 ```json
-[
-  {
-    "id": 1,
-    "slug": "ezhednevnaya-uborka-nomera",
-    "title": "Ежедневная уборка номера",
-    "price": 0,
-    "description": "Стандартная уборка номера: заправка кровати, вынос мусора, замена полотенец",
-    "image": null
-  },
-  ...
-]
+{
+  "slug": "uborka-i-klining",
+  "title": "Уборка и клининг",
+  "services": [
+    {
+      "id": 1,
+      "slug": "ezhednevnaya-uborka-nomera",
+      "title": "Ежедневная уборка номера",
+      "price": 0,
+      "description": "Стандартная уборка номера: заправка кровати, вынос мусора, замена полотенец",
+      "image": null
+    },
+    {
+      "id": 2,
+      "slug": "generalnaya-uborka",
+      "title": "Генеральная уборка",
+      "price": 1500,
+      "description": "Полная уборка номера с мытьем окон и санузла",
+      "image": null
+    }
+  ]
+}
 ```
 <br>
 

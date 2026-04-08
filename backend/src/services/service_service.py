@@ -8,7 +8,13 @@ async def get_services_by_service_category(category_slug: str, session: AsyncSes
     category =  await service_categories_crud.get_service_category_by_slug(category_slug, session)
     if category is None:
         raise ServiceCategoriesNotFoundError()
-    return await service_crud.get_services_by_category_by_slug(category_slug, session)
+    services = await service_crud.get_services_by_category_by_slug(category_slug, session)
+    response = {
+        "slug": category.slug,
+        "title": category.title,
+        "services": services
+    }
+    return response
 
 
 async def get_service_by_slug(service_slug: str, session):

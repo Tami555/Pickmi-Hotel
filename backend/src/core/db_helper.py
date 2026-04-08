@@ -8,7 +8,7 @@ class DatabaseHelper:
     def __init__(self, db_url):
         self.engine = create_async_engine(
             url=db_url,
-            echo=True, # Отладка
+            echo=False, # Отладка
             pool_size=20, 
             max_overflow=30
         )
