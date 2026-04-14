@@ -17,39 +17,50 @@ async def get_employee_by_id(employee_id: int, session: AsyncSession):
 
 
 async def registration_employee(
-    user_data: UserCreate,
-    employee_data: EmployeeCreate,
-    session: AsyncSession
+        user_data: UserCreate,
+        employee_data: EmployeeCreate,
+        session: AsyncSession
 ) -> User:
-    """ Регистрация сотрудника """
-    # Проверяем уникальность пользователя
-    if await user_crud.get_user_by_email(user_data.email, session):
-        raise EmailAlreadyExistsError()
-    
-    if await user_crud.get_user_by_phone(user_data.phone, session):
-        raise PhoneAlreadyExistsError()
-    
-    if await user_crud.get_user_by_passport(user_data.passport_series, user_data.passport_number, session):
-        raise PassportAlreadyExistsError()
-    
+    """ Регистрация сотрудника с восстановлением """
     # Проверяем должность
     position = await position_crud.get_position_by_id(employee_data.position_id, session)
     if not position:
         raise PositionNotFoundError(employee_data.position_id)
-    
-    # Создаём пользователя
-    user_dict = user_data.model_dump()
-    user_dict["password"] = hashed_password(user_dict["password"])
-    user_dict["role"] = Role.EMPLOYEE
-    
-    new_user = await user_crud.create_user(user_dict, session)
-    
+
+    # Возможно существующий пользователь-сотрудник без связки с employer
+    existing_user = await user_crud.get_user_by_email(user_data.email, session)
+    if existing_user:
+        # Если роль не EMPLOYEE - тоже ошибка
+        if existing_user.role != Role.EMPLOYEE:
+            raise EmailAlreadyExistsError()
+
+        existing_employee = await employee_crud.get_employee_by_user_id(existing_user.id, session)
+        if existing_employee:
+            raise EmailAlreadyExistsError()
+
+        # Восстанавливаемся: используем существующего пользователя
+        new_user = existing_user
+    else:
+        # Проверяем остальные уникальные поля
+        if await user_crud.get_user_by_phone(user_data.phone, session):
+            raise PhoneAlreadyExistsError()
+
+        if await user_crud.get_user_by_passport(user_data.passport_series, user_data.passport_number, session):
+            raise PassportAlreadyExistsError()
+
+        # Создаём нового пользователя
+        user_dict = user_data.model_dump()
+        user_dict["password"] = hashed_password(user_dict["password"])
+        user_dict["role"] = Role.EMPLOYEE
+
+        new_user = await user_crud.create_user(user_dict, session)
+
     # Создаём сотрудника
     employee_dict = employee_data.model_dump()
     employee_dict["user_id"] = new_user.id
     employee_dict["hire_date"] = datetime.datetime.now().date()
     new_employee = await employee_crud.create_employee(employee_dict, session)
-    
+
     return await get_employee_by_id(new_employee.id, session)
 
 
