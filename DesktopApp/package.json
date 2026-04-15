@@ -1,0 +1,12 @@
+{
+  "name": "pickmi-desktop",
+  "version": "1.0.0",
+  "description": "Desktop app for PICKMI-HOTEL",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^31.0.0"
+  }
+}

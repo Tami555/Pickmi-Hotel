@@ -1,0 +1,137 @@
+@font-face {
+  font-family: 'PuffPuff';
+  src: url('C:/Users/admin1/Desktop/Pickmi-Hotel/DesktopApp/src/fonts/LPMPuffPuff-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'SliceMono';
+  src: url('C:/Users/admin1/Desktop/Pickmi-Hotel/DesktopApp/src/fonts/MBASliceMono-Regular.otf');
+}
+
+body {
+  margin: 0;
+  font-family: 'SliceMono', Arial, sans-serif;
+  background: #F7F7F8;
+}
+
+/* TOP BAR */
+.topbar {
+  height: 60px;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.app-name {
+  font-weight: bold;
+  color: #575F6E;
+  font-family: 'PuffPuff';
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #575F6E;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #D4D4D4;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav-item {
+  color: #575F6E;
+  cursor: pointer;
+  font-family: 'SliceMono';
+  font-weight: 500;
+  font-size: 18px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: 0.2s ease;
+}
+
+.nav-item:hover {
+  background: #F2E6EC;
+  transform: translateX(6px);
+  color: #6A4163;
+}
+
+
+/* MAIN */
+.content {
+  flex: 1;
+  padding: 20px;
+}
+
+.welcome-title {
+  color: #6A4163;
+  margin-bottom: 10px;
+  font-size: 48px;
+  font-family: 'PuffPuff';
+}
+
+.welcome-black {
+  color: black;
+  font-size: 36px;
+  font-family: 'PuffPuff';
+  margin: 0;
+}
+
+.welcome-gray {
+  color: gray;
+  margin-bottom: 20px;
+  font-size: 30px;
+  font-family: 'PuffPuff';
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 260px; 
+}
+
+.btn {
+  padding: 20px 24px; 
+  font-family: 'SliceMono';
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-radius: 16px;
+  font-size: 24px;     
+  width: 100%;        
+  text-align: center;   
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateX(4px);
+  opacity: 0.95;
+}
+
+
+.staff { background: #F39DB6; }
+.rooms { background: #D46A92; }
+.reports { background: #6A4163; }

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pickmi Admin - Отчетность</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="app-name">PICKMI ADMIN</div>
+
+  <div class="profile">
+    <div class="avatar" id="avatar"></div>
+    <div class="username" id="username">Мой профиль</div>
+  </div>
+</header>
+
+<div class="layout">
+
+  <aside class="sidebar">
+  <div class="nav-item" id="goStaff">👥 Сотрудники</div>
+  <div class="nav-item" id="goRooms">🛏️ Номера</div>
+  <div class="nav-item" id="goReports">📊 Отчетность</div>
+  </aside>
+
+  <main class="content">
+
+    <h1 class="welcome-title">Отчетность</h1>
+
+    <!-- ФИЛЬТР -->
+    <div class="report-filters">
+      <div class="filter-item">
+        <label>Дата начала</label>
+        <input type="date" id="startDate">
+      </div>
+
+      <div class="filter-item">
+        <label>Дата конца</label>
+        <input type="date" id="endDate">
+      </div>
+
+      <button class="btn generate-all">Сформировать все</button>
+    </div>
+
+    <!-- СПИСОК ОТЧЕТОВ -->
+    <div class="reports-list">
+
+      <div class="report-card">
+        <div class="report-info">
+          <div class="report-title">Номера и брони</div>
+          <div class="report-desc">Загрузка, бронирования, занятость</div>
+        </div>
+        <button class="btn small" onclick="generateReport('rooms')">
+          Сформировать
+        </button>
+      </div>
+
+      <div class="report-card">
+        <div class="report-info">
+          <div class="report-title">Сотрудники</div>
+          <div class="report-desc">Зарплата, статус, активность</div>
+        </div>
+        <button class="btn small" onclick="generateReport('employees')">
+          Сформировать
+        </button>
+      </div>
+
+      <div class="report-card">
+        <div class="report-info">
+          <div class="report-title">Услуги</div>
+          <div class="report-desc">Доход и популярность услуг</div>
+        </div>
+        <button class="btn small" onclick="generateReport('services')">
+          Сформировать
+        </button>
+      </div>
+
+    </div>
+
+    <!-- РЕЗУЛЬТАТ -->
+    <div id="reportResult" class="report-result"></div>
+
+  </main>
+
+</div>
+
+<script type="module" src="renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pickmi Admin - Главная</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="app-name">PICKMI ADMIN</div>
+
+    <div class="profile">
+      <div class="avatar"></div>
+      <div class="username" id="username">Мой профиль</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+  <div class="nav-item" id="goStaff">👥 Сотрудники</div>
+  <div class="nav-item" id="goRooms">🛏️ Номера</div>
+  <div class="nav-item" id="goReports">📊 Отчетность</div>
+</aside>
+
+    <!-- MAIN -->
+    <main class="content">
+      
+      <h1 class="welcome-title">Вы зашли в систему!</h1>
+
+      <p class="welcome-black">Добро пожаловать</p>
+
+      <div class="buttons">
+  <button class="btn staff" id="btnStaff">Сотрудники</button>
+  <button class="btn rooms" id="btnRooms">Номера</button>
+  <button class="btn reports" id="btnReports">Отчетность</button>
+</div>
+
+    </main>
+
+  </div>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

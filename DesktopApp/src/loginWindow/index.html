@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pickmi Admin - Авторизация</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<!--нач окно-->
+<body>
+  <div class="container">
+    <h1 class="title-main">Вы не вошли в систему!</h1>
+
+    <p class="subtitle">
+      для продолжения работ войдите в свой профиль:
+    </p>
+
+    <button id="loginBtn">Войти</button>
+  </div>
+
+  <!--Логин -->
+<div id="loginModal" class="modal hidden">
+  <div class="modal-content">
+    <!-- внутри modal-content -->
+<h2 class="modal-title">Вход</h2>
+
+<input type="email" id="email" placeholder="Email" />
+<input type="password" id="password" placeholder="Пароль" />
+
+<p id="errorText" style="color:red; display:none;">
+  Неверный email или пароль
+</p>
+
+<button id="submitLogin">Войти</button>
+  </div>
+</div>
+
+<!--успех-->
+<div id="successModal" class="modal hidden">
+  <div class="modal-content success">
+    <p>Вы успешно вошли!</p>
+    <div class="checkmark">✔</div>
+  </div>
+</div>
+
+<script type="module" src="renderer.js"></script>
+</body>
+</html>

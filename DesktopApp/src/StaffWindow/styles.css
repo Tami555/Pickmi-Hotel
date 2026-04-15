@@ -1,0 +1,454 @@
+@font-face {
+  font-family: 'PuffPuff';
+  src: url('C:/Users/admin1/Desktop/Pickmi-Hotel/DesktopApp/src/fonts/LPMPuffPuff-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'SliceMono';
+  src: url('C:/Users/admin1/Desktop/Pickmi-Hotel/DesktopApp/src/fonts/MBASliceMono-Regular.otf');
+}
+
+body {
+  margin: 0;
+  font-family: 'SliceMono', Arial, sans-serif;
+  background: #F7F7F8;
+}
+
+/* TOP BAR */
+.topbar {
+  height: 60px;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.app-name {
+  font-weight: bold;
+  color: #575F6E;
+  font-family: 'PuffPuff';
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #575F6E;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #D4D4D4;
+}
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  height: calc(100vh - 60px);
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.nav-item {
+  color: #575F6E;
+  cursor: pointer;
+  font-family: 'SliceMono';
+  font-weight: 500;
+  font-size: 18px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  transition: 0.2s ease;
+}
+
+.nav-item:hover {
+  background: #F2E6EC;
+  transform: translateX(6px);
+  color: #6A4163;
+}
+
+
+/* MAIN */
+.content {
+  flex: 1;
+  padding: 20px;
+    overflow-y: auto;
+  height: calc(100vh - 60px);
+}
+
+/* BUTTONS */
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 260px; 
+}
+
+.btn {
+  padding: 20px 24px; 
+  font-family: 'SliceMono';
+  border: none;
+  cursor: pointer;
+  color: white;
+  border-radius: 16px;
+  font-size: 24px;     
+  width: 100%;        
+  text-align: center;   
+  transition: 0.2s ease;
+}
+
+.btn:hover {
+  transform: translateX(4px);
+  opacity: 0.95;
+}
+
+/* HEADER ROW */
+.staff-header-row {
+  padding: 0 20px;
+  font-family: 'SliceMono';
+  color: gray;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  margin-bottom: 10px;
+  align-items: center;
+  font-size: 14px;
+}
+
+/* CARD */
+.staff-card {
+  background: white;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: grid;
+  align-items: center;
+  transition: 0.2s;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+}
+
+.staff-card:hover {
+  transform: translateX(4px);
+}
+.staff-container {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* LEFT */
+.staff-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.staff-name {
+  font-family: 'SliceMono';
+  font-size: 18px;
+  color: black;
+}
+
+.staff-id {
+  font-family: 'SliceMono';
+  color: gray;
+  font-size: 12px;
+}
+
+.staff-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+
+/* SALARY */
+.staff-salary {
+  font-family: 'SliceMono';
+  color: black;
+  text-align: center;
+}
+
+/* ROLE */
+.staff-role {
+  font-family: 'SliceMono';
+  color: #6A4163;
+  text-align: center;
+}
+
+/* STATUS */
+.staff-status {
+  font-family: 'SliceMono';
+  text-align: center;
+  color: green;
+  margin-left: 10px;
+}
+
+/* BUTTON */
+.add-staff {
+  margin-top: 20px;
+  background: white;
+  color: black;
+}
+
+.detail-card {
+  background: white;
+  padding: 24px;
+  border-radius: 16px;
+  font-family: 'SliceMono';
+}
+
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.detail-field input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-family: 'SliceMono';
+}
+
+#editBtn, #backBtn {
+  margin-top: 20px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+#editBtn {
+  background: #6A4163;
+  color: white;
+}
+
+#backBtn {
+  background: #eee;
+}
+
+#backBtn,
+#editBtn {
+  font-family: 'SliceMono';
+  border: none;
+  cursor: pointer;
+  border-radius: 14px;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+/* ───── BACK BUTTON ───── */
+#backBtn {
+  background: #F2F2F2;
+  color: #333;
+  padding: 10px 14px;
+  font-size: 14px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+#backBtn:hover {
+  background: #E9E9E9;
+  transform: translateX(-3px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+#backBtn:active {
+  transform: scale(0.97) translateX(-1px);
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ───── EDIT / SAVE BUTTON ───── */
+#editBtn {
+  background: linear-gradient(135deg, #6A4163, #8B5A83);
+  color: white;
+  padding: 12px 18px;
+  font-size: 15px;
+  box-shadow: 0 8px 20px rgba(106, 65, 99, 0.25);
+}
+
+#editBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(106, 65, 99, 0.35);
+  filter: brightness(1.05);
+}
+
+#editBtn:active {
+  transform: scale(0.97);
+  box-shadow: 0 6px 14px rgba(106, 65, 99, 0.2);
+}
+
+/* лёгкий универсальный pressed-эффект */
+#backBtn:active,
+#editBtn:active {
+  filter: brightness(0.95);
+}
+.breadcrumbs {
+  font-family: 'SliceMono';
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.breadcrumbs #breadcrumbBack {
+  color: #6A4163;
+  cursor: pointer;
+  border-bottom: 1px solid #6A4163;
+}
+
+.breadcrumbs #breadcrumbBack:hover {
+  opacity: 0.7;
+}
+
+.breadcrumbs .divider {
+  margin: 0 6px;
+  color: gray;
+}
+
+.employee-subtitle {
+  font-family: 'SliceMono';
+  color: #6A4163;
+  margin-top: -10px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+#createBtn {
+  margin-top: 20px;
+  background: linear-gradient(135deg, #6A4163, #8B5A83);
+  color: white;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  font-family: 'SliceMono';
+  box-shadow: 0 8px 20px rgba(106, 65, 99, 0.25);
+}
+
+#createBtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px rgba(106, 65, 99, 0.35);
+}
+
+
+
+/* КРУГЛАЯ КНОПКА */
+.delete-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+
+  background: #FBEAEA;
+  color: #D64545;
+
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.delete-btn:hover {
+  background: #F5D0D0;
+  transform: scale(1.1);
+}
+
+/* active */
+.delete-btn:active {
+  transform: scale(0.95);
+}
+.staff-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+}
+.tasks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.task-card {
+  background: #F7F7F8;
+  padding: 12px;
+  border-radius: 12px;
+  font-family: 'SliceMono';
+}
+.welcome-title {
+  font-family: 'PuffPuff';
+  color: #6A4163;
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+/* === CUSTOM SELECT (как input) === */
+.select-wrapper {
+  position: relative;
+}
+
+.custom-select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-family: 'SliceMono';
+  font-size: 14px;
+  background: white;
+  appearance: none; /* убираем стандартный стиль */
+  cursor: pointer;
+}
+
+.custom-select option {
+  font-family: 'SliceMono';
+}
+
+/* стрелка */
+.select-wrapper::after {
+  content: "▾";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-family: 'SliceMono';
+  color: #6A4163;
+  font-size: 14px;
+}
+
+/* hover / focus */
+.custom-select:hover {
+  border-color: #6A4163;
+}
+
+.custom-select:focus {
+  outline: none;
+  border-color: #6A4163;
+  box-shadow: 0 0 0 2px rgba(106, 65, 99, 0.1);
+}
+
+
+

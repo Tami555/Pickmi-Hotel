@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pickmi Admin - Номера</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="app-name">PICKMI ADMIN</div>
+
+    <div class="profile">
+      <div class="avatar"></div>
+      <div class="username" id="username">Мой профиль</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="nav-item" id="goStaff">👥 Сотрудники</div>
+      <div class="nav-item active" id="goRooms">🛏️ Номера</div>
+      <div class="nav-item" id="goReports">📊 Отчетность</div>
+      <div class="nav-item" id="goGuests">🧍 Гости</div>
+
+      <hr />
+
+      <!-- ФИЛЬТРЫ -->
+      <div class="filter-title">Фильтр</div>
+
+      <select id="filterOccupancy">
+        <option value="all">Все</option>
+        <option value="free">Свободные</option>
+        <option value="busy">Занятые</option>
+      </select>
+
+      <select id="filterPlaces">
+        <option value="all">Любое кол-во мест</option>
+        <option value="1">1 место</option>
+        <option value="2">2 места</option>
+        <option value="3">3+ мест</option>
+      </select>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="content">
+
+      <h1 class="title">Номера</h1>
+
+      <!-- КОЛЬЦО -->
+      <div class="occupancy-block">
+        <div class="circle" id="occupancyCircle">
+          <span id="occupancyText">0%</span>
+        </div>
+        <p>Загруженность отеля</p>
+      </div>
+
+      <!-- ТАБЫ -->
+      <div class="tabs" id="tabs"></div>
+
+      <!-- ПОИСК -->
+      <input 
+        type="text" 
+        id="searchInput" 
+        placeholder="Поиск по номеру или гостю..." 
+      />
+
+      <!-- ТАБЛИЦА -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Номер</th>
+              <th>Этаж</th>
+              <th>Мест</th>
+              <th>Статус</th>
+              <th>Гость</th>
+              <th>Дней</th>
+            </tr>
+          </thead>
+          <tbody id="roomsTable"></tbody>
+        </table>
+      </div>
+
+    </main>
+
+  </div>
+
+<script type="module" src="renderer.js"></script>
+</body>
+</html>
