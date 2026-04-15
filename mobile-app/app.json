@@ -1,0 +1,55 @@
+{
+  "expo": {
+    "backgroundColor": "#FFC0CB",
+    "name": "pickmi-mobile",
+    "slug": "pickmi-mobile",
+    "version": "1.0.0",
+    "orientation": "vertical",
+    "icon": "./assets/images/grizha_pozvonochnika.png",
+    "scheme": "pickmimobile",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/images/grizha_pozvonochnika.png",
+      "backgroundColor": "#FF69B4",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "icon": "./assets/expo.icon",
+      "splash": {
+        "image": "./assets/images/grizha_pozvonochnika.png",
+        "backgroundColor": "#FF69B4"
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#FFC0CB",
+        "backgroundImage": "./assets/images/grizha_pozvonochnika.png"
+      },
+      "splash": {
+        "image": "./assets/images/grizha_pozvonochnika.png",
+        "backgroundColor": "#FF69B4",
+        "resizeMode": "contain"
+      }
+    },
+    "web": {
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#FF69B4",
+          "image": "./assets/images/grizha_pozvonochnika.png",
+          "imageWidth": 200,
+          "resizeMode": "contain"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
