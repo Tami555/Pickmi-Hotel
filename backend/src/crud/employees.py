@@ -49,6 +49,16 @@ async def get_employee_by_id(employee_id: int, session: AsyncSession) -> Employe
     return employee
 
 
+async def get_employee_by_user_id(user_id: int, session: AsyncSession) -> Employee | None:
+    """ Получение сотрудника по id пользователя"""
+    stmt = select(Employee).options(
+            joinedload(Employee.user),
+            joinedload(Employee.position)
+        ).where(Employee.user_id == user_id)
+    employee = await session.scalar(stmt)
+    return employee
+
+
 async def create_employee(employee_data: dict, session: AsyncSession) -> Employee:
     """ Создание сотрудника """
     new_employee = Employee(**employee_data)
