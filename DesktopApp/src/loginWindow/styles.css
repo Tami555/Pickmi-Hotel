@@ -1,11 +1,11 @@
 @font-face {
   font-family: 'PuffPuff';
-  src: url('C:/Users/admin1/Desktop/Pickmi-Hotel/DesktopApp/src/fonts/LPMPuffPuff-Regular.ttf');
+  src: url('../fonts/LPMPuffPuff-Regular.ttf');
 }
 
 @font-face {
   font-family: 'SliceMono';
-  src: url('C:/Users/admin1/Desktop/Pickmi-Hotel/DesktopApp/src/fonts/MBASliceMono-Regular.otf');
+  src: url('../fonts/MBASliceMono-Regular.otf');
 }
 
 /*Нач окно*/
