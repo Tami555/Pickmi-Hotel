@@ -8,18 +8,32 @@ import {
   StyleSheet,
   SafeAreaView,
   StatusBar,
+    Image,    
   TouchableOpacity,
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { router } from 'expo-router';
+import { router, usePathname  } from 'expo-router';
 import { getEmployeeProfile, type EmployeeProfileResponse } from '@/api/services';
 import { clearTokens } from '@/api/utils/auth/storage';
+import { Animated, Easing } from 'react-native';
 
 export default function EmployeeProfileScreen() {
+    const pathname = usePathname();
   const [profile, setProfile] = useState<EmployeeProfileResponse | null>(null);
   const [loading, setLoading] = useState(true);
+const homeScale = useState(new Animated.Value(1))[0];
+const profileScale = useState(new Animated.Value(1))[0];
 
+// 🔹 Функция анимации нажатия
+const animatePress = (anim: Animated.Value, pressed: boolean) => {
+  Animated.timing(anim, {
+    toValue: pressed ? 1.15 : 1,
+    duration: 150,
+    easing: Easing.ease,
+    useNativeDriver: true,
+  }).start();
+};
   // 🔹 Загрузка профиля
   const fetchProfile = async () => {
     try {
@@ -120,19 +134,19 @@ export default function EmployeeProfileScreen() {
           <Text style={styles.position}>{profile.position.title}</Text>
           
           {/* Status Badge */}
-          <View style={[styles.statusBadge, { backgroundColor: statusConfig.color + '20' }]}>
-            <Text style={[styles.statusText, { color: statusConfig.color }]}>
-              {statusConfig.text}
-            </Text>
-          </View>
+          <View style={[styles.statusBadge, { backgroundColor: '#D35D8A20' }]}>
+  <Text style={[styles.statusText, { color: '#D35D8A' }]}>
+    {statusConfig.text}
+  </Text>
+</View>
         </View>
 
         {/* Personal Info Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>📋 Личные данные</Text>
+          <Text style={styles.sectionTitle}>Личные данные</Text>
           
           <View style={styles.infoRow}>
-            <Text style={styles.infoLabel}>Email</Text>
+            <Text style={styles.infoLabel}>Почта</Text>
             <Text style={styles.infoValue}>{profile.user.email}</Text>
           </View>
           
@@ -151,7 +165,7 @@ export default function EmployeeProfileScreen() {
 
         {/* Employment Info Section */}
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>💼 Работа</Text>
+          <Text style={styles.sectionTitle}>Работа</Text>
           
           <View style={styles.infoRow}>
             <Text style={styles.infoLabel}>Дата приёма</Text>
@@ -218,12 +232,47 @@ export default function EmployeeProfileScreen() {
           <Text style={styles.versionText}>Pickmi Hotel v1.2.0</Text>
         </View>
       </ScrollView>
+      <View style={styles.bottomBar}>
+        {/* 🔹 Кнопка: Главная */}
+        <TouchableOpacity 
+          style={[styles.navItem, pathname === '/pages/HomeScreen' && styles.navItemActive]}
+          onPress={() => router.push('/pages/HomeScreen')}
+          onPressIn={() => animatePress(homeScale, true)}
+          onPressOut={() => animatePress(homeScale, false)}
+          activeOpacity={0.7}
+        >
+          <Animated.View style={{ transform: [{ scale: homeScale }] }}>
+            <Image
+              source={require('../../../src/assets/home_11810789.png')} // 🔹 Ваша картинка
+              style={[styles.navIcon, pathname === '/pages/HomeScreen' && styles.navIconActive]}
+              resizeMode="contain"
+            />
+          </Animated.View>
+        </TouchableOpacity>
+        
+        {/* 🔹 Кнопка: Профиль */}
+        <TouchableOpacity 
+          style={[styles.navItem, pathname === '/pages/ProfileScreen' && styles.navItemActive]}
+          onPress={() => router.push('/pages/ProfileScreen')}
+          onPressIn={() => animatePress(profileScale, true)}
+          onPressOut={() => animatePress(profileScale, false)}
+          activeOpacity={0.7}
+        >
+          <Animated.View style={{ transform: [{ scale: profileScale }] }}>
+            <Image
+              source={require('../../assets/user_4979282.png')} // 🔹 Ваша картинка
+              style={[styles.navIcon, pathname === '/pages/ProfileScreen' && styles.navIconActive]}
+              resizeMode="contain"
+            />
+          </Animated.View>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF' },
+  container: { flex: 1, backgroundColor: '#fadbe4' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 },
   scrollView: { flex: 1 },
   
@@ -233,18 +282,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
+        paddingTop: 70,
     paddingVertical: 15,
+    backgroundColor: '#fadbe4',
   },
   backButton: {
-    width: 40,
-    height: 40,
+    width: 50,
+    height: 50,
     borderRadius: 8,
+    paddingBottom: 6,
     backgroundColor: '#D35D8A',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backButtonText: { color: '#FFF', fontSize: 24 },
-  headerTitle: { fontSize: 20, fontWeight: '600', color: '#D35D8A' },
+  backButtonText: { color: '#FFF', fontSize: 24,   },
+  headerTitle: { fontSize: 30, fontWeight: '400', color: '#D35D8A',   },
   headerDivider: { height: 1, backgroundColor: '#E5E7EB', width: '100%' },
   
   // Profile Header
@@ -262,16 +314,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 16,
   },
-  avatarText: { fontSize: 32, fontWeight: '600', color: '#FFFFFF' },
+  avatarText: { fontSize: 32, fontWeight: '600', color: '#FFFFFF',   },
   userName: {
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: '600',  
     color: '#111827',
     textAlign: 'center',
     marginBottom: 4,
   },
   position: {
-    fontSize: 16,
+    fontSize: 16,  
     color: '#6B7280',
     marginBottom: 12,
   },
@@ -280,7 +332,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 20,
   },
-  statusText: { fontSize: 14, fontWeight: '500' },
+  statusText: { fontSize: 14, fontWeight: '500',   },
   
   // Sections
   section: {
@@ -288,7 +340,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 18,  
     fontWeight: '600',
     color: '#111827',
     marginBottom: 16,
@@ -305,12 +357,12 @@ const styles = StyleSheet.create({
     borderBottomColor: '#F9FAFB',
   },
   infoLabel: {
-    fontSize: 15,
+    fontSize: 15,  
     color: '#6B7280',
     flex: 1,
   },
   infoValue: {
-    fontSize: 15,
+    fontSize: 15,  
     color: '#111827',
     fontWeight: '500',
     textAlign: 'right',
@@ -326,7 +378,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   saveButtonDisabled: { opacity: 0.7 },
-  saveButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  saveButtonText: { color: '#fff', fontSize: 16, fontWeight: '600',   },
   
   logoutButton: {
     marginHorizontal: 20,
@@ -337,23 +389,43 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#EF4444',
   },
-  logoutText: { color: '#EF4444', fontSize: 16, fontWeight: '500' },
+  logoutText: { color: '#EF4444', fontSize: 16, fontWeight: '500',   },
   
   // Footer
   footer: {
     alignItems: 'center',
     paddingVertical: 20,
   },
-  versionText: { fontSize: 13, color: '#9CA3AF' },
+  versionText: { fontSize: 13, color: '#9CA3AF',   },
   
   // Loading / Error
-  loadingText: { marginTop: 16, color: '#6B7280' },
-  errorText: { color: '#EF4444', marginBottom: 16, textAlign: 'center' },
+  loadingText: { marginTop: 16, color: '#6B7280',   },
+  errorText: { color: '#EF4444', marginBottom: 16, textAlign: 'center',   },
   retryButton: {
     backgroundColor: '#D35D8A',
     paddingHorizontal: 24,
     paddingVertical: 12,
     borderRadius: 8,
   },
-  retryText: { color: '#fff', fontWeight: '500' },
+  retryText: { color: '#fff', fontWeight: '500',   },
+
+  bottomBar: {
+    position: 'absolute', bottom: 0, left: 0, right: 0,
+    flexDirection: 'row', justifyContent: 'space-around',
+    paddingVertical: 20, paddingHorizontal: -10,
+    backgroundColor: '#FFFFFF', borderTopWidth: 3, borderTopColor: '#E5E7EB',
+  },
+  navItem: { alignItems: 'center', paddingVertical: 4 },
+  navItemActive: {},
+  // Стало (для картинок):
+navIcon: { 
+  width: 28,      // 🔹 Размер иконки
+  height: 28, 
+  tintColor: '#9CA3AF', // 🔹 Цвет для монохромных PNG/SVG
+},
+navIconActive: { 
+  tintColor: '#D35D8A', // 🔹 Цвет активной иконки
+},
+  navLabel: { fontSize: 11, color: '#9CA3AF', marginTop: 4 },
+  navLabelActive: { color: '#D35D8A', fontWeight: '600' },
 });

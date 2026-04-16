@@ -30,6 +30,34 @@ interface SubTask {
 }
 
 export default function CleaningTaskScreen() {
+  
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+const [isTimerRunning, setIsTimerRunning] = useState(false);
+
+// 🔹 Логика таймера (авто-очистка при размонтировании)
+useEffect(() => {
+  let interval: ReturnType<typeof setInterval> | null = null;
+  
+  if (isTimerRunning) {
+    interval = setInterval(() => {
+      setElapsedSeconds(prev => prev + 1);
+    }, 1000);
+  }
+  
+  return () => {
+    if (interval) clearInterval(interval);
+  };
+}, [isTimerRunning]);
+
+  const formatTime = (totalSeconds: number) => {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+};
+  
+  
+  
   const params = useLocalSearchParams();
   
   // Получаем параметры из навигации
@@ -89,7 +117,7 @@ export default function CleaningTaskScreen() {
       if (foundTask.comment) {
         generatedSubTasks.unshift({
           id: '0',
-          text: `💬 ${foundTask.comment}`,
+          text: `${foundTask.comment}`,
           completed: true,
         });
       }
@@ -126,6 +154,8 @@ export default function CleaningTaskScreen() {
       
       setTask(prev => prev ? { ...prev, status: updated.status, started_at: updated.started_at ?? null } : null);
       setTaskStarted(true);
+      setIsTimerRunning(true);
+      setElapsedSeconds(0); // Сброс при новом старте
       
     } catch (error: any) {
       console.error('❌ Ошибка начала задачи:', error?.message);
@@ -153,6 +183,7 @@ export default function CleaningTaskScreen() {
               const updated = await completeTask(task.id);
               
               setTask(prev => prev ? { ...prev, status: updated.status, completed_at: updated.completed_at ?? null } : null);
+              setIsTimerRunning(false); // Остановка таймера
               
               Alert.alert('✓ Готово!', 'Задача успешно завершена', [
                 { text: 'OK', onPress: () => router.replace('/pages/HomeScreen') }
@@ -290,7 +321,7 @@ export default function CleaningTaskScreen() {
         {/* 🔹 Comment Section */}
         {task.comment && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>💬 Комментарий</Text>
+            <Text style={styles.sectionTitle}>Комментарий</Text>
             <Text style={styles.commentText}>{task.comment}</Text>
           </View>
         )}
@@ -298,50 +329,36 @@ export default function CleaningTaskScreen() {
         {/* 🔹 Service Description */}
         {task.service?.description && (
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>📋 Описание услуги</Text>
+            <Text style={styles.sectionTitle}>Описание услуги</Text>
             <Text style={styles.commentText}>{task.service.description}</Text>
           </View>
         )}
 
-        {/* 🔹 Progress Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Прогресс выполнения</Text>
-          <View style={styles.progressContainer}>
-            <View style={[styles.progressBar, { width: `${progress}%` }]} />
-            <Text style={styles.progressText}>{progress}%</Text>
-          </View>
-          <Text style={styles.progressHint}>
-            {subTasks.filter(t => t.completed).length} из {subTasks.length} выполнено
-          </Text>
-        </View>
+        {/* 🔹 Секция: Таймер выполнения */}
+<View style={styles.timerSection}>
+  <Text style={styles.sectionTitle}>Время выполнения</Text>
+  
+  <View style={styles.timerDisplay}>
+    <Text style={styles.timerText}>
+      {isTimerRunning ? formatTime(elapsedSeconds) : "00:00:00"}
+    </Text>
+  </View>
 
-        {/* 🔹 Tasks / Subtasks Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Чек-лист</Text>
-          <View style={styles.tasksList}>
-            {subTasks.map((subTask) => (
-              <TouchableOpacity
-                key={subTask.id}
-                style={styles.taskItem}
-                onPress={() => toggleSubTask(subTask.id)}
-                activeOpacity={0.7}
-              >
-                <Text style={[
-                  styles.taskText, 
-                  subTask.completed && styles.taskTextCompleted
-                ]}>
-                  {subTask.text}
-                </Text>
-                <View style={[
-                  styles.checkbox, 
-                  subTask.completed && styles.checkboxFilled
-                ]}>
-                  {subTask.completed && <Text style={styles.checkmark}>✓</Text>}
-                </View>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
+  {/* Подсказки в зависимости от статуса */}
+  {!isTimerRunning && task?.status !== 'completed' && (
+    <Text style={styles.timerHint}>Нажмите "Начать выполнение", чтобы запустить таймер</Text>
+  )}
+  {isTimerRunning && (
+    <Text style={[styles.timerHint, { color: '#D35D8A', fontWeight: '500' }]}>
+      Задача в процессе... ⏳
+    </Text>
+  )}
+  {task?.status === 'completed' && (
+    <Text style={[styles.timerHint, { color: '#D35D8A', fontWeight: '500' }]}>
+      Завершено! Итоговое время: {formatTime(elapsedSeconds)}
+    </Text>
+  )}
+</View>
 
         {/* 🔹 Status Badge */}
         <View style={styles.statusSection}>
@@ -350,8 +367,8 @@ export default function CleaningTaskScreen() {
             styles.statusBadge,
             { 
               backgroundColor: 
-                task.status === 'completed' ? '#22C55E20' :
-                task.status === 'in_progress' ? '#F59E0B20' :
+                task.status === 'completed' ? '#D35D8A20' :
+                task.status === 'in_progress' ? '#e09e8420' :
                 task.status === 'canceled' ? '#6B728020' :
                 '#D35D8A20'
             }
@@ -360,16 +377,16 @@ export default function CleaningTaskScreen() {
               styles.statusText,
               { 
                 color: 
-                  task.status === 'completed' ? '#22C55E' :
-                  task.status === 'in_progress' ? '#F59E0B' :
+                  task.status === 'completed' ? '#D35D8A' :
+                  task.status === 'in_progress' ? '#e09e84' :
                   task.status === 'canceled' ? '#6B7280' :
                   '#D35D8A'
               }
             ]}>
-              {task.status === 'completed' && '✓ Выполнено'}
-              {task.status === 'in_progress' && '⏳ В работе'}
-              {task.status === 'canceled' && '✕ Отменено'}
-              {task.status === 'pending' && '📋 Ожидает'}
+              {task.status === 'completed' && 'Выполнено'}
+              {task.status === 'in_progress' && 'В работе'}
+              {task.status === 'canceled' && 'Отменено'}
+              {task.status === 'pending' && 'Ожидает'}
             </Text>
           </View>
         </View>
@@ -385,35 +402,34 @@ export default function CleaningTaskScreen() {
             {updatingStatus ? (
               <ActivityIndicator color="#fff" size="small" />
             ) : (
-              <Text style={styles.startButtonText}>▶️ Начать выполнение</Text>
+              <Text style={styles.startButtonText}>Начать выполнение</Text>
             )}
           </TouchableOpacity>
         )}
 
         {/* 🔹 Finish Button */}
         <TouchableOpacity 
-          style={[
-            styles.finishButton,
-            task.status === 'completed' && styles.finishButtonDone,
-            (!taskStarted && task?.status !== 'completed') && styles.finishButtonDisabled,
-            updatingStatus && styles.finishButtonDisabled
-          ]} 
-          onPress={handleCompleteTask}
-          activeOpacity={0.8}
-          disabled={!taskStarted && task?.status !== 'completed' || updatingStatus}
-        >
-          {updatingStatus ? (
-            <ActivityIndicator color="#fff" size="small" />
-          ) : (
-            <Text style={styles.finishButtonText}>
-              {task?.status === 'completed' 
-                ? '✓ Задача выполнена' 
-                : taskStarted 
-                  ? '✅ Завершить задачу' 
-                  : '⏳ Сначала начните выполнение'}
-            </Text>
-          )}
-        </TouchableOpacity>
+  style={[
+    styles.finishButton,
+    task.status === 'completed' && styles.finishButtonDone,
+    (updatingStatus || task?.status === 'completed') && styles.finishButtonDisabled
+  ]} 
+  onPress={handleCompleteTask}
+  // 🔹 Отключаем анимацию нажатия, когда кнопка заблокирована
+  activeOpacity={(updatingStatus || task?.status === 'completed') ? 1 : 0.8}
+  // 🔹 Полная блокировка на уровне нативного компонента
+  disabled={updatingStatus || task?.status === 'completed'}
+>
+  {updatingStatus ? (
+    <ActivityIndicator color="#fff" size="small" />
+  ) : (
+    <Text style={styles.finishButtonText}>
+      {task?.status === 'completed' 
+        ? '✓ Задача выполнена' 
+        : 'Завершить задачу'}
+    </Text>
+  )}
+</TouchableOpacity>
 
         <View style={styles.footerSpacer} />
       </ScrollView>
@@ -423,37 +439,38 @@ export default function CleaningTaskScreen() {
 
 // 🔹 Стили
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF' },
+  container: { flex: 1, backgroundColor: '#fadbe4' },
   center: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 },
   scrollView: { flex: 1 },
-  loadingText: { marginTop: 16, fontSize: 16, color: '#6B7280' },
-  errorText: { color: '#EF4444', marginBottom: 16, textAlign: 'center', fontSize: 16 },
+  loadingText: { marginTop: 16, fontSize: 16, color: '#6B7280',   },
+  errorText: { color: '#EF4444', marginBottom: 16, textAlign: 'center', fontSize: 16,   },
   retryButton: {
     backgroundColor: '#D35D8A', paddingHorizontal: 24,
     paddingVertical: 12, borderRadius: 8,
   },
-  retryText: { color: '#fff', fontWeight: '500' },
+  retryText: { color: '#fff', fontWeight: '500',   },
   
   // Header
   header: {
     flexDirection: 'row', justifyContent: 'space-between',
-    alignItems: 'center', marginTop: 20, marginBottom: 20,
+    backgroundColor: '#fadbe4',
+    alignItems: 'center', marginTop: 70, marginBottom: 20,
     paddingHorizontal: 20,
   },
   title: {
-    fontSize: 24, fontWeight: '600', color: '#D35D8A',
+    fontSize: 24, fontWeight: '600', color: '#D35D8A',  
     flex: 1, marginRight: 12,
   },
   closeButton: {
     width: 40, height: 40, backgroundColor: '#D35D8A',
     borderRadius: 8, justifyContent: 'center', alignItems: 'center',
   },
-  closeButtonText: { color: '#FFFFFF', fontSize: 28, fontWeight: '400', lineHeight: 28 },
+  closeButtonText: { color: '#FFFFFF', fontSize: 28, fontWeight: '400', lineHeight: 28,   },
   
   // Date
   dateContainer: { marginBottom: 20, paddingHorizontal: 20 },
-  dateLabel: { fontSize: 13, color: '#6B7280', marginBottom: 4 },
-  dateText: { fontSize: 16, color: '#111827', fontWeight: '500' },
+  dateLabel: { fontSize: 13, color: '#6B7280', marginBottom: 4,   },
+  dateText: { fontSize: 16, color: '#111827', fontWeight: '500',   },
   
   // Timer Boxes
   timerContainer: {
@@ -467,19 +484,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 4,
   },
   timerValue: {
-    fontSize: 18, fontWeight: '700', color: '#FFFFFF',
+    fontSize: 18, fontWeight: '700', color: '#FFFFFF',  
     marginBottom: 4, textAlign: 'center',
   },
-  timerLabel: { fontSize: 12, color: '#FFFFFF', fontWeight: '500', textAlign: 'center' },
+  timerLabel: { fontSize: 12, color: '#FFFFFF', fontWeight: '500', textAlign: 'center',   },
   
   // Sections
   section: { marginBottom: 25, paddingHorizontal: 20 },
   sectionTitle: {
-    fontSize: 17, fontWeight: '600', color: '#111827',
+    fontSize: 17, fontWeight: '600', color: '#111827',  
     marginBottom: 12,
   },
   commentText: {
-    fontSize: 15, color: '#374151', lineHeight: 22,
+    fontSize: 15, color: '#374151', lineHeight: 22,  
     backgroundColor: '#F9FAFB', padding: 14, borderRadius: 10,
   },
   
@@ -493,11 +510,11 @@ const styles = StyleSheet.create({
     borderRadius: 8, position: 'absolute', left: 0, top: 0, bottom: 0,
   },
   progressText: {
-    fontSize: 13, color: '#FFFFFF', fontWeight: '600',
+    fontSize: 13, color: '#FFFFFF', fontWeight: '600',  
     textAlign: 'center', lineHeight: 16, zIndex: 1,
   },
   progressHint: {
-    fontSize: 13, color: '#6B7280', textAlign: 'center',
+    fontSize: 13, color: '#6B7280', textAlign: 'center',  
   },
   
   // Tasks List
@@ -509,10 +526,10 @@ const styles = StyleSheet.create({
     marginBottom: 10, borderWidth: 1, borderColor: '#F3F4F6',
   },
   taskText: {
-    fontSize: 15, color: '#D35D8A', flex: 1, marginRight: 12,
+    fontSize: 15, color: '#D35D8A', flex: 1, marginRight: 12,  
   },
   taskTextCompleted: {
-    color: '#9CA3AF', textDecorationLine: 'line-through',
+    color: '#9CA3AF', textDecorationLine: 'line-through',  
   },
   checkbox: {
     width: 26, height: 26, borderRadius: 13,
@@ -521,7 +538,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   checkboxFilled: { backgroundColor: '#D35D8A', borderColor: '#D35D8A' },
-  checkmark: { color: '#FFFFFF', fontSize: 16, fontWeight: 'bold', lineHeight: 16 },
+  checkmark: { color: '#FFFFFF', fontSize: 16, fontWeight: 'bold', lineHeight: 16,   },
   
   // Status Badge
   statusSection: { paddingHorizontal: 20, marginBottom: 20 },
@@ -529,11 +546,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16, paddingVertical: 10,
     borderRadius: 12, alignSelf: 'flex-start',
   },
-  statusText: { fontSize: 14, fontWeight: '600' },
+  statusText: { fontSize: 14, fontWeight: '600',   },
   
   // Start Button
   startButton: {
-    backgroundColor: '#F59E0B',
+    backgroundColor: '#D35D8A',
     borderRadius: 14,
     paddingVertical: 16,
     alignItems: 'center',
@@ -545,7 +562,7 @@ const styles = StyleSheet.create({
   },
   startButtonDisabled: { opacity: 0.6 },
   startButtonText: {
-    fontSize: 16,
+    fontSize: 16,  
     fontWeight: '600',
     color: '#FFFFFF',
   },
@@ -556,12 +573,44 @@ const styles = StyleSheet.create({
     paddingVertical: 18, alignItems: 'center', justifyContent: 'center',
     marginHorizontal: 20, marginBottom: 24,
   },
-  finishButtonDone: { backgroundColor: '#22C55E' },
+  finishButtonDone: { backgroundColor: '#D35D8A' },
   finishButtonDisabled: { opacity: 0.5, backgroundColor: '#9CA3AF' },
   finishButtonText: {
-    fontSize: 17, fontWeight: '600', color: '#FFFFFF',
+    fontSize: 17, fontWeight: '600', color: '#FFFFFF',  
   },
   
   // Footer
   footerSpacer: { height: 30 },
+
+
+  timerSection: { 
+  marginBottom: 25, 
+  paddingHorizontal: 20 
+},
+timerDisplay: {
+  backgroundColor: '#D35D8A',
+  borderRadius: 16,
+  paddingVertical: 28,
+  alignItems: 'center',
+  justifyContent: 'center',
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.15,
+  shadowRadius: 6,
+  elevation: 4,
+},
+timerText: {
+  fontSize: 44,  
+  fontWeight: '700',
+  color: '#FFFFFF',
+  fontVariant: ['tabular-nums'], // 🔑 Фиксирует ширину цифр, чтобы таймер не "дрожал"
+  letterSpacing: 2,
+},
+timerHint: {
+  fontSize: 14,  
+  color: '#6B7280',
+  textAlign: 'center',
+  marginTop: 12,
+  lineHeight: 20,
+},
 });

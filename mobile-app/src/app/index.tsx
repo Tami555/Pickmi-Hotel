@@ -1,27 +1,87 @@
-import { useEffect } from 'react';
+// src/app/index.tsx
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'expo-router';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ImageBackground,
+  Animated,
+  Easing,
+} from 'react-native';
+import { useKeepAwake } from 'expo-keep-awake';
+import LottieView from 'lottie-react-native';
+import { Video, ResizeMode } from 'expo-av';
+import { Image } from 'react-native';
 
 
+interface Props {
+  text?: string;
+}
 
-export default function Index() {
+export default function Index({ text = 'Загрузка...' }: Props) {
+  useKeepAwake();
   const router = useRouter();
+  
+  const [fadeAnim] = useState(new Animated.Value(0));
+  const [pulseAnim] = useState(new Animated.Value(1));
 
   useEffect(() => {
-    console.log('🚀 ПРИЛОЖЕНИЕ ЗАПУСКАЕТСЯ');
-    console.log('Redirecting to login...');
+    // 🔹 Плавное появление
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 600,
+      easing: Easing.ease,
+      useNativeDriver: true,
+    }).start();
+
+    // 🔹 Пульсация логотипа
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 1.1,
+          duration: 800,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 800,
+          easing: Easing.ease,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+
+    // 🔹 Переход на логин через 2 секунды
     const timer = setTimeout(() => {
       router.replace('/pages/LoginScreen');
-    }, 1000);
+    }, 2000);
 
     return () => clearTimeout(timer);
-  }, [router]);
+  }, [router, fadeAnim, pulseAnim]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Загрузка...</Text>
-      <ActivityIndicator size="large" color="#D87093" />
-    </View>
+    <ImageBackground
+      // // 🔹 ФОН: укажите путь к вашей картинке
+      source={require('../assets/miau.png')}
+      style={styles.container}
+      resizeMode="cover"
+    >
+      {/* 🔹 Затемнение */}
+      <View style={styles.overlay} />
+
+      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+      
+
+        {/* 🔹 Lottie анимация (Амогус) */}
+        <Image
+          source={require('../assets/amogus.gif')}
+          style={styles.lottie}
+        />
+
+      </Animated.View>
+    </ImageBackground>
   );
 }
 
@@ -30,11 +90,24 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+  },
+  overlay: {
+  },
+  content: {
+  },
+  logo: {
+    width: 200,
+    height: 200,
+  },
+  lottie: {
+    marginTop: 450,
+    width: 200,
+    height: 370,
   },
   text: {
-    marginBottom: 20,
-    fontSize: 16,
-    color: '#333',
+    fontSize: 18,
+    fontWeight: '500',
+    color: '#FFFFFF',
+    textAlign: 'center',
   },
 });

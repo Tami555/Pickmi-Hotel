@@ -10,6 +10,7 @@ import {
   SafeAreaView,
   StatusBar,
   Alert,
+  Image,
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
@@ -62,11 +63,11 @@ export default function LoginScreen() {
       return;
     }
     try {
-      console.log('🔐 Попытка входа:', { email });
+      console.log('Попытка входа:', { email });
       await login(email, password);
       router.replace('/pages/HomeScreen');      
     } catch (error: any) {
-      console.error('💥 Ошибка входа:', {
+      console.error('Ошибка входа:', {
         message: error?.message
       });  
       Alert.alert('Ошибка входа', error?.message);
@@ -98,7 +99,9 @@ export default function LoginScreen() {
           {/* 🔹 Header */}
           <View style={styles.header}>
             <View style={styles.logoContainer}>
-              <Text style={styles.logoIcon}>🧹</Text>
+              <Image
+                        source={require('./../../../src/assets/logo.png')}
+                      />
               <Text style={styles.logoText}>Pickmi Hotel</Text>
             </View>
             <Text style={styles.headerTitle}>Добро пожаловать</Text>
@@ -109,7 +112,7 @@ export default function LoginScreen() {
           <View style={styles.form}>
             {/* Email */}
             <View style={styles.inputGroup}>
-              <Text style={styles.label}>Email</Text>
+              <Text style={styles.label}>Почта</Text>
               <TextInput
                 style={styles.input}
                 value={email}
@@ -138,12 +141,19 @@ export default function LoginScreen() {
                   editable={!loading}
                 />
                 <TouchableOpacity
-                  onPress={() => !loading && setSecureText(!secureText)}
-                  style={styles.eyeIcon}
-                  disabled={loading}
-                >
-                  <Text style={styles.eyeText}>{secureText ? '👁️' : '👁️‍🗨️'}</Text>
-                </TouchableOpacity>
+  onPress={() => !loading && setSecureText(!secureText)}
+  style={styles.eyeIconn}
+  disabled={loading}
+>
+  <Image
+    source={secureText 
+      ? require('../../assets/eye_17113703.png') // 👁️🗨️ Скрыто
+      : require('../../assets/eye_13645203.png') // 👁️ Видно
+    }
+    style={styles.eyeIconImage}
+    resizeMode="contain"
+  />
+</TouchableOpacity>
               </View>
             </View>
 
@@ -216,24 +226,31 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 16,
-  },
+  },eyeIcon: {
+  padding: 12, // Отступы вокруг кликабельной зоны
+},
+eyeIconImage: {
+  width: 24,
+  height: 24,
+  tintColor: '#9CA3AF', // Цвет иконки (меняется через стили)
+},
   logoIcon: {
-    fontSize: 32,
+    fontSize: 32,  
     marginRight: 8,
   },
   logoText: {
-    fontSize: 24,
+    fontSize: 24,  
     fontWeight: '700',
     color: '#FFFFFF',
   },
   headerTitle: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: 28,  
+    fontWeight: '500',
     color: '#FFFFFF',
     marginBottom: 8,
   },
   headerSubtitle: {
-    fontSize: 15,
+    fontSize: 15,  
     color: 'rgba(255, 255, 255, 0.9)',
     textAlign: 'center',
   },
@@ -253,7 +270,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   label: {
-    fontSize: 14,
+    fontSize: 14,  
     fontWeight: '600',
     color: '#374151',
     marginBottom: 8,
@@ -281,19 +298,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#111827',
   },
-  eyeIcon: {
+  eyeIconn: {
     padding: 16,
     paddingHorizontal: 20,
   },
   eyeText: {
-    fontSize: 18,
+    fontSize: 18,  
   },
   forgotButton: {
     alignSelf: 'flex-end',
     marginBottom: 24,
   },
   forgotText: {
-    fontSize: 14,
+    fontSize: 14,  
     color: '#D87093',
     fontWeight: '500',
   },
@@ -309,11 +326,11 @@ const styles = StyleSheet.create({
   },
   loginButtonText: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 18,  
     fontWeight: '600',
   },
   infoText: {
-    fontSize: 13,
+    fontSize: 13,  
     color: '#6B7280',
     textAlign: 'center',
     lineHeight: 18,
@@ -326,12 +343,12 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   versionText: {
-    fontSize: 13,
+    fontSize: 13,  
     color: 'rgba(255, 255, 255, 0.8)',
     marginBottom: 4,
   },
   copyrightText: {
-    fontSize: 12,
+    fontSize: 12,  
     color: 'rgba(255, 255, 255, 0.6)',
   },
 });
